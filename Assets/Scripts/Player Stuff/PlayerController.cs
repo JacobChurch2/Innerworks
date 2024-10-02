@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(TouchingDirections))]
 public class PlayerController : MonoBehaviour
 {
 	//animaiton variables
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviour
 	//movement variables
 	public float walkSpeed = 5f;
     Vector2 moveInput;
+	TouchingDirections touchingDirections;
+	public float jumpImpulse = 10f;
 
 	public bool IsMoving { get
         {
@@ -41,35 +44,40 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _isMoving = value;
-            animator.SetBool("IsMoving", value);
+            animator.SetBool(AnimationStrings.IsMoving, value);
         }
     }
 
+	public float CurrentMoveSpeed { get
+		{
+			if (IsMoving && !touchingDirections.IsOnWall)
+			{
+				return walkSpeed;
+			} else
+			{
+				// Idle
+				return 0;
+			}
+
+		}
+	}
+
 	//Components
-    Rigidbody2D rb;
+	Rigidbody2D rb;
     Animator animator;
 
-    private void Awake()
+	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+		touchingDirections = GetComponent<TouchingDirections>();
 	}
-
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 	private void FixedUpdate()
 	{
-		rb.linearVelocity = new Vector2(moveInput.x * walkSpeed, rb.linearVelocity.y);
+		rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
+
+		animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
 
         if (!IsMoving)
         {
@@ -85,6 +93,16 @@ public class PlayerController : MonoBehaviour
 
         SetFacingDirection(moveInput);
     }
+
+	public void OnJump(InputAction.CallbackContext context)
+	{
+		//TODO check if alive as well
+		if (context.started && touchingDirections.IsGrounded)
+		{
+			animator.SetTrigger(AnimationStrings.Jump);
+			rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpImpulse);
+		}
+	}
 
 	private void SetFacingDirection(Vector2 moveInput)
 	{
@@ -107,12 +125,12 @@ public class PlayerController : MonoBehaviour
 		if (current_animation.Equals("Player_Idle") || current_animation.Equals("Player_Sleepy"))
 		{
 			IdleTimer += Time.deltaTime;
-			animator.SetFloat("IdleTimer", IdleTimer);
+			animator.SetFloat(AnimationStrings.IdleTimer, IdleTimer);
 		}
 		else
 		{
 			IdleTimer = 0;
-			animator.SetFloat("IdleTimer", IdleTimer);
+			animator.SetFloat(AnimationStrings.IdleTimer, IdleTimer);
 		}
 	}
 }
