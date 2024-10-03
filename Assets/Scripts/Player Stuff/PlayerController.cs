@@ -3,14 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Splines.Interpolators;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(TouchingDirections))]
 public class PlayerController : MonoBehaviour
 {
+	#region animation variables
 	//animaiton variables
-    private bool _isMoving = false;
+	private bool _isMoving = false;
 	public bool _isFacingRight = true;
 
     private float IdleTimer = 0;
@@ -29,13 +31,16 @@ public class PlayerController : MonoBehaviour
 			_isFacingRight = value;
 		}
 	}
+	#endregion
 
-
+	#region movement variables
 	//movement variables
 	public float walkSpeed = 5f;
     Vector2 moveInput;
 	TouchingDirections touchingDirections;
 	public float jumpImpulse = 10f;
+	private bool dashAvalible = false;
+	private bool dashing = false;
 
 	public bool IsMoving { get
         {
@@ -61,11 +66,15 @@ public class PlayerController : MonoBehaviour
 
 		}
 	}
+	#endregion
 
+	#region Component variables
 	//Components
 	Rigidbody2D rb;
     Animator animator;
+	#endregion
 
+	#region basic methods
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
@@ -75,16 +84,26 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
+		if (!dashing)
+		{
+			rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
 
-		animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
+			animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
 
-        if (!IsMoving)
-        {
-			SetIdleAnimation();
-        }
+			if (!IsMoving)
+			{
+				SetIdleAnimation();
+			}
+		}
+
+		if (!dashAvalible && touchingDirections.IsGrounded && !dashing)
+		{
+			dashAvalible = true;
+		}
 	}
+	#endregion
 
+	#region movement things
 	public void OnMove(InputAction.CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
@@ -104,6 +123,50 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	public void OnDash(InputAction.CallbackContext context)
+	{
+		//TODO: Screen shake
+		//TODO: Aninimation
+		if (dashAvalible)
+		{
+			float x = moveInput.x;
+			float y = moveInput.y;
+			rb.linearVelocity = Vector2.zero;
+			rb.linearVelocity += new Vector2(x, y).normalized * 30;
+			dashAvalible = false;
+			StartCoroutine(DashBeforeAndAfter());
+		}
+	}
+
+	private IEnumerator DashBeforeAndAfter()
+	{
+		dashing = true;
+		rb.gravityScale = 0;
+		rb.linearDamping = 4;
+		yield return new WaitForSeconds(0.15f);
+		StartCoroutine(DashDamping(0, 0.2f));
+		rb.linearDamping = 0;
+		dashing = false;
+		rb.gravityScale = 5;
+	}
+
+	IEnumerator DashDamping(float endValue, float duration)
+	{
+		float time = 0;
+		float startValue = rb.linearDamping;
+
+		while (time < duration)
+		{
+			rb.linearDamping = Mathf.Lerp(startValue, endValue, time / duration);
+			time += Time.deltaTime;
+			yield return null;
+		}
+		rb.linearDamping = endValue;
+	}
+
+	#endregion
+
+	#region Animation stuff
 	private void SetFacingDirection(Vector2 moveInput)
 	{
 		if(moveInput.x > 0 && !IsFacingRight)
@@ -133,4 +196,5 @@ public class PlayerController : MonoBehaviour
 			animator.SetFloat(AnimationStrings.IdleTimer, IdleTimer);
 		}
 	}
+	#endregion
 }
