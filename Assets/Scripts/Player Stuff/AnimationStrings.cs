@@ -9,4 +9,5 @@ public class AnimationStrings
 	internal static string Jump = "Jump";
 	internal static string IsOnWall = "IsOnWall";
 	internal static string IsOnCeiling = "IsOnCeiling";
+	internal static string SideDash = "SideDash";
 }

@@ -13,18 +13,27 @@ public class DashUnlockController : MonoBehaviour
     FadingPanel CloseText;
 	[SerializeField]
 	FadingPanel DashText;
+    [SerializeField]
+    PlayerController Player;
 
     bool SequenceStart = false;
+    bool SequenceEnd = false;
 
-	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
         Frozen = GetComponent<FreezeGame>();
         Near = GetComponent<NearObject>();
     }
 
-    // Update is called once per frame
-    void Update()
+	private void Update()
+	{
+		if (SequenceEnd && Player.Dashing)
+		{
+			Time.timeScale = 1.0f;
+		}
+	}
+
+	void FixedUpdate()
     {
         if (Near.InRange && !SequenceStart)
         {
@@ -40,6 +49,8 @@ public class DashUnlockController : MonoBehaviour
 		yield return new WaitForSecondsRealtime(3);
 		StartCoroutine(CloseText.FadeOutRealTime());
 		StartCoroutine(DashText.FadeInRealTime());
+        SequenceEnd = true;
+        Player.DashUnlocked = true;
         yield return new WaitForSecondsRealtime(3);
 		StartCoroutine(DashText.FadeOutRealTime());
 	}

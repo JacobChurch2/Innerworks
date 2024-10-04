@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     Vector2 moveInput;
 	TouchingDirections touchingDirections;
 	public float jumpImpulse = 10f;
+	private bool dashUnlocked = false;
 	private bool dashAvalible = false;
 	private bool dashing = false;
 
@@ -66,9 +67,18 @@ public class PlayerController : MonoBehaviour
 
 		}
 	}
+
+	public bool DashUnlocked { get => dashUnlocked; set => dashUnlocked = value; }
+	public bool Dashing { get => dashing; set => dashing = value; }
+
 	#endregion
 
-	#region Component variables
+	#region management variables
+	private bool dead;
+	public bool Dead { get => dead; set => dead = value; }
+	#endregion
+
+	#region component variables
 	//Components
 	Rigidbody2D rb;
     Animator animator;
@@ -84,9 +94,10 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (!dashing)
+		if (!Dashing)
 		{
-			rb.linearVelocity = new Vector2(moveInput.x * CurrentMoveSpeed, rb.linearVelocity.y);
+			int xMove = (moveInput.x !=0) ? (moveInput.x > 0 ? 1 : -1): 0 ;
+			rb.linearVelocity = new Vector2(xMove * CurrentMoveSpeed, rb.linearVelocity.y);
 
 			animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
 
@@ -96,7 +107,7 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 
-		if (!dashAvalible && touchingDirections.IsGrounded && !dashing)
+		if (!dashAvalible && touchingDirections.IsGrounded && !Dashing)
 		{
 			dashAvalible = true;
 		}
@@ -108,7 +119,7 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = context.ReadValue<Vector2>();
 
-        IsMoving = (moveInput != Vector2.zero);
+        IsMoving = (moveInput.x != 0);
 
         SetFacingDirection(moveInput);
     }
@@ -123,46 +134,50 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	#region Dash
 	public void OnDash(InputAction.CallbackContext context)
 	{
-		//TODO: Screen shake
-		//TODO: Aninimation
-		if (dashAvalible)
+		if (moveInput.x != 0 || (moveInput.y != 0))
 		{
-			float x = moveInput.x;
-			float y = moveInput.y;
-			rb.linearVelocity = Vector2.zero;
-			rb.linearVelocity += new Vector2(x, y).normalized * 30;
-			dashAvalible = false;
-			StartCoroutine(DashBeforeAndAfter());
+			if (dashAvalible && DashUnlocked)
+			{
+				//TODO: Screen shake
+				//TODO: Aninimation
+				animator.SetBool(AnimationStrings.SideDash, true);
+				DashSetUp();
+				Dash();
+				StartCoroutine(DashAfter());
+			}
 		}
 	}
 
-	private IEnumerator DashBeforeAndAfter()
+	private void DashSetUp()
 	{
-		dashing = true;
+		Dashing = true;
 		rb.gravityScale = 0;
 		rb.linearDamping = 4;
+		dashAvalible = false;
+	}
+
+	private void Dash()
+	{
+		float x = moveInput.x;
+		float y = moveInput.y;
+		rb.linearVelocity = Vector2.zero;
+		rb.linearVelocity += new Vector2(x, y).normalized * 40;
+	}
+
+	private IEnumerator DashAfter()
+	{
 		yield return new WaitForSeconds(0.15f);
-		StartCoroutine(DashDamping(0, 0.2f));
+		animator.SetBool(AnimationStrings.SideDash, false);
+		Dashing = false;
+		rb.linearVelocity = Vector2.zero;
+		yield return new WaitForSeconds(0.1f);
 		rb.linearDamping = 0;
-		dashing = false;
 		rb.gravityScale = 5;
 	}
-
-	IEnumerator DashDamping(float endValue, float duration)
-	{
-		float time = 0;
-		float startValue = rb.linearDamping;
-
-		while (time < duration)
-		{
-			rb.linearDamping = Mathf.Lerp(startValue, endValue, time / duration);
-			time += Time.deltaTime;
-			yield return null;
-		}
-		rb.linearDamping = endValue;
-	}
+	#endregion
 
 	#endregion
 

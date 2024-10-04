@@ -24,7 +24,6 @@ public class FreezeGame : MonoBehaviour
 			{
 				Time.timeScale = timeScale;
 				yield return new WaitForSecondsRealtime(0.01f);
-				print(timeScale);
 			}
 			if(Time.timeScale != 0f)
 			{
