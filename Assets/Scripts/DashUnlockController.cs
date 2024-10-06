@@ -30,6 +30,7 @@ public class DashUnlockController : MonoBehaviour
 		if (SequenceEnd && Player.Dashing)
 		{
 			Time.timeScale = 1.0f;
+			StartCoroutine(DashText.FadeOutRealTime());
 		}
 	}
 
@@ -51,7 +52,7 @@ public class DashUnlockController : MonoBehaviour
 		StartCoroutine(DashText.FadeInRealTime());
         SequenceEnd = true;
         Player.DashUnlocked = true;
+        PlayerData.DashUnlocked = true;
         yield return new WaitForSecondsRealtime(3);
-		StartCoroutine(DashText.FadeOutRealTime());
 	}
 }

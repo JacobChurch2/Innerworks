@@ -15,15 +15,16 @@ public class PlayerController : MonoBehaviour
 	private bool _isMoving = false;
 	public bool _isFacingRight = true;
 
-    private float IdleTimer = 0;
+	private float IdleTimer = 0;
 	private AnimatorClipInfo[] animatorinfo;
 	private string current_animation;
 
-	public bool IsFacingRight { 
-		get { return _isFacingRight; } 
+	public bool IsFacingRight
+	{
+		get { return _isFacingRight; }
 		private set
 		{
-			if(_isFacingRight != value)
+			if (_isFacingRight != value)
 			{
 				//flip the local scale to make the player face the opposite direction
 				transform.localScale *= new Vector2(-1, 1);
@@ -36,30 +37,35 @@ public class PlayerController : MonoBehaviour
 	#region movement variables
 	//movement variables
 	public float walkSpeed = 5f;
-    Vector2 moveInput;
+	Vector2 moveInput;
 	TouchingDirections touchingDirections;
 	public float jumpImpulse = 10f;
-	private bool dashUnlocked = false;
-	private bool dashAvalible = false;
-	private bool dashing = false;
+	public bool DashUnlocked = false;
+	private bool DashAvalible = true;
+	public bool Dashing = false;
 
-	public bool IsMoving { get
-        {
-            return _isMoving;
-        }
-        private set
-        {
-            _isMoving = value;
-            animator.SetBool(AnimationStrings.IsMoving, value);
-        }
-    }
+	public bool IsMoving
+	{
+		get
+		{
+			return _isMoving;
+		}
+		private set
+		{
+			_isMoving = value;
+			animator.SetBool(AnimationStrings.IsMoving, value);
+		}
+	}
 
-	public float CurrentMoveSpeed { get
+	public float CurrentMoveSpeed
+	{
+		get
 		{
 			if (IsMoving && !touchingDirections.IsOnWall)
 			{
 				return walkSpeed;
-			} else
+			}
+			else
 			{
 				// Idle
 				return 0;
@@ -67,9 +73,6 @@ public class PlayerController : MonoBehaviour
 
 		}
 	}
-
-	public bool DashUnlocked { get => dashUnlocked; set => dashUnlocked = value; }
-	public bool Dashing { get => dashing; set => dashing = value; }
 
 	#endregion
 
@@ -81,22 +84,27 @@ public class PlayerController : MonoBehaviour
 	#region component variables
 	//Components
 	Rigidbody2D rb;
-    Animator animator;
+	Animator animator;
 	#endregion
 
 	#region basic methods
 	private void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+		animator = GetComponent<Animator>();
 		touchingDirections = GetComponent<TouchingDirections>();
+	}
+
+	private void Start()
+	{
+		//DashUnlocked = PlayerData.DashUnlocked;
 	}
 
 	private void FixedUpdate()
 	{
 		if (!Dashing)
 		{
-			int xMove = (moveInput.x !=0) ? (moveInput.x > 0 ? 1 : -1): 0 ;
+			int xMove = (moveInput.x != 0) ? (moveInput.x > 0 ? 1 : -1) : 0;
 			rb.linearVelocity = new Vector2(xMove * CurrentMoveSpeed, rb.linearVelocity.y);
 
 			animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
@@ -107,22 +115,22 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 
-		if (!dashAvalible && touchingDirections.IsGrounded && !Dashing)
+		if (!DashAvalible && touchingDirections.IsGrounded && !Dashing)
 		{
-			dashAvalible = true;
+			DashAvalible = true;
 		}
 	}
 	#endregion
 
 	#region movement things
 	public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
+	{
+		moveInput = context.ReadValue<Vector2>();
 
-        IsMoving = (moveInput.x != 0);
+		IsMoving = (moveInput.x != 0);
 
-        SetFacingDirection(moveInput);
-    }
+		SetFacingDirection(moveInput);
+	}
 
 	public void OnJump(InputAction.CallbackContext context)
 	{
@@ -139,7 +147,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if (moveInput.x != 0 || (moveInput.y != 0))
 		{
-			if (dashAvalible && DashUnlocked)
+			if (DashAvalible && DashUnlocked)
 			{
 				//TODO: Screen shake
 				//TODO: Aninimation
@@ -156,7 +164,7 @@ public class PlayerController : MonoBehaviour
 		Dashing = true;
 		rb.gravityScale = 0;
 		rb.linearDamping = 4;
-		dashAvalible = false;
+		DashAvalible = false;
 	}
 
 	private void Dash()
@@ -184,12 +192,12 @@ public class PlayerController : MonoBehaviour
 	#region Animation stuff
 	private void SetFacingDirection(Vector2 moveInput)
 	{
-		if(moveInput.x > 0 && !IsFacingRight)
+		if (moveInput.x > 0 && !IsFacingRight)
 		{
 			//face right
 			IsFacingRight = true;
 		}
-		else if(moveInput.x < 0 && IsFacingRight)
+		else if (moveInput.x < 0 && IsFacingRight)
 		{
 			//face left
 			IsFacingRight = false;
@@ -197,7 +205,7 @@ public class PlayerController : MonoBehaviour
 	}
 
 	private void SetIdleAnimation()
-    {
+	{
 		animatorinfo = this.animator.GetCurrentAnimatorClipInfo(0);
 		current_animation = animatorinfo[0].clip.name;
 		if (current_animation.Equals("Player_Idle") || current_animation.Equals("Player_Sleepy"))
