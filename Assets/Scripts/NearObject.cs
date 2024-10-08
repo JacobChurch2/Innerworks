@@ -5,13 +5,22 @@ public class NearObject : MonoBehaviour
 {
     public bool InRange = false;
 
-    void OnTriggerEnter2D()
+    [SerializeField]
+    public string OtherTag;
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        InRange = true;
+        if (collision.tag == OtherTag)
+        {
+            InRange = true;
+        }
     }
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-        InRange = false;
+		if (collision.tag == OtherTag)
+		{
+			InRange = false;
+		}
 	}
 }
