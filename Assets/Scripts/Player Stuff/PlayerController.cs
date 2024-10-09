@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Splines.Interpolators;
@@ -8,6 +9,7 @@ using UnityEngine.Splines.Interpolators;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(TouchingDirections))]
+[RequireComponent(typeof(SpriteRenderer))]
 public class PlayerController : MonoBehaviour
 {
 	#region animation variables
@@ -85,6 +87,7 @@ public class PlayerController : MonoBehaviour
 	//Components
 	Rigidbody2D rb;
 	Animator animator;
+	SpriteRenderer Renderer;
 	#endregion
 
 	#region basic methods
@@ -93,6 +96,7 @@ public class PlayerController : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 		animator = GetComponent<Animator>();
 		touchingDirections = GetComponent<TouchingDirections>();
+		Renderer = GetComponent<SpriteRenderer>();
 	}
 
 	private void Start()
@@ -149,9 +153,6 @@ public class PlayerController : MonoBehaviour
 		{
 			if (DashAvalible && DashUnlocked)
 			{
-				//TODO: Screen shake
-				//TODO: Aninimation
-				animator.SetBool(AnimationStrings.SideDash, true);
 				DashSetUp();
 				Dash();
 				StartCoroutine(DashAfter());
@@ -171,19 +172,44 @@ public class PlayerController : MonoBehaviour
 	{
 		float x = moveInput.x;
 		float y = moveInput.y;
+		DashAnimation(x, y);
 		rb.linearVelocity = Vector2.zero;
 		rb.linearVelocity += new Vector2(x, y).normalized * 40;
+	}
+
+	private void DashAnimation(float x, float y)
+	{
+		if (x != 0)
+		{
+			if (y != 0)
+			{
+				animator.SetBool(AnimationStrings.DiagonalDash, true);
+				y = (float) Math.Round(y);
+			} 
+			else
+			{
+				animator.SetBool(AnimationStrings.SideDash, true);
+				y = 1;
+			}
+		} else
+		{
+			animator.SetBool(AnimationStrings.VerticalDash, true);
+		}
+		Renderer.flipY = (y == -1);
 	}
 
 	private IEnumerator DashAfter()
 	{
 		yield return new WaitForSeconds(0.15f);
 		animator.SetBool(AnimationStrings.SideDash, false);
-		Dashing = false;
+		animator.SetBool(AnimationStrings.VerticalDash, false);
+		animator.SetBool(AnimationStrings.DiagonalDash, false);
 		rb.linearVelocity = Vector2.zero;
 		yield return new WaitForSeconds(0.1f);
+		Renderer.flipY = false;
 		rb.linearDamping = 0;
 		rb.gravityScale = 5;
+		Dashing = false;
 	}
 	#endregion
 
