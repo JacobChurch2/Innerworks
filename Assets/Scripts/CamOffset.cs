@@ -44,8 +44,8 @@ public class CamOffset : MonoBehaviour
 			{
 				camera.StopAllCoroutines();
 			}
-			StartCoroutine(xOffsetLerp(xOffset, xOffsetOriginal, TransitionTime));
-			StartCoroutine(yOffsetLerp(yOffset, yOffsetOriginal, TransitionTime));
+			StartCoroutine(xOffsetLerp(cam.FollowOffset.x, xOffsetOriginal, TransitionTime));
+			StartCoroutine(yOffsetLerp(cam.FollowOffset.y, yOffsetOriginal, TransitionTime));
 		}
 	}
 

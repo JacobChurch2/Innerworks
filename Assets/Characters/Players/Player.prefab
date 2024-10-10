@@ -160,6 +160,8 @@ MonoBehaviour:
   jumpImpulse: 20
   DashUnlocked: 0
   Dashing: 0
+  IsDead: 0
+  CamShake: {fileID: 0}
 --- !u!114 &259861541632364800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,4 +369,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aacba0b00e36b964fabf19c1eb27a31b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ResapwnPoint: {fileID: 0}
+  ResapwnPoint: {fileID: 2633711538668867284, guid: e929ef4e5ddf95347a43e5d3d3555916, type: 3}

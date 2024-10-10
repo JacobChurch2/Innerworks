@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
 	public bool DashUnlocked = false;
 	private bool DashAvalible = true;
 	public bool Dashing = false;
+	public bool IsDead = false;
 
 	public bool IsMoving
 	{
@@ -79,8 +81,7 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region management variables
-	private bool dead;
-	public bool Dead { get => dead; set => dead = value; }
+
 	#endregion
 
 	#region component variables
@@ -88,6 +89,8 @@ public class PlayerController : MonoBehaviour
 	Rigidbody2D rb;
 	Animator animator;
 	SpriteRenderer Renderer;
+	[SerializeField]
+	CameraShake CamShake;
 	#endregion
 
 	#region basic methods
@@ -138,7 +141,6 @@ public class PlayerController : MonoBehaviour
 
 	public void OnJump(InputAction.CallbackContext context)
 	{
-		//TODO check if alive as well
 		if (context.started && touchingDirections.IsGrounded)
 		{
 			animator.SetTrigger(AnimationStrings.Jump);
@@ -151,7 +153,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if (moveInput.x != 0 || (moveInput.y != 0))
 		{
-			if (DashAvalible && DashUnlocked)
+			if (DashAvalible && DashUnlocked && !IsDead)
 			{
 				DashSetUp();
 				Dash();
@@ -184,31 +186,48 @@ public class PlayerController : MonoBehaviour
 			if (y != 0)
 			{
 				animator.SetBool(AnimationStrings.DiagonalDash, true);
-				y = (float) Math.Round(y);
-			} 
+				y = (float)Math.Round(y);
+			}
 			else
 			{
 				animator.SetBool(AnimationStrings.SideDash, true);
 				y = 1;
 			}
-		} else
+		}
+		else
 		{
 			animator.SetBool(AnimationStrings.VerticalDash, true);
 		}
 		Renderer.flipY = (y == -1);
+		CamShake.ShakeCamera(1.5f, .15f);
+		if (FindFirstObjectByType<RippleEffect>())
+		{
+			FindFirstObjectByType<RippleEffect>().Emit(Camera.main.WorldToViewportPoint(transform.position));
+		}
 	}
 
 	private IEnumerator DashAfter()
 	{
 		yield return new WaitForSeconds(0.15f);
+		if (!IsDead)
+		{
+			rb.linearVelocity = Vector2.zero;
+		}
+		else
+		{
+			Dashing = false;
+			Renderer.flipY = false;
+		}
 		animator.SetBool(AnimationStrings.SideDash, false);
 		animator.SetBool(AnimationStrings.VerticalDash, false);
 		animator.SetBool(AnimationStrings.DiagonalDash, false);
-		rb.linearVelocity = Vector2.zero;
 		yield return new WaitForSeconds(0.1f);
-		Renderer.flipY = false;
+		if (!IsDead)
+		{
+			rb.gravityScale = 5;
+		}
 		rb.linearDamping = 0;
-		rb.gravityScale = 5;
+		Renderer.flipY = false;
 		Dashing = false;
 	}
 	#endregion
