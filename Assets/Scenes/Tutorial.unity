@@ -8745,10 +8745,14 @@ PrefabInstance:
       objectReference: {fileID: 2112954787}
     - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: walkSpeed
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: jumpImpulse
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: Acceleration
       value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
@@ -8756,8 +8760,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: Decelaration
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: _isFacingRight
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: jumpBufferTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: jumpCoyoteTime
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5497325367971761099, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_SortingOrder
@@ -8794,6 +8810,10 @@ PrefabInstance:
     - target: {fileID: 8041512113066192073, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_CollisionDetection
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8300245133013886795, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: m_Offset.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalScale.x
