@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using Unity.Android.Gradle.Manifest;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -106,12 +107,18 @@ public class PlayerController : MonoBehaviour
 	private Vector2 slopeNormalPerp;
 	private bool isOnSlope;
 	private float slopeDownAngleOld;
+	private float slopeSideAngle;
+
+	private bool rotated;
 
 	[SerializeField]
 	LayerMask Ground;
 
 	[SerializeField]
 	private float slopeCheckDistance;
+
+	[SerializeField]
+	TextMeshProUGUI MovementDebugText;
 	#endregion
 
 	#region component variables
@@ -122,6 +129,10 @@ public class PlayerController : MonoBehaviour
 	CapsuleCollider2D cc;
 	[SerializeField]
 	CameraShake CamShake;
+	[SerializeField]
+	PhysicsMaterial2D NormalPhysics;
+	[SerializeField]
+	PhysicsMaterial2D SlopePhysics;
 	#endregion
 
 	#region basic methods
@@ -149,18 +160,14 @@ public class PlayerController : MonoBehaviour
 		{
 			//int xMove = (moveInput.x != 0) ? (moveInput.x > 0 ? 1 : -1) : 0;
 			//rb.linearVelocity = new Vector2(xMove * CurrentMoveSpeed, rb.linearVelocity.y);
-			if (!touchingDirections.IsOnWall && !touchingDirections.IsOnCeiling)
-			{
-				Movement();
-			}
+			Movement();
 
 			animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
 
 			if (!IsMoving)
 			{
 				SetIdleAnimation();
-			}
-
+			} 
 			if (rb.linearVelocityY < 0 && !IsDead)
 			{
 				rb.gravityScale = gravityScale * fallGravityMultiplier;
@@ -198,6 +205,7 @@ public class PlayerController : MonoBehaviour
 		SlopeCheck();
 
 		lastJumpTime -= Time.deltaTime;
+		animator.SetBool(AnimationStrings.IsOnSlope, isOnSlope);
 	}
 	#endregion
 
@@ -222,8 +230,18 @@ public class PlayerController : MonoBehaviour
 
 		float movement = speedDif * accelRate;
 
-		rb.AddForce(movement * Vector2.right, ForceMode2D.Force);
+		MovementDebugText.text = movement.ToString();
 
+		if (isOnSlope)
+		{
+			rb.AddForce((slopeNormalPerp * -1) * movement, ForceMode2D.Force);
+			Debug.DrawRay(transform.position, (slopeNormalPerp * -1) * movement, Color.blue);
+		}
+		else
+		{
+			rb.AddForce(movement * (Vector2.right), ForceMode2D.Force);
+			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue);
+		}
 	}
 
 	public void OnJump(InputAction.CallbackContext context)
@@ -242,6 +260,7 @@ public class PlayerController : MonoBehaviour
 	private void JumpAction()
 	{
 		animator.SetTrigger(AnimationStrings.Jump);
+		rb.linearVelocityY = 0;
 		rb.AddForce(new Vector2(0, jumpImpulse), ForceMode2D.Impulse);
 		Jumping = true;
 	}
@@ -250,12 +269,21 @@ public class PlayerController : MonoBehaviour
 	private void SlopeCheck()
 	{
 		Vector2 checkPos = transform.position - new Vector3(0, colliderSize.y / 2);
+
+		SlopeCheckHorizontal(checkPos);
 		SlopeCheckVertical(checkPos);
 	}
 
 	private void SlopeCheckHorizontal(Vector2 checkPos)
 	{
-
+		if (isOnSlope && moveInput.x == 0f)
+		{
+			rb.sharedMaterial = SlopePhysics;
+		}
+		else
+		{
+			rb.sharedMaterial = NormalPhysics;
+		}
 	}
 
 	private void SlopeCheckVertical(Vector2 checkPos)
@@ -265,18 +293,28 @@ public class PlayerController : MonoBehaviour
 		if (hit)
 		{
 			slopeNormalPerp = Vector2.Perpendicular(hit.normal);
+			print(slopeNormalPerp);
 
 			slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
 
-			if (slopeDownAngle != slopeDownAngleOld)
+			transform.eulerAngles = new Vector3(0f, 0f, -Vector2.SignedAngle(hit.normal, Vector2.up));
+
+			if (slopeDownAngle < 50 && slopeDownAngle > 0)
 			{
 				isOnSlope = true;
 			}
-
-			slopeDownAngleOld = slopeDownAngle;
+			else
+			{
+				isOnSlope = false;
+			}
 
 			Debug.DrawRay(hit.point, slopeNormalPerp, Color.red);
 			Debug.DrawRay(hit.point, hit.normal, Color.green);
+		}
+		else
+		{
+			isOnSlope = false;
+			transform.eulerAngles = new Vector3(0f, 0f, 0f);
 		}
 	}
 

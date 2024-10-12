@@ -172,6 +172,8 @@ MonoBehaviour:
     m_Bits: 8
   slopeCheckDistance: 0.5
   CamShake: {fileID: 0}
+  NormalPhysics: {fileID: 0}
+  SlopePhysics: {fileID: 0}
 --- !u!114 &259861541632364800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,7 +334,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.00096940994, y: -0.075464725}
+  m_Offset: {x: 0.00096940994, y: -0.02}
   m_Size: {x: 0.8857374, y: 0.8857374}
   m_Direction: 0
 --- !u!114 &6406296749779892743

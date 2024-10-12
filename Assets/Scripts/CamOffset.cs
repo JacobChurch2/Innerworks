@@ -16,6 +16,7 @@ public class CamOffset : MonoBehaviour
 	private float yOffsetOriginal;
 	private float xOffsetOriginal;
 
+	private static int Boxes;
 
 	private void Start()
 	{
@@ -33,6 +34,7 @@ public class CamOffset : MonoBehaviour
 			}
 			StartCoroutine(xOffsetLerp(cam.FollowOffset.x, xOffset, TransitionTime));
 			StartCoroutine(yOffsetLerp(cam.FollowOffset.y, yOffset, TransitionTime));
+			Boxes++;
 		}
 	}
 
@@ -40,12 +42,15 @@ public class CamOffset : MonoBehaviour
 	{
 		if (collision.tag.Equals("Player"))
 		{
-			foreach (CamOffset camera in Resources.FindObjectsOfTypeAll<CamOffset>())
-			{
-				camera.StopAllCoroutines();
+			if ((Boxes <= 1)){
+				foreach (CamOffset camera in Resources.FindObjectsOfTypeAll<CamOffset>())
+				{
+					camera.StopAllCoroutines();
+				}
+				StartCoroutine(xOffsetLerp(cam.FollowOffset.x, xOffsetOriginal, TransitionTime));
+				StartCoroutine(yOffsetLerp(cam.FollowOffset.y, yOffsetOriginal, TransitionTime));
 			}
-			StartCoroutine(xOffsetLerp(cam.FollowOffset.x, xOffsetOriginal, TransitionTime));
-			StartCoroutine(yOffsetLerp(cam.FollowOffset.y, yOffsetOriginal, TransitionTime));
+			Boxes--;
 		}
 	}
 
