@@ -9,14 +9,16 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Splines.Interpolators;
+using UnityEngine.UIElements.Experimental;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(TouchingDirections))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class PlayerController : MonoBehaviour
 {
+	#region Variables
 	#region animation variables
 	//animaiton variables
 	private bool _isMoving = false;
@@ -106,19 +108,13 @@ public class PlayerController : MonoBehaviour
 	private float slopeDownAngle;
 	private Vector2 slopeNormalPerp;
 	private bool isOnSlope;
-	private float slopeDownAngleOld;
 	private float slopeSideAngle;
-
-	private bool rotated;
 
 	[SerializeField]
 	LayerMask Ground;
 
 	[SerializeField]
 	private float slopeCheckDistance;
-
-	[SerializeField]
-	TextMeshProUGUI MovementDebugText;
 	#endregion
 
 	#region component variables
@@ -126,13 +122,14 @@ public class PlayerController : MonoBehaviour
 	Rigidbody2D rb;
 	Animator animator;
 	SpriteRenderer Renderer;
-	CapsuleCollider2D cc;
+	BoxCollider2D cc;
 	[SerializeField]
 	CameraShake CamShake;
 	[SerializeField]
 	PhysicsMaterial2D NormalPhysics;
 	[SerializeField]
 	PhysicsMaterial2D SlopePhysics;
+	#endregion
 	#endregion
 
 	#region basic methods
@@ -142,7 +139,7 @@ public class PlayerController : MonoBehaviour
 		animator = GetComponent<Animator>();
 		touchingDirections = GetComponent<TouchingDirections>();
 		Renderer = GetComponent<SpriteRenderer>();
-		cc = GetComponent<CapsuleCollider2D>();
+		cc = GetComponent<BoxCollider2D>();
 
 		gravityScale = rb.gravityScale;
 	}
@@ -156,61 +153,24 @@ public class PlayerController : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (!Dashing)
-		{
-			//int xMove = (moveInput.x != 0) ? (moveInput.x > 0 ? 1 : -1) : 0;
-			//rb.linearVelocity = new Vector2(xMove * CurrentMoveSpeed, rb.linearVelocity.y);
-			Movement();
+		WalkUpdate();
 
-			animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
+		GravityUpdate();
 
-			if (!IsMoving)
-			{
-				SetIdleAnimation();
-			} 
-			if (rb.linearVelocityY < 0 && !IsDead)
-			{
-				rb.gravityScale = gravityScale * fallGravityMultiplier;
-			}
-			else if (!IsDead)
-			{
-				rb.gravityScale = gravityScale;
-			}
-		}
+		CheckDashUpdate();
 
-		if (!DashAvalible && touchingDirections.IsGrounded && !Dashing)
-		{
-			DashAvalible = true;
-		}
+		JumpUpdate();
 
-		if (touchingDirections.IsGrounded)
-		{
-			lastGroundedTime = jumpCoyoteTime;
-		}
-		else
-		{
-			lastGroundedTime -= Time.deltaTime;
-		}
+		SlopeUpdate();
 
-		if (lastGroundedTime > 0 && lastJumpTime > 0 && !Jumping)
-		{
-			JumpAction();
-		}
-
-		if (Jumping && rb.linearVelocityY < 0)
-		{
-			Jumping = false;
-		}
-
-		SlopeCheck();
-
-		lastJumpTime -= Time.deltaTime;
-		animator.SetBool(AnimationStrings.IsOnSlope, isOnSlope);
+		AnimatorUpdate();
 	}
 	#endregion
 
-	#region movement things
-	public void OnMove(InputAction.CallbackContext context)
+	#region Movement things
+
+	#region Walk
+	public void OnWalk(InputAction.CallbackContext context)
 	{
 		moveInput = context.ReadValue<Vector2>();
 
@@ -219,7 +179,20 @@ public class PlayerController : MonoBehaviour
 		SetFacingDirection(moveInput);
 	}
 
-	private void Movement()
+	private void WalkUpdate()
+	{
+		if (!Dashing)
+		{
+			Walk();
+
+			if (!IsMoving)
+			{
+				SetIdleAnimation();
+			}
+		}
+	}
+
+	private void Walk()
 	{
 
 		int xMove = (moveInput.x != 0) ? (moveInput.x > 0 ? 1 : -1) : 0;
@@ -229,8 +202,6 @@ public class PlayerController : MonoBehaviour
 		float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
 
 		float movement = speedDif * accelRate;
-
-		MovementDebugText.text = movement.ToString();
 
 		if (isOnSlope)
 		{
@@ -243,7 +214,9 @@ public class PlayerController : MonoBehaviour
 			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue);
 		}
 	}
+	#endregion
 
+	#region Jump
 	public void OnJump(InputAction.CallbackContext context)
 	{
 		if (context.started)
@@ -265,16 +238,58 @@ public class PlayerController : MonoBehaviour
 		Jumping = true;
 	}
 
-	#region slopes
-	private void SlopeCheck()
+	private void JumpUpdate()
+	{
+		if (touchingDirections.IsGrounded)
+		{
+			lastGroundedTime = jumpCoyoteTime;
+		}
+		else
+		{
+			lastGroundedTime -= Time.deltaTime;
+		}
+
+		if (lastGroundedTime > 0 && lastJumpTime > 0 && !Jumping)
+		{
+			JumpAction();
+		}
+
+		if (Jumping && rb.linearVelocityY < 0)
+		{
+			Jumping = false;
+		}
+
+		lastJumpTime -= Time.deltaTime;
+	}
+	#endregion
+
+	#region Gravity
+	private void GravityUpdate()
+	{
+		if (!Dashing)
+		{
+			if (rb.linearVelocityY < 0 && !IsDead)
+			{
+				rb.gravityScale = gravityScale * fallGravityMultiplier;
+			}
+			else if (!IsDead)
+			{
+				rb.gravityScale = gravityScale;
+			}
+		}
+	}
+	#endregion
+
+	#region Slopes
+	private void SlopeUpdate()
 	{
 		Vector2 checkPos = transform.position - new Vector3(0, colliderSize.y / 2);
 
-		SlopeCheckHorizontal(checkPos);
 		SlopeCheckVertical(checkPos);
+		SlopeMaterialCheck();
 	}
 
-	private void SlopeCheckHorizontal(Vector2 checkPos)
+	private void SlopeMaterialCheck()
 	{
 		if (isOnSlope && moveInput.x == 0f)
 		{
@@ -293,7 +308,6 @@ public class PlayerController : MonoBehaviour
 		if (hit)
 		{
 			slopeNormalPerp = Vector2.Perpendicular(hit.normal);
-			print(slopeNormalPerp);
 
 			slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
 
@@ -402,11 +416,25 @@ public class PlayerController : MonoBehaviour
 		Renderer.flipY = false;
 		Dashing = false;
 	}
+
+	private void CheckDashUpdate()
+	{
+		if (!DashAvalible && touchingDirections.IsGrounded && !Dashing)
+		{
+			DashAvalible = true;
+		}
+	}
 	#endregion
 
 	#endregion
 
 	#region Animation stuff
+	private void AnimatorUpdate()
+	{
+		animator.SetFloat(AnimationStrings.yVelocity, rb.linearVelocity.y);
+		animator.SetBool(AnimationStrings.IsOnSlope, isOnSlope);
+	}
+
 	private void SetFacingDirection(Vector2 moveInput)
 	{
 		if (moveInput.x > 0 && !IsFacingRight)

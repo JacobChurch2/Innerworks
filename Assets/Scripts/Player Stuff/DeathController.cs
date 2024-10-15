@@ -12,7 +12,7 @@ public class DeathController : MonoBehaviour
 	PlayerController Player;
 
 	[SerializeField]
-	Transform ResapwnPoint;
+	public Transform ResapwnPoint;
 
 	public void Start()
 	{
