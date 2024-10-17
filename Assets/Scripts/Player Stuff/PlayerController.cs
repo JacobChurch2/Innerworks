@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
 
 	public float jumpImpulse = 10f;
 	private bool Jumping = false;
+	private int jumpCount = 1;
+	public int jumpsAvliable = 1;
 
 	public float jumpCutMultiplier = 0.5f;
 
@@ -60,6 +62,11 @@ public class PlayerController : MonoBehaviour
 	public float jumpCoyoteTime = .5f;
 	private float lastGroundedTime = 0;
 	private float lastJumpTime = 0;
+
+	public bool isAffectedBySpring = false;
+	public float SpringAffectTime = 1;
+	private float SpringTime;
+	public float SpringDamping = 30;
 
 	public float fallGravityMultiplier = 1.5f;
 
@@ -147,7 +154,7 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		//DashUnlocked = PlayerData.DashUnlocked;
-
+		SpringTime = SpringAffectTime;
 		colliderSize = cc.size;
 	}
 
@@ -194,12 +201,28 @@ public class PlayerController : MonoBehaviour
 
 	private void Walk()
 	{
-
 		int xMove = (moveInput.x != 0) ? (moveInput.x > 0 ? 1 : -1) : 0;
 		float targetSpeed = xMove * walkSpeed;
 		float speedDif = targetSpeed - rb.linearVelocityX;
 
-		float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
+		float accelRate = 0;
+
+		if (!isAffectedBySpring)
+		{
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
+		} else
+		{
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? 2 : 4;
+			SpringTime -= Time.deltaTime;
+			rb.linearDamping = 30;
+
+			if (SpringTime <= 0)
+			{
+				isAffectedBySpring = false;
+				SpringTime = SpringAffectTime;
+				rb.linearDamping = 0;
+			}
+		}
 
 		float movement = speedDif * accelRate;
 
@@ -243,15 +266,20 @@ public class PlayerController : MonoBehaviour
 		if (touchingDirections.IsGrounded)
 		{
 			lastGroundedTime = jumpCoyoteTime;
+			jumpCount = jumpsAvliable;
 		}
 		else
 		{
 			lastGroundedTime -= Time.deltaTime;
 		}
 
-		if (lastGroundedTime > 0 && lastJumpTime > 0 && !Jumping)
+		if ((lastGroundedTime > 0 || jumpCount > 1) && lastJumpTime > 0 && !Jumping)
 		{
 			JumpAction();
+			if (!(lastGroundedTime > 0))
+			{
+				jumpCount--;
+			}
 		}
 
 		if (Jumping && rb.linearVelocityY < 0)
@@ -417,11 +445,32 @@ public class PlayerController : MonoBehaviour
 		Dashing = false;
 	}
 
+	private void endDashBecauseOfSpring()
+	{
+		animator.SetBool(AnimationStrings.SideDash, false);
+		animator.SetBool(AnimationStrings.VerticalDash, false);
+		animator.SetBool(AnimationStrings.DiagonalDash, false);
+		if (!IsDead)
+		{
+			rb.gravityScale = 5;
+		}
+		Renderer.flipY = false;
+		Dashing = false;
+	}
+
 	private void CheckDashUpdate()
 	{
 		if (!DashAvalible && touchingDirections.IsGrounded && !Dashing)
 		{
 			DashAvalible = true;
+		}
+
+		if (isAffectedBySpring) { 
+			DashAvalible = true;
+			if (Dashing)
+			{
+				endDashBecauseOfSpring();
+			}
 		}
 	}
 	#endregion
