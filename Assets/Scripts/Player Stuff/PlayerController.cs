@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using DG.Tweening;
 using TMPro;
 using Unity.Android.Gradle.Manifest;
@@ -76,6 +77,17 @@ public class PlayerController : MonoBehaviour
 	private bool DashAvalible = true;
 	public bool Dashing = false;
 
+	public bool GrappleUnlocked = false;
+	public float GrappleDistance = 10f;
+	public float GrappleStength = 10f;
+	private bool GrappleAvalible = true;
+	private bool Grappling = false;
+	private RaycastHit2D GrappleHit;
+	private Vector3 MousePos;
+	private LineRenderer GrappleLine;
+	private Vector2 GrappleMousePoint;
+
+
 	public bool IsDead = false;
 
 	public bool IsMoving
@@ -122,6 +134,8 @@ public class PlayerController : MonoBehaviour
 
 	[SerializeField]
 	private float slopeCheckDistance;
+
+	private Camera cam;
 	#endregion
 
 	#region component variables
@@ -148,6 +162,11 @@ public class PlayerController : MonoBehaviour
 		Renderer = GetComponent<SpriteRenderer>();
 		cc = GetComponent<BoxCollider2D>();
 
+		if (GetComponent<LineRenderer>())
+		{
+			GrappleLine = GetComponent<LineRenderer>();
+		}
+
 		gravityScale = rb.gravityScale;
 	}
 
@@ -156,6 +175,7 @@ public class PlayerController : MonoBehaviour
 		//DashUnlocked = PlayerData.DashUnlocked;
 		SpringTime = SpringAffectTime;
 		colliderSize = cc.size;
+		cam = Camera.main;
 	}
 
 	private void FixedUpdate()
@@ -169,6 +189,8 @@ public class PlayerController : MonoBehaviour
 		JumpUpdate();
 
 		SlopeUpdate();
+
+		GrappleUpdate();
 
 		AnimatorUpdate();
 	}
@@ -207,10 +229,7 @@ public class PlayerController : MonoBehaviour
 
 		float accelRate = 0;
 
-		if (!isAffectedBySpring)
-		{
-			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
-		} else
+		if (isAffectedBySpring)
 		{
 			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? 2 : 4;
 			SpringTime -= Time.deltaTime;
@@ -223,8 +242,17 @@ public class PlayerController : MonoBehaviour
 				rb.linearDamping = 0;
 			}
 		}
+		else
+		{
+			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
+		}
 
 		float movement = speedDif * accelRate;
+
+		if (Grappling && xMove == 0)
+		{
+			movement = 0;
+		}
 
 		if (isOnSlope)
 		{
@@ -465,7 +493,8 @@ public class PlayerController : MonoBehaviour
 			DashAvalible = true;
 		}
 
-		if (isAffectedBySpring) { 
+		if (isAffectedBySpring)
+		{
 			DashAvalible = true;
 			if (Dashing)
 			{
@@ -473,6 +502,89 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 	}
+	#endregion
+
+	#region Grapple
+	public void OnGrapple(InputAction.CallbackContext context)
+	{
+		if (context.started && GrappleAvalible && GrappleUnlocked)
+		{
+			GrappleStart();
+		}
+
+		if (context.canceled)
+		{
+			GrappleEnd();
+		}
+	}
+
+	private void GrappleStart()
+	{
+		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+		Grappling = true;
+
+		Debug.DrawLine(transform.position, MousePos, Color.magenta);
+
+		GrappleMousePoint = MousePos - transform.position;
+
+		GrappleHit = Physics2D.Raycast(transform.position, GrappleMousePoint, GrappleDistance, Ground);
+		animator.SetBool(AnimationStrings.Grappling, true);
+		rb.gravityScale = 0;
+	}
+
+	private void GrappleUpdate()
+	{
+		if (Grappling)
+		{
+			GrappleLine.enabled = true;
+			if (GrappleHit)
+			{
+				Vector2 direction = ((Vector3)GrappleHit.point - transform.position);
+				Debug.DrawLine(transform.position, GrappleHit.point, Color.cyan);
+
+				//rb.linearVelocity = (direction * GrappleStength);	
+				if (((Vector3)GrappleHit.point - transform.position).magnitude <= 1)
+				{
+					rb.linearVelocity = Vector2.zero;
+				} 
+				else
+				{
+					rb.AddForce(direction * GrappleStength, ForceMode2D.Force);
+				}
+
+				Vector3[] GrapplePoints = { transform.position, GrappleHit.point };
+				GrappleLine.SetPositions(GrapplePoints);
+			}
+			else
+			{
+				StartCoroutine(FailedGrapple());
+			}
+		}
+	}
+
+	private IEnumerator FailedGrapple()
+	{
+		rb.linearVelocity = Vector3.zero;
+
+		Vector3 EndPoint = transform.position + (Vector3)GrappleMousePoint.normalized * GrappleDistance;
+		Vector3[] GrapplePoints = { transform.position, EndPoint };
+		GrappleLine.SetPositions(GrapplePoints);
+
+		yield return new WaitForSeconds(.1f);
+
+		rb.gravityScale = gravityScale;
+		GrappleEnd();
+	}
+
+	private void GrappleEnd()
+	{
+		Grappling = false;
+		GrappleLine.enabled = false;
+		rb.gravityScale = gravityScale;
+		animator.SetBool(AnimationStrings.Grappling, false);
+	}
+
 	#endregion
 
 	#endregion

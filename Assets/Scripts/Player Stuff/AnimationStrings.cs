@@ -14,4 +14,5 @@ public class AnimationStrings
 	internal static string VerticalDash = "VerticalDash";
 	internal static string DiagonalDash = "DiagonalDash";
 	internal static string IsDead = "IsDead";
+	internal static string Grappling = "Grappling";
 }
