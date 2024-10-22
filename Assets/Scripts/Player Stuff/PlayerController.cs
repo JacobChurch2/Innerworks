@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
 	private Vector3 MousePos;
 	private LineRenderer GrappleLine;
 	private Vector2 GrappleMousePoint;
+	private float ActualGrappleLength;
 
 
 	public bool IsDead = false;
@@ -522,13 +523,22 @@ public class PlayerController : MonoBehaviour
 	{
 		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-		Grappling = true;
+        if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)
+        {
+			ActualGrappleLength = Vector2.Distance(MousePos, transform.position);
+
+		} else
+		{
+			ActualGrappleLength = GrappleDistance;
+		}
+
+        Grappling = true;
 
 		Debug.DrawLine(transform.position, MousePos, Color.magenta);
 
 		GrappleMousePoint = MousePos - transform.position;
 
-		GrappleHit = Physics2D.Raycast(transform.position, GrappleMousePoint, GrappleDistance, Ground);
+		GrappleHit = Physics2D.Raycast(transform.position, GrappleMousePoint, ActualGrappleLength, Ground);
 		animator.SetBool(AnimationStrings.Grappling, true);
 		rb.gravityScale = 0;
 	}
@@ -567,7 +577,7 @@ public class PlayerController : MonoBehaviour
 	{
 		rb.linearVelocity = Vector3.zero;
 
-		Vector3 EndPoint = transform.position + (Vector3)GrappleMousePoint.normalized * GrappleDistance;
+		Vector3 EndPoint = transform.position + (Vector3)GrappleMousePoint.normalized * ActualGrappleLength;
 		Vector3[] GrapplePoints = { transform.position, EndPoint };
 		GrappleLine.SetPositions(GrapplePoints);
 
