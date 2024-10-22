@@ -1,32 +1,67 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class LustBossController : MonoBehaviour
 {
-    private int phase = 1;
+    public enum State
+    {
+        PhaseOne,
+        Tired,
+        PhaseTwo,
+        PhaseThree,
+
+    }
 
     [SerializeField]
-    Transform NavTarget;
+    Transform Target;
 
     NavMeshAgent agent;
+    Rigidbody2D rb;
 
-    public float sight = 100;
+    public float sight = 10;
     public LayerMask player;
 
-	#region bullet variables
+	#region Bullet Variables
+
 	public GameObject Bullet;
     public float BulletSpeed;
     public float BulletCooldown;
     private float BulletTimer;
-	#endregion 
+
+    #endregion
+
+
+    #region Dash Variables
+
+    public float DashPower;
+    public float DashCooldown;
+    private float DashTimer;
+    private bool Dashing = false;
+
+	#endregion
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag.Equals("Player"))
+		{
+			//TODO::DamagePlayer
+			print("boss hit");
+		}
+	}
 
 	private void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+
+        rb = GetComponent<Rigidbody2D>();
+
+        DashTimer = DashCooldown;
 	}
 
 	void FixedUpdate()
@@ -34,7 +69,13 @@ public class LustBossController : MonoBehaviour
         Sight();
         BulletTimer -= Time.deltaTime;
 
-        agent.SetDestination(NavTarget.position);
+        DashAttack();
+
+        if (!Dashing)
+        {
+            agent.SetDestination(Target.position);
+		} 
+
     }
 
     private void Sight()
@@ -64,4 +105,33 @@ public class LustBossController : MonoBehaviour
             BulletTimer = BulletCooldown;
         }
     }
+
+    private void DashAttack()
+    {
+        if (DashTimer <= 0)
+        {
+            DashTimer = DashCooldown;
+            Dashing = true;
+			agent.SetDestination(Target.position);
+			agent.speed = DashPower;
+			agent.acceleration = 10000;
+            agent.angularSpeed = 0;
+            agent.autoBraking = false;
+			StartCoroutine(DashEnd());
+        } 
+        else
+        {
+            DashTimer -= Time.deltaTime;
+        }
+    }
+
+    private IEnumerator DashEnd()
+    {
+        yield return new WaitForSeconds(1f);
+        Dashing = false;
+		agent.speed = 10;
+		agent.acceleration = 8;
+        agent.autoBraking = true;
+        agent.angularSpeed = 120;
+	}
 }
