@@ -10,6 +10,8 @@ public class StartFight : MonoBehaviour
 	[SerializeField]
 	private GameObject BossUI;
 	[SerializeField]
+	private GameObject ChocolateDrops;
+	[SerializeField]
 	private Collider2D newCamCollider;
 	[SerializeField]
 	private CinemachineConfiner2D confiner;
@@ -21,6 +23,12 @@ public class StartFight : MonoBehaviour
 			Door.SetActive(true);
 			Boss.SetActive(true);
 			BossUI.SetActive(true);
+			ChocolateDrops.SetActive(true);
+
+			foreach (ParallaxEffect parallax in Resources.FindObjectsOfTypeAll<ParallaxEffect>())
+			{
+				parallax.enabled = false;
+			}
 
 			confiner.BoundingShape2D = newCamCollider;
 		}

@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region movement variables
+	[Header("Movement")]
 	public float walkSpeed = 5f;
 	public float Acceleration = 2.5f;
 	public float Decelaration = 5f;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
 	Vector2 moveInput;
 	TouchingDirections touchingDirections;
 
+	[Header("Jump")]
 	public float jumpImpulse = 10f;
 	private bool Jumping = false;
 	private int jumpCount = 1;
@@ -63,20 +65,22 @@ public class PlayerController : MonoBehaviour
 	public float jumpCoyoteTime = .5f;
 	private float lastGroundedTime = 0;
 	private float lastJumpTime = 0;
+	public float fallGravityMultiplier = 1.5f;
 
+	[Header("Springs")]
 	public bool isAffectedBySpring = false;
 	public float SpringAffectTime = 1;
 	private float SpringTime;
 	public float SpringDamping = 30;
 
-	public float fallGravityMultiplier = 1.5f;
-
 	private float gravityScale = 5;
 
+	[Header("Dash")]
 	public bool DashUnlocked = false;
 	private bool DashAvalible = true;
 	public bool Dashing = false;
 
+	[Header("Grapple")]
 	public bool GrappleUnlocked = false;
 	public float GrappleDistance = 10f;
 	public float GrappleStength = 10f;
@@ -87,10 +91,12 @@ public class PlayerController : MonoBehaviour
 	private LineRenderer GrappleLine;
 	private Vector2 GrappleMousePoint;
 	private float ActualGrappleLength;
+	public float GrappleCoolDown;
+	private float GrappleTimer;
+	private SpringJoint2D GrappleJoint;
 
-
+	[Header("States")]
 	public bool IsDead = false;
-
 	public bool IsMoving
 	{
 		get
@@ -103,7 +109,6 @@ public class PlayerController : MonoBehaviour
 			animator.SetBool(AnimationStrings.IsMoving, value);
 		}
 	}
-
 	public float CurrentMoveSpeed
 	{
 		get
@@ -124,6 +129,7 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region management variables
+	[Header("Management")]
 	private Vector2 colliderSize;
 	private float slopeDownAngle;
 	private Vector2 slopeNormalPerp;
@@ -162,6 +168,11 @@ public class PlayerController : MonoBehaviour
 		touchingDirections = GetComponent<TouchingDirections>();
 		Renderer = GetComponent<SpriteRenderer>();
 		cc = GetComponent<BoxCollider2D>();
+
+		if (GetComponent<SpringJoint2D>())
+		{
+			GrappleJoint = GetComponent<SpringJoint2D>();
+		}
 
 		if (GetComponent<LineRenderer>())
 		{
@@ -250,9 +261,17 @@ public class PlayerController : MonoBehaviour
 
 		float movement = speedDif * accelRate;
 
-		if (Grappling && xMove == 0)
+		if (Grappling)
 		{
-			movement = 0;
+			switch (xMove)
+			{
+				case 0:
+					movement = 0;
+					break;
+				default:
+					movement = speedDif * accelRate * .5f;
+					break;
+			}
 		}
 
 		if (isOnSlope)
@@ -323,7 +342,7 @@ public class PlayerController : MonoBehaviour
 	#region Gravity
 	private void GravityUpdate()
 	{
-		if (!Dashing)
+		if (!Dashing && !Grappling)
 		{
 			if (rb.linearVelocityY < 0 && !IsDead)
 			{
@@ -508,7 +527,7 @@ public class PlayerController : MonoBehaviour
 	#region Grapple
 	public void OnGrapple(InputAction.CallbackContext context)
 	{
-		if (context.started && GrappleAvalible && GrappleUnlocked)
+		if (context.started && GrappleAvalible && GrappleUnlocked && (GrappleTimer < 0))
 		{
 			GrappleStart();
 		}
@@ -523,22 +542,36 @@ public class PlayerController : MonoBehaviour
 	{
 		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
-        if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)
-        {
+		if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)
+		{
 			ActualGrappleLength = Vector2.Distance(MousePos, transform.position);
 
-		} else
+		}
+		else
 		{
 			ActualGrappleLength = GrappleDistance;
 		}
 
-        Grappling = true;
+		Grappling = true;
 
 		Debug.DrawLine(transform.position, MousePos, Color.magenta);
 
 		GrappleMousePoint = MousePos - transform.position;
 
 		GrappleHit = Physics2D.Raycast(transform.position, GrappleMousePoint, ActualGrappleLength, Ground);
+
+		if (GrappleHit)
+		{
+			GrappleJoint.enabled = true;
+			GrappleJoint.connectedAnchor = GrappleHit.point;
+			GrappleJoint.distance = 0;
+
+			Vector2 direction = ((Vector3)GrappleHit.point - transform.position);
+			rb.AddForce(direction * GrappleStength, ForceMode2D.Impulse);
+		}
+
+		GrappleTimer = GrappleCoolDown;
+
 		animator.SetBool(AnimationStrings.Grappling, true);
 		rb.gravityScale = 0;
 	}
@@ -550,18 +583,7 @@ public class PlayerController : MonoBehaviour
 			GrappleLine.enabled = true;
 			if (GrappleHit)
 			{
-				Vector2 direction = ((Vector3)GrappleHit.point - transform.position);
 				Debug.DrawLine(transform.position, GrappleHit.point, Color.cyan);
-
-				//rb.linearVelocity = (direction * GrappleStength);	
-				if (((Vector3)GrappleHit.point - transform.position).magnitude <= 1)
-				{
-					rb.linearVelocity = Vector2.zero;
-				} 
-				else
-				{
-					rb.AddForce(direction * GrappleStength, ForceMode2D.Force);
-				}
 
 				Vector3[] GrapplePoints = { transform.position, GrappleHit.point };
 				GrappleLine.SetPositions(GrapplePoints);
@@ -571,6 +593,7 @@ public class PlayerController : MonoBehaviour
 				StartCoroutine(FailedGrapple());
 			}
 		}
+		GrappleTimer -= Time.deltaTime;
 	}
 
 	private IEnumerator FailedGrapple()
@@ -593,6 +616,7 @@ public class PlayerController : MonoBehaviour
 		GrappleLine.enabled = false;
 		rb.gravityScale = gravityScale;
 		animator.SetBool(AnimationStrings.Grappling, false);
+		GrappleJoint.enabled = false;
 	}
 
 	#endregion
