@@ -694,8 +694,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
-      propertyPath: slopeCheckDistance
-      value: 0.5
+      propertyPath: SpringAcceleration
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: SpringDeceleration
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5497325367971761099, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_FlipX

@@ -243,9 +243,9 @@ public class PlayerController : MonoBehaviour
 
 		if (isAffectedBySpring)
 		{
-			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? 2 : 4;
+
 			SpringTime -= Time.deltaTime;
-			rb.linearDamping = 30;
+			rb.linearDamping = SpringDamping;
 
 			if (SpringTime <= 0)
 			{
@@ -254,10 +254,8 @@ public class PlayerController : MonoBehaviour
 				rb.linearDamping = 0;
 			}
 		}
-		else
-		{
-			accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
-		}
+
+		accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Acceleration : Decelaration;
 
 		float movement = speedDif * accelRate;
 

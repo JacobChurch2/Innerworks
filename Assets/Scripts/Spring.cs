@@ -11,7 +11,8 @@ public class Spring : MonoBehaviour
 		{
 			Vector3 rotation = transform.rotation.eulerAngles;
 			Vector2 rotatedVector = (Quaternion.AngleAxis(rotation.z, Vector3.forward) * Vector2.up).normalized;
-			collision.GetComponent<Rigidbody2D>().linearVelocity = (rotatedVector * power);
+			collision.GetComponent<Rigidbody>().AddForce(rotatedVector * power);
+			//collision.GetComponent<Rigidbody2D>().linearVelocity = (rotatedVector * power);
 			collision.GetComponent<PlayerController>().isAffectedBySpring = true;
 		}
 	}
@@ -22,18 +23,8 @@ public class Spring : MonoBehaviour
 		{
 			Vector3 rotation = transform.rotation.eulerAngles;
 			Vector2 rotatedVector = (Quaternion.AngleAxis(rotation.z, Vector3.forward) * Vector2.up).normalized;
-			collision.rigidbody.linearVelocity = (rotatedVector * power);
-			collision.gameObject.GetComponent<PlayerController>().isAffectedBySpring = true;
-		}
-	}
-
-	private void OnCollisionStay2D(Collision2D collision)
-	{
-		if (collision.gameObject.tag.Equals("Player"))
-		{
-			Vector3 rotation = transform.rotation.eulerAngles;
-			Vector2 rotatedVector = (Quaternion.AngleAxis(rotation.z, Vector3.forward) * Vector2.up).normalized;
-			collision.rigidbody.linearVelocity = (rotatedVector * power);
+			collision.rigidbody.AddForce(rotatedVector * power);
+			//collision.rigidbody.linearVelocity = (rotatedVector * power);
 			collision.gameObject.GetComponent<PlayerController>().isAffectedBySpring = true;
 		}
 	}

@@ -169,7 +169,9 @@ MonoBehaviour:
   fallGravityMultiplier: 1.5
   isAffectedBySpring: 0
   SpringAffectTime: 0.15
-  SpringDamping: 30
+  SpringDamping: 20
+  SpringAcceleration: 2
+  SpringDeceleration: 2
   DashUnlocked: 0
   Dashing: 0
   GrappleUnlocked: 0
