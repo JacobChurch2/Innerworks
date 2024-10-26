@@ -210,6 +210,64 @@ PolygonCollider2D:
       - {x: 196.45844, y: -7.8963346}
       - {x: 196.26819, y: 17.890413}
   m_UseDelaunayMesh: 0
+--- !u!1001 &143138105
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4074454510776545458, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8240187728362830041, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+      propertyPath: m_Name
+      value: FallingPlatforms (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -3859387185735603103, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bffbcaf9d924757499d09de4738f7f5d, type: 3}
 --- !u!4 &232829311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
@@ -368,7 +426,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 2
   m_Sprite: {fileID: -744564410, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -565,7 +623,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 0
   m_Sprite: {fileID: -1464932648, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -970,7 +1028,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 1
   m_Sprite: {fileID: -1091719301, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2284,7 +2342,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -2
+  m_SortingLayer: -3
   m_SortingOrder: 3
   m_Sprite: {fileID: -691174493, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2646,3 +2704,4 @@ SceneRoots:
   - {fileID: 7028177059080253159}
   - {fileID: 1991487436579873869}
   - {fileID: 1430599981}
+  - {fileID: 143138105}
