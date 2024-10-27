@@ -170,8 +170,6 @@ MonoBehaviour:
   isAffectedBySpring: 0
   SpringAffectTime: 0.15
   SpringDamping: 20
-  SpringAcceleration: 2
-  SpringDeceleration: 2
   DashUnlocked: 0
   Dashing: 0
   GrappleUnlocked: 0
@@ -181,7 +179,7 @@ MonoBehaviour:
   IsDead: 0
   Ground:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 64
   slopeCheckDistance: 0.75
   CamShake: {fileID: 6115257735984773875, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
   NormalPhysics: {fileID: 6200000, guid: 51e5f44017e90d64fb099e091ba3e557, type: 2}

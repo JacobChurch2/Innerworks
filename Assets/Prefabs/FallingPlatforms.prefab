@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 138298624071352247}
   - component: {fileID: 673523163313867275}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Spot Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 3481160992302211204}
   - component: {fileID: 2981793290642678493}
   - component: {fileID: 8848700535927120296}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FallingPlatforms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
