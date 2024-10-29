@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
 	private Vector2 colliderSize;
 	private float slopeDownAngle;
 	private Vector2 slopeNormalPerp;
-	private bool isOnSlope;
+	public bool isOnSlope;
 	private float slopeSideAngle;
 
 	[SerializeField]
@@ -288,7 +288,7 @@ public class PlayerController : MonoBehaviour
 	#region Jump
 	public void OnJump(InputAction.CallbackContext context)
 	{
-		if (context.started)
+		if (context.started && !isAffectedBySpring)
 		{
 			lastJumpTime = jumpBufferTime;
 		}
