@@ -634,6 +634,7 @@ public class PlayerController : MonoBehaviour
 		animator.SetBool(AnimationStrings.Grappling, false);
 		GrappleJoint.enabled = false;
 		GrappleJoint.connectedBody = null;
+		GrappleJoint.connectedAnchor = Vector2.zero;
 	}
 
 	#endregion

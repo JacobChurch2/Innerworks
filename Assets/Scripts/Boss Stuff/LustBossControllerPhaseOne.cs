@@ -7,14 +7,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Rigidbody2D))]
 public class LustBossControllerPhaseOne : MonoBehaviour
 {
-	public enum State
-	{
-		PhaseOne,
-		Tired,
-		PhaseTwo,
-		PhaseThree,
-	}
-
 	[SerializeField]
 	Transform Target;
 

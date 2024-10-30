@@ -9,14 +9,6 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(Rigidbody2D))]
 public class LustBossControllerPhaseTwo : MonoBehaviour
 {
-	public enum State
-	{
-		PhaseOne,
-		Tired,
-		PhaseTwo,
-		PhaseThree,
-	}
-
 	[SerializeField]
 	Transform Target;
 
