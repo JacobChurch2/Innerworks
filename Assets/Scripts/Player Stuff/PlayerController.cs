@@ -561,8 +561,17 @@ public class PlayerController : MonoBehaviour
 		if (GrappleHit)
 		{
 			GrappleJoint.enabled = true;
-			GrappleJoint.connectedAnchor = GrappleHit.point;
 			GrappleJoint.distance = 0;
+
+			if (GrappleHit.rigidbody.tag.Equals("MovingPlatform"))
+			{
+				GrappleJoint.connectedBody = GrappleHit.rigidbody;
+			}
+			else
+			{
+				GrappleJoint.connectedAnchor = GrappleHit.point;
+			}
+
 
 			Vector2 direction = ((Vector3)GrappleHit.point - transform.position);
 			rb.AddForce(direction * GrappleStength, ForceMode2D.Impulse);
@@ -581,9 +590,18 @@ public class PlayerController : MonoBehaviour
 			GrappleLine.enabled = true;
 			if (GrappleHit)
 			{
-				Debug.DrawLine(transform.position, GrappleHit.point, Color.cyan);
+				Vector3 endPoint;
+				if (GrappleJoint.connectedBody != null)
+				{
+					endPoint = GrappleJoint.connectedBody.transform.position;
+				}
+				else
+				{
+					endPoint = GrappleHit.point;
+				}
 
-				Vector3[] GrapplePoints = { transform.position, GrappleHit.point };
+				Debug.DrawLine(transform.position, endPoint, Color.cyan);
+				Vector3[] GrapplePoints = { transform.position, endPoint };
 				GrappleLine.SetPositions(GrapplePoints);
 			}
 			else
@@ -615,6 +633,7 @@ public class PlayerController : MonoBehaviour
 		rb.gravityScale = gravityScale;
 		animator.SetBool(AnimationStrings.Grappling, false);
 		GrappleJoint.enabled = false;
+		GrappleJoint.connectedBody = null;
 	}
 
 	#endregion
