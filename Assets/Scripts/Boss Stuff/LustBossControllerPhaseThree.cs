@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,9 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 {
 	[SerializeField]
 	Transform Target;
+
+	[SerializeField]
+	Transform BulletHellPlace;
 
 	NavMeshAgent agent;
 	Rigidbody2D rb;
@@ -57,7 +61,6 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	private void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
-		agent.enabled = false;
 		agent.updateRotation = false;
 		agent.updateUpAxis = false;
 		agent.speed = 30f;
@@ -169,22 +172,35 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		BulletHellTimer -= Time.deltaTime;
 		if (BulletHellTimer <= 0 && !BulletHellActive)
 		{
-			switch (BulletHellPhase)
-			{
-				case 1:
-					StartCoroutine(BulletVersionOne());
-					break;
-				case 2:
-					StartCoroutine(BulletVersionTwo());
-					break;
-				case 3:
-					StartCoroutine(BulletVersionThree());
-					break;
-			}
-			BulletHellTimer = BulletHellCooldown;
-			BulletHellActive = true;
-			BulletHellPhase++;
+			StartCoroutine(BulletHellStart());
 		}
+	}
+
+	private IEnumerator BulletHellStart()
+	{
+		transform.DOLocalMove(BulletHellPlace.position, 2f);
+		agent.enabled = false;
+		BulletHellActive = true;
+
+		yield return new WaitForSeconds(2f);
+
+		switch (BulletHellPhase)
+		{
+			case 1:
+				StartCoroutine(BulletVersionOne());
+				break;
+			case 2:
+				StartCoroutine(BulletVersionTwo());
+				break;
+			case 3:
+				StartCoroutine(BulletVersionThree());
+				break;
+			case 4:
+				StartCoroutine(FinalStand());
+				break;
+		}
+
+		BulletHellPhase++;
 	}
 
 	private IEnumerator BulletVersionOne()
@@ -207,8 +223,8 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 			yield return new WaitForSeconds(.5f);
 		}
-		yield return new WaitForSeconds(3f);
-		BulletHellActive = false;
+
+		StartCoroutine(BulletHellEnd());
 	}
 
 	private IEnumerator BulletVersionTwo()
@@ -231,8 +247,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 			yield return new WaitForSeconds(.1f);
 		}
 
-		yield return new WaitForSeconds(3f);
-		BulletHellActive = false;
+		StartCoroutine(BulletHellEnd());
 	}
 
 	private IEnumerator BulletVersionThree()
@@ -307,9 +322,184 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 			BlowBulletHell(ray);
 		}
 
+		StartCoroutine(BulletHellEnd());
+	}
+
+	private IEnumerator BulletHellEnd()
+	{
 		yield return new WaitForSeconds(3f);
 		BulletHellActive = false;
+		agent.enabled = true;
+		BulletHellTimer = BulletHellCooldown;
 	}
+
+	#region Final Stand
+	private IEnumerator FinalStand()
+	{
+		StartCoroutine(FinalStandCircle());
+		yield return FinalStandSpin();
+
+		yield return FinalStandBackwardSpin();
+
+		yield return FinalStandAreas();
+
+		StartCoroutine(FinalstandCircleTired());
+	}
+
+	private IEnumerator FinalStandCircle()
+	{
+		for (int j = 0; j < 45; j++)
+		{
+			for (int i = 0; i < 360; i += 40)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			yield return new WaitForSeconds(.5f);
+
+			for (int i = 20; i < 360; i += 40)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			yield return new WaitForSeconds(.5f);
+		}
+	}
+
+	private IEnumerator FinalStandSpin()
+	{
+		for (int j = 0; j < 360; j += 3)
+		{
+
+			Vector2 ray = Quaternion.AngleAxis(0 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(90 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(180 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(270 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			yield return new WaitForSeconds(.1f);
+		}
+	}
+
+	private IEnumerator FinalStandBackwardSpin()
+	{
+		for (int j = 360; j >= 0; j -= 3)
+		{
+
+			Vector2 ray = Quaternion.AngleAxis(0 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(90 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(180 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			ray = Quaternion.AngleAxis(270 + j, Vector3.forward) * Vector2.right;
+			BlowBulletHell(ray);
+
+			yield return new WaitForSeconds(.1f);
+		}
+	}
+
+	private IEnumerator FinalStandAreas()
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 * j), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 + (90 * j)), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (180 + (90 * j)), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+			yield return new WaitForSeconds(1.5f);
+		}
+
+		for (int j = 0; j < 2; j++)
+		{
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 * j), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (180 + (90 * j)), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+			yield return new WaitForSeconds(1.5f);
+		}
+
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 * j), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 + (90 * j)), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+			yield return new WaitForSeconds(1.5f);
+		}
+
+		for (int j = 0; j < 4; j++)
+		{
+			for (int i = 0; i < 90; i += 3)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i + (90 * j), Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+			yield return new WaitForSeconds(1.5f);
+		}
+	}
+
+	private IEnumerator FinalstandCircleTired()
+	{
+		for (int j = 0; j < 10; j++)
+		{
+			for (int i = 0; i < 360; i += 40)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			yield return new WaitForSeconds(.5f + (.1f * j));
+
+			for (int i = 20; i < 360; i += 40)
+			{
+				Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
+				BlowBulletHell(ray);
+			}
+
+			yield return new WaitForSeconds(.5f + (.1f * j));
+		}
+	}
+
+	#endregion
 
 	private void BlowBulletHell(Vector2 force)
 	{

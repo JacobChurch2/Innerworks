@@ -8,6 +8,7 @@ public class Drops : MonoBehaviour
 		{
 			//TODO::DamagePlayer
 			print("drop hit");
+			Destroy(gameObject);
 		}
 	}
 }

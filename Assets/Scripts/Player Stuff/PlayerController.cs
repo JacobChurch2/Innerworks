@@ -563,7 +563,7 @@ public class PlayerController : MonoBehaviour
 			GrappleJoint.enabled = true;
 			GrappleJoint.distance = 0;
 
-			if (GrappleHit.rigidbody.tag.Equals("MovingPlatform"))
+			if (GrappleHit.rigidbody.tag.Equals("MovingPlatform") || GrappleHit.rigidbody.tag.Equals("FallingPlatform"))
 			{
 				GrappleJoint.connectedBody = GrappleHit.rigidbody;
 			}
@@ -594,6 +594,10 @@ public class PlayerController : MonoBehaviour
 				if (GrappleJoint.connectedBody != null)
 				{
 					endPoint = GrappleJoint.connectedBody.transform.position;
+					if (!GrappleJoint.connectedBody.simulated)
+					{
+						GrappleEnd();
+					}
 				}
 				else
 				{

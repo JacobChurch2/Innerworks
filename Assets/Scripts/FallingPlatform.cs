@@ -83,6 +83,7 @@ public class FallingPlatform : MonoBehaviour
 		yield return new WaitForSeconds(DestoryDelay);
 		TheSprite.enabled = false;
 		TheCollider.enabled = false;
+		rb.simulated = false;
         StartCoroutine(Respawn());
 	}
 
@@ -93,7 +94,8 @@ public class FallingPlatform : MonoBehaviour
 		TheSprite.enabled = true;
 		TheCollider.enabled = true;
 		rb.linearVelocity = Vector2.zero;
-        Falling = false;
+		Falling = false;
+		rb.simulated = true;
 		StartCoroutine(FadeIn());
 	}
 

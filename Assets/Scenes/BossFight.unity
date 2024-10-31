@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 219196270}
   - component: {fileID: 219196269}
   m_Layer: 0
-  m_Name: CamConfiner (1)
+  m_Name: PhaseOneCamConfiner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1173,6 +1173,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5437209700452267330, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
   m_PrefabInstance: {fileID: 141596765}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &448252290
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 448252291}
+  m_Layer: 0
+  m_Name: BulletHellPlacement
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &448252291
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 448252290}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 501, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455272172 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7657592077623310144, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
@@ -1233,8 +1264,8 @@ MonoBehaviour:
   xBoundRight: 260
   yBoundTop: 12
   yBoundBottom: 12
-  CoolDownMax: 1
-  CoolDownMin: 2
+  CoolDownMax: 2
+  CoolDownMin: 3
 --- !u!4 &458984091
 Transform:
   m_ObjectHideFlags: 0
@@ -1528,8 +1559,8 @@ MonoBehaviour:
   xBoundRight: 260
   yBoundTop: 12
   yBoundBottom: 12
-  CoolDownMax: 1
-  CoolDownMin: 2
+  CoolDownMax: 2
+  CoolDownMin: 3
 --- !u!4 &512750003
 Transform:
   m_ObjectHideFlags: 0
@@ -1577,6 +1608,89 @@ Transform:
   - {fileID: 689313815}
   - {fileID: 1691877425}
   - {fileID: 413866461}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &602649717
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 602649719}
+  - component: {fileID: 602649718}
+  m_Layer: 0
+  m_Name: PhaseThreeCamConfiner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!60 &602649718
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602649717}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 262, y: -8}
+      - {x: 262, y: 15}
+      - {x: 223, y: 15}
+      - {x: 223, y: -8}
+  m_UseDelaunayMesh: 0
+--- !u!4 &602649719
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602649717}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 258, y: -0.73, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &608137251 stripped
@@ -1832,6 +1946,204 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 38.5, y: 22}
   m_EdgeRadius: 0
+--- !u!1 &824111117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 824111120}
+  - component: {fileID: 824111119}
+  - component: {fileID: 824111118}
+  m_Layer: 0
+  m_Name: StartPhase3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &824111118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824111117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55f91fa559803c4f9d10643a8d33da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChocolateDrops: {fileID: 1678543313}
+  newCamCollider: {fileID: 602649718}
+  confiner: {fileID: 2112954793}
+--- !u!61 &824111119
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824111117}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.31871033, y: 5.0462923}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1.6374207, y: 20.86646}
+  m_EdgeRadius: 0
+--- !u!4 &824111120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 824111117}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 482.65, y: -2.0031266, z: -0.4088974}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &859373922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 859373923}
+  - component: {fileID: 859373924}
+  m_Layer: 0
+  m_Name: ChocolateDrops (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &859373923
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859373922}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1678543314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &859373924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859373922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4855a9e620ba1048b11ec3441333d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drop: {fileID: 8469703150003843720, guid: eb3ffc08de603da4098625b5be47c791, type: 3}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  xBoundLeft: 482
+  xBoundRight: 519
+  yBoundTop: 12
+  yBoundBottom: 12
+  CoolDownMax: 1
+  CoolDownMin: 2
+--- !u!1 &870884063
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 870884064}
+  - component: {fileID: 870884065}
+  m_Layer: 0
+  m_Name: ChocolateDrops
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &870884064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870884063}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1678543314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &870884065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870884063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4855a9e620ba1048b11ec3441333d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drop: {fileID: 8469703150003843720, guid: eb3ffc08de603da4098625b5be47c791, type: 3}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  xBoundLeft: 482
+  xBoundRight: 519
+  yBoundTop: 12
+  yBoundBottom: 12
+  CoolDownMax: 1
+  CoolDownMin: 2
 --- !u!114 &896565649 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1964513538607294263, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
@@ -2064,7 +2376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1014055587}
   m_Layer: 0
-  m_Name: ChocolateDrops
+  m_Name: ChocolateDropsPhaseOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2242,11 +2554,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 495
+      value: 474.39
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: -6.19
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3371,18 +3683,123 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 232829311}
+  BulletHellPlace: {fileID: 448252291}
   sight: 10
   player:
     serializedVersion: 2
     m_Bits: 128
   Bullet: {fileID: 8679646929111970683, guid: ea1a32c7eacaaae4b8e3ddf4ec3de82b, type: 3}
-  BulletSpeed: 17
-  BulletCooldown: 0.5
-  DashPower: 50
+  BulletSpeed: 20
+  BulletCooldown: 0.35
+  DashPower: 60
   DashCooldown: 5
-  DashChargeTime: 0.5
-  BulletHellSpeed: 5
-  BulletHellCooldown: 5
+  DashChargeTime: 0.35
+  BulletHellSpeed: 7
+  BulletHellCooldown: 30
+--- !u!1 &1413347223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1413347224}
+  - component: {fileID: 1413347225}
+  m_Layer: 0
+  m_Name: ChocolateDrops (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1413347224
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413347223}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1678543314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1413347225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1413347223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4855a9e620ba1048b11ec3441333d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drop: {fileID: 8469703150003843720, guid: eb3ffc08de603da4098625b5be47c791, type: 3}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  xBoundLeft: 482
+  xBoundRight: 519
+  yBoundTop: 12
+  yBoundBottom: 12
+  CoolDownMax: 1
+  CoolDownMin: 2
+--- !u!1 &1417658048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1417658049}
+  - component: {fileID: 1417658050}
+  m_Layer: 0
+  m_Name: ChocolateDrops (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1417658049
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417658048}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1678543314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1417658050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417658048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4855a9e620ba1048b11ec3441333d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drop: {fileID: 8469703150003843720, guid: eb3ffc08de603da4098625b5be47c791, type: 3}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  xBoundLeft: 482
+  xBoundRight: 519
+  yBoundTop: 12
+  yBoundBottom: 12
+  CoolDownMax: 1
+  CoolDownMin: 2
 --- !u!1001 &1430599981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12296,6 +12713,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5437209700452267330, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
   m_PrefabInstance: {fileID: 1050366121}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1678543313
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1678543314}
+  m_Layer: 0
+  m_Name: ChocolateDropsPhaseThree
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1678543314
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678543313}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 501.24, y: 12.48, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 870884064}
+  - {fileID: 1417658049}
+  - {fileID: 1413347224}
+  - {fileID: 859373923}
+  - {fileID: 2101565047}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1690624455 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
@@ -58377,8 +58830,8 @@ MonoBehaviour:
   xBoundRight: 260
   yBoundTop: 12
   yBoundBottom: 12
-  CoolDownMax: 1
-  CoolDownMin: 2
+  CoolDownMax: 2
+  CoolDownMin: 3
 --- !u!4 &1938335500
 Transform:
   m_ObjectHideFlags: 0
@@ -58685,7 +59138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9159820185645686905, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
       propertyPath: m_Size.x
-      value: 83.20894
+      value: 83.270546
       objectReference: {fileID: 0}
     - target: {fileID: 9159820185645686905, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
       propertyPath: m_Size.y
@@ -58693,7 +59146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9159820185645686905, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
       propertyPath: m_Offset.x
-      value: 34.75219
+      value: 34.782993
       objectReference: {fileID: 0}
     - target: {fileID: 9159820185645686905, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
       propertyPath: m_Offset.y
@@ -58707,6 +59160,58 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 221282249}
   m_SourcePrefab: {fileID: 100100000, guid: b3329bb6ae08b6449b8f18f9b6b673d5, type: 3}
+--- !u!1 &2101565046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101565047}
+  - component: {fileID: 2101565048}
+  m_Layer: 0
+  m_Name: ChocolateDrops (4)
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101565047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101565046}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1678543314}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2101565048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101565046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4855a9e620ba1048b11ec3441333d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Drop: {fileID: 8469703150003843720, guid: eb3ffc08de603da4098625b5be47c791, type: 3}
+  Rotation: {x: 0, y: 0, z: 0, w: 0}
+  xBoundLeft: 482
+  xBoundRight: 519
+  yBoundTop: 12
+  yBoundBottom: 12
+  CoolDownMax: 1
+  CoolDownMin: 2
 --- !u!114 &2112954787 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6115257735984773875, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
@@ -58963,7 +59468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 501
+      value: 480.39
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -59108,11 +59613,11 @@ PrefabInstance:
       objectReference: {fileID: 1941299536}
     - target: {fileID: 5837207117479830892, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 501
+      value: 480.39
       objectReference: {fileID: 0}
     - target: {fileID: 5837207117479830892, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.1
+      value: -6.19
       objectReference: {fileID: 0}
     - target: {fileID: 5837207117479830892, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -59176,6 +59681,7 @@ SceneRoots:
   - {fileID: 8676730260803189476}
   - {fileID: 119034041}
   - {fileID: 219196270}
+  - {fileID: 602649719}
   - {fileID: 2624389080314037994}
   - {fileID: 1025384912}
   - {fileID: 1450197901}
@@ -59191,6 +59697,7 @@ SceneRoots:
   - {fileID: 328255681}
   - {fileID: 1146428915}
   - {fileID: 1014055587}
+  - {fileID: 1678543314}
   - {fileID: 958700323}
   - {fileID: 1945150875}
   - {fileID: 115214388}
@@ -59198,3 +59705,5 @@ SceneRoots:
   - {fileID: 1190280060}
   - {fileID: 1945677127}
   - {fileID: 954133868}
+  - {fileID: 448252291}
+  - {fileID: 824111120}
