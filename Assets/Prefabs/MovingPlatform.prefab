@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Duration: 5
   m_MaxSpeed: 4.932053
   m_EasingMode: 0
-  m_AlignmentMode: 3
+  m_AlignmentMode: 2
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0

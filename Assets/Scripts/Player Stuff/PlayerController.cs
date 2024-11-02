@@ -128,6 +128,14 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
+	#region Health variables
+	public int Health = 100;
+	public float HealCooldown = 5f;
+	private float HealTimer;
+	private bool MaxHealth = true;
+	private Coroutine HealingC;
+	#endregion
+
 	#region management variables
 	[Header("Management")]
 	private Vector2 colliderSize;
@@ -187,6 +195,9 @@ public class PlayerController : MonoBehaviour
 		//DashUnlocked = PlayerData.DashUnlocked;
 		SpringTime = SpringAffectTime;
 		colliderSize = cc.size;
+
+		HealTimer = HealCooldown;
+
 		cam = Camera.main;
 	}
 
@@ -203,6 +214,8 @@ public class PlayerController : MonoBehaviour
 		SlopeUpdate();
 
 		GrappleUpdate();
+
+		HealthUpdate();
 
 		AnimatorUpdate();
 	}
@@ -643,6 +656,49 @@ public class PlayerController : MonoBehaviour
 
 	#endregion
 
+	#endregion
+
+	#region Health
+	private void HealthUpdate()
+	{
+		if (!MaxHealth)
+		{
+			HealTimer -= Time.deltaTime;
+
+			if (HealTimer < 0)
+			{
+				HealingC = StartCoroutine(Heal());
+				HealTimer = HealCooldown;
+			}
+		}
+
+		if(Health <= 0)
+		{
+			print("Death");
+		}
+	}
+
+	public void TakeDamage(int damage)
+	{
+		Health -= damage;
+		if (HealingC != null)
+		{
+			StopCoroutine(HealingC);
+		}
+		MaxHealth = false;
+		HealTimer = HealCooldown;
+	}
+
+	private IEnumerator Heal()
+	{
+		for (int i = Health; i < 100; i++)
+		{
+			//IntelliSense told me to put all these semicolons
+			Health++;
+			yield return new WaitForSeconds(.04f);
+		}
+		MaxHealth = true;
+	}
 	#endregion
 
 	#region Animation stuff

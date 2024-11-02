@@ -39,12 +39,19 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 
 	#endregion
 
+	public int damage = 5;
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			//TODO::DamagePlayer
 			print("boss hit");
+			PlayerController player = collision.GetComponent<PlayerController>();
+			if (player)
+			{
+				player.TakeDamage(damage);
+			}
 		}
 	}
 

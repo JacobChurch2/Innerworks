@@ -21,9 +21,14 @@ public class StartFight : MonoBehaviour
 		if (collision.tag.Equals("Player"))
 		{
 			Door.SetActive(true);
-			Boss.SetActive(true);
-			BossUI.SetActive(true);
+
 			ChocolateDrops.SetActive(true);
+			Boss.SetActive(true);
+			Boss.GetComponent<LustBossControllerPhaseOne>().enabled = true;
+			Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
+			Boss.GetComponent<LustBossControllerPhaseThree>().enabled = false;
+
+			BossUI.SetActive(true);
 
 			foreach (ParallaxEffect parallax in Resources.FindObjectsOfTypeAll<ParallaxEffect>())
 			{

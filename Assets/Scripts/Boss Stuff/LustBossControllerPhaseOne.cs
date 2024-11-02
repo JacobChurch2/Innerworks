@@ -34,14 +34,21 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	private float DashTimer;
 	private bool Dashing = false;
 
+	public int damage = 5;
+
 	#endregion
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			//TODO::DamagePlayer
-			print("boss hit");
+            print("boss hit");
+			PlayerController player = collision.GetComponent<PlayerController>();
+			if (player)
+			{
+				player.TakeDamage(damage);
+			}
 		}
 	}
 

@@ -27,6 +27,8 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	public float BulletCooldown;
 	private float BulletTimer;
 
+	public int damage = 5;
+
 	#endregion
 
 	#region Dash Variables
@@ -51,10 +53,15 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			//TODO::DamagePlayer
 			print("boss hit");
+			PlayerController player = collision.GetComponent<PlayerController>();
+			if (player)
+			{
+				player.TakeDamage(damage);
+			}
 		}
 	}
 
