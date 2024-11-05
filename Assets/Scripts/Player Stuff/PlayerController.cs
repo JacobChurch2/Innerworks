@@ -17,6 +17,7 @@ using UnityEngine.UIElements.Experimental;
 [RequireComponent(typeof(TouchingDirections))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(AudioController))]
 public class PlayerController : MonoBehaviour
 {
 	#region Variables
@@ -159,6 +160,7 @@ public class PlayerController : MonoBehaviour
 	Animator animator;
 	SpriteRenderer Renderer;
 	BoxCollider2D cc;
+	AudioController audioController;
 	[SerializeField]
 	CameraShake CamShake;
 	[SerializeField]
@@ -199,6 +201,8 @@ public class PlayerController : MonoBehaviour
 		HealTimer = HealCooldown;
 
 		cam = Camera.main;
+
+		audioController = GetComponent<AudioController>();
 	}
 
 	private void FixedUpdate()
@@ -293,7 +297,16 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			rb.AddForce(movement * (Vector2.right), ForceMode2D.Force);
-			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue);
+			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue);;
+		}
+
+		if (touchingDirections.IsGrounded && xMove != 0)
+		{
+			audioController.PlayMovement(true);
+		}
+		else
+		{
+			audioController.PlayMovement(false);
 		}
 	}
 	#endregion
@@ -315,6 +328,8 @@ public class PlayerController : MonoBehaviour
 	private void JumpAction()
 	{
 		animator.SetTrigger(AnimationStrings.Jump);
+		audioController.PlayMovement(false);
+		audioController.PlayAudio("jump");
 		rb.linearVelocityY = 0;
 		rb.AddForce(new Vector2(0, jumpImpulse), ForceMode2D.Impulse);
 		Jumping = true;
@@ -448,6 +463,7 @@ public class PlayerController : MonoBehaviour
 		float x = moveInput.x;
 		float y = moveInput.y;
 		DashAnimation(x, y);
+		audioController.PlayAudio("dash");
 		rb.linearVelocity = Vector2.zero;
 		rb.linearVelocity += new Vector2(x, y).normalized * 40;
 	}
@@ -593,6 +609,7 @@ public class PlayerController : MonoBehaviour
 		GrappleTimer = GrappleCoolDown;
 
 		animator.SetBool(AnimationStrings.Grappling, true);
+		audioController.PlayAudio("grapple");
 		rb.gravityScale = 0;
 	}
 
@@ -672,7 +689,7 @@ public class PlayerController : MonoBehaviour
 			}
 		}
 
-		if(Health <= 0)
+		if (Health <= 0)
 		{
 			print("Death");
 		}
@@ -736,6 +753,16 @@ public class PlayerController : MonoBehaviour
 			IdleTimer = 0;
 			animator.SetFloat(AnimationStrings.IdleTimer, IdleTimer);
 		}
+	}
+
+	public void PlayLandingSound()
+	{
+		audioController.PlayAudio("land");
+	}
+
+	public void PlayDeathSound()
+	{
+		audioController.PlayAudio("death");
 	}
 	#endregion
 }

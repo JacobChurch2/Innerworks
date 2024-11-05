@@ -15,6 +15,8 @@ public class StartFight : MonoBehaviour
 	private Collider2D newCamCollider;
 	[SerializeField]
 	private CinemachineConfiner2D confiner;
+	[SerializeField]
+	private BossMusic music;
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -36,6 +38,10 @@ public class StartFight : MonoBehaviour
 			}
 
 			confiner.BoundingShape2D = newCamCollider;
+
+			music.StartAudio();
+
+			Destroy(gameObject, 0.1f);
 		}
 	}
 }

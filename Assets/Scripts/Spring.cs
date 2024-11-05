@@ -1,9 +1,17 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[RequireComponent(typeof(Animator))]
 public class Spring : MonoBehaviour
 {
 	public float power = 10000;
+
+	private Animator anim;
+
+	private void Start()
+	{
+		anim = GetComponent<Animator>();
+	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
@@ -14,6 +22,7 @@ public class Spring : MonoBehaviour
 			collision.GetComponent<Rigidbody>().AddForce(rotatedVector * power);
 			//collision.GetComponent<Rigidbody2D>().linearVelocity = (rotatedVector * power);
 			collision.GetComponent<PlayerController>().isAffectedBySpring = true;
+			anim.SetTrigger("Spring");
 		}
 	}
 
@@ -26,6 +35,7 @@ public class Spring : MonoBehaviour
 			collision.rigidbody.AddForce(rotatedVector * power);
 			//collision.rigidbody.linearVelocity = (rotatedVector * power);
 			collision.gameObject.GetComponent<PlayerController>().isAffectedBySpring = true;
+			anim.SetTrigger("Spring");
 		}
 	}
 }

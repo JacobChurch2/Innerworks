@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(AudioSource))]
 public class FallingPlatform : MonoBehaviour
 {
     public float FallDelay;
@@ -24,9 +25,13 @@ public class FallingPlatform : MonoBehaviour
     private Vector3 OriginalPlace;
     private SpriteRenderer TheSprite;
     private Collider2D TheCollider;
+	[SerializeField]
+	private AudioSource CrumbleSound;
+	[SerializeField]
+	private AudioSource WhooshSound;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         TheSprite = GetComponent<SpriteRenderer>();
@@ -51,6 +56,7 @@ public class FallingPlatform : MonoBehaviour
 				StartCoroutine(Fall());
 				RegisterTimer = RegisterTime;
 				Falling = true;
+				CrumbleSound.Play();
 			}
 		}
 	}
@@ -59,6 +65,7 @@ public class FallingPlatform : MonoBehaviour
     {
         yield return new WaitForSeconds(FallDelay);
 		rb.linearVelocityY = Vector2.down.y * FallSpeed;
+		WhooshSound.Play();
         //Destroy(gameObject, DestoryDelay);
         StartCoroutine(FadeOut());
         StartCoroutine(Death());

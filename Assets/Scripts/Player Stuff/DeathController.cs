@@ -4,12 +4,14 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(AudioController))]
 public class DeathController : MonoBehaviour
 {
 	Animator animator;
 	Rigidbody2D rb;
 	PlayerInput playerInput;
 	PlayerController Player;
+	AudioController audioController;
 
 	[SerializeField]
 	public Transform ResapwnPoint;
@@ -18,6 +20,7 @@ public class DeathController : MonoBehaviour
 	{
 		animator = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody2D>();
+		audioController = GetComponent<AudioController>();
 		if (GetComponent<PlayerInput>() != null)
 		{
 			playerInput = GetComponent<PlayerInput>();
@@ -33,6 +36,7 @@ public class DeathController : MonoBehaviour
 		if (collision.tag.Equals("Death"))
 		{
 			animator.SetBool(AnimationStrings.IsDead, true);
+			//audioController.PlayAudio("death");
 			rb.gravityScale = 0;
 			rb.linearVelocity = Vector2.zero;
 			if (playerInput)

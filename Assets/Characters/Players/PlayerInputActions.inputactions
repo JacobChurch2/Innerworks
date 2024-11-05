@@ -294,19 +294,8 @@
                 },
                 {
                     "name": "",
-                    "id": "7aa3d286-59fd-424b-a201-7e8230cae42c",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "749e25af-c1c8-48b4-8827-dd7717d71b31",
-                    "path": "<Keyboard>/upArrow",
+                    "id": "747067db-60e1-4353-be40-a305ab5b1819",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
