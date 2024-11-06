@@ -3,7 +3,7 @@ using UnityEngine;
 public class AudioController : MonoBehaviour
 {
 	[SerializeField]
-	private AudioClip movement, jump, land, death, grapple, dash;
+	private AudioClip movement, jump, land, death, grapple, dash, hit;
 
 	[SerializeField]
 	private AudioSource Source;
@@ -30,6 +30,9 @@ public class AudioController : MonoBehaviour
 				break;
 			case "dash":
 				Source.PlayOneShot(dash);
+				break;
+			case "hit":
+				Source.PlayOneShot(hit);
 				break;
 		}
 

@@ -499,7 +499,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 2
   m_Sprite: {fileID: -744564410, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -696,7 +696,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: -1464932648, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1167,7 +1167,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 1
   m_Sprite: {fileID: -1091719301, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7722,7 +7722,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1459080967
-  m_SortingLayer: -3
+  m_SortingLayer: -2
   m_SortingOrder: 3
   m_Sprite: {fileID: -691174493, guid: 76614745f3ec55349ae620c9a123c7d0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7882,11 +7882,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.9525337
+      value: -3.9525414
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.07057
+      value: 1.07056
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7994,14 +7994,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2044019743192266946, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
-      propertyPath: TrackerSettings.PositionDamping.x
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2044019743192266946, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
-      propertyPath: TrackerSettings.PositionDamping.y
-      value: 0.25
-      objectReference: {fileID: 0}
     - target: {fileID: 5399081207373484972, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_Enabled
       value: 1

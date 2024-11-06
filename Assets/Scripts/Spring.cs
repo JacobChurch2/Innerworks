@@ -8,9 +8,16 @@ public class Spring : MonoBehaviour
 
 	private Animator anim;
 
+	private AudioSource sound;
+
 	private void Start()
 	{
 		anim = GetComponent<Animator>();
+
+		if (GetComponent<AudioSource>())
+		{
+			sound = GetComponent<AudioSource>();
+		}
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -23,6 +30,11 @@ public class Spring : MonoBehaviour
 			//collision.GetComponent<Rigidbody2D>().linearVelocity = (rotatedVector * power);
 			collision.GetComponent<PlayerController>().isAffectedBySpring = true;
 			anim.SetTrigger("Spring");
+
+			if (sound)
+			{
+				sound.Play();
+			}
 		}
 	}
 
@@ -36,6 +48,11 @@ public class Spring : MonoBehaviour
 			//collision.rigidbody.linearVelocity = (rotatedVector * power);
 			collision.gameObject.GetComponent<PlayerController>().isAffectedBySpring = true;
 			anim.SetTrigger("Spring");
+
+			if (sound)
+			{
+				sound.Play();
+			}
 		}
 	}
 }

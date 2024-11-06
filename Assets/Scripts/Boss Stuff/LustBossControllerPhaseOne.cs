@@ -36,6 +36,8 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 
 	public int damage = 5;
 
+	private AudioSource DashSound;
+
 	#endregion
 
 	private void OnTriggerEnter2D(Collider2D collision)
@@ -60,6 +62,11 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		agent.speed = 30f;
 
 		rb = GetComponent<Rigidbody2D>();
+
+		if (GetComponent<AudioSource>())
+		{
+			DashSound = GetComponent<AudioSource>();
+		}
 
 		DashTimer = DashCooldown;
 	}
@@ -120,6 +127,7 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 
 	private void DashAttack()
 	{
+		DashSound.Play();
 		agent.SetDestination(Target.position);
 		agent.speed = DashPower;
 		agent.acceleration = 10000;

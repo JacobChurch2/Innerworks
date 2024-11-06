@@ -85,7 +85,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1804805707
-  m_SortingLayer: -2
+  m_SortingLayer: 1
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: fb5a8fd3d07065a4493a45d5eaa3797a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -548,10 +548,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 8300000, guid: 3c396aa359332e646b04de56b6a6219a, type: 3}
   jump: {fileID: 8300000, guid: 60d0587974ea19e4caf6426aea203e1e, type: 3}
-  land: {fileID: 8300000, guid: a40f47e67b9f0dc409ca2f17c8a9900f, type: 3}
+  land: {fileID: 8300000, guid: 37debbdf63a2fbc4da19c8e90cd65016, type: 3}
   death: {fileID: 8300000, guid: b032ec90368c5f9478be53f61dfadb4d, type: 3}
   grapple: {fileID: 8300000, guid: 1b7fa1207c0adc946a0dcc2f2b037da2, type: 3}
   dash: {fileID: 8300000, guid: 27f8556f13efd1147aeeaef562cc8237, type: 3}
+  hit: {fileID: 8300000, guid: 8eeb68622961fc745b597c77191ddf71, type: 3}
   Source: {fileID: 2059799525154923291}
 --- !u!82 &2059799525154923291
 AudioSource:
@@ -566,13 +567,13 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.359
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 133
+  Priority: 7
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

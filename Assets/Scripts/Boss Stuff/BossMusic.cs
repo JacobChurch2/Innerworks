@@ -132,8 +132,14 @@ public class BossMusic : MonoBehaviour
 		IntroState, PhaseOneState, TransitionOneState, PhaseTwoState, TransitionTwoState, PhaseThreeState, FinalState
 	}
 
+	private AudioSource IntroSource, PhaseOneSource, TransitionOneSource, PhaseTwoSource, TransitionTwoSource, PhaseThreeSource, FinalSource;
+
+	private AudioSource[] AudioSources = new AudioSource[7];
+	private int AudioSourceIndex = 0;
+
 	[SerializeField]
 	private AudioClip Intro, PhaseOne, TransitionOne, PhaseTwo, TransitionTwo, PhaseThree, Final;
+
 
 	[SerializeField]
 	private LustBossControllerPhaseOne BossPhaseOne;
@@ -145,8 +151,8 @@ public class BossMusic : MonoBehaviour
 	[SerializeField]
 	AudioMixerGroup TheMixerOne, TheMixerTwo;
 
-	private AudioSource sourceA;
-	private AudioSource sourceB;
+	//private AudioSource sourceA;
+	//private AudioSource sourceB;
 	private AudioSource currentSource;
 	private eState currentState;
 	private bool started = false;
@@ -158,27 +164,45 @@ public class BossMusic : MonoBehaviour
 
 	private void Start()
 	{
-		sourceA = gameObject.AddComponent<AudioSource>();
-		sourceB = gameObject.AddComponent<AudioSource>();
+		IntroSource = gameObject.AddComponent<AudioSource>();
+		IntroSource.clip = Intro;
+		PhaseOneSource = gameObject.AddComponent<AudioSource>();
+		PhaseOneSource.clip = PhaseOne;
+		TransitionOneSource = gameObject.AddComponent<AudioSource>();
+		TransitionOneSource.clip = TransitionOne;
+		PhaseTwoSource = gameObject.AddComponent<AudioSource>();
+		PhaseTwoSource.clip = PhaseTwo;
+		TransitionTwoSource = gameObject.AddComponent<AudioSource>();
+		TransitionTwoSource.clip = TransitionTwo;
+		PhaseThreeSource = gameObject.AddComponent<AudioSource>();
+		PhaseThreeSource.clip = PhaseThree;
+		FinalSource = gameObject.AddComponent<AudioSource>();
+		FinalSource.clip = Final;
 
-		sourceA.priority = 1;
-		sourceB.priority = 1;
+		AudioSources[0] = IntroSource;
+		AudioSources[1] = PhaseOneSource;
+		AudioSources[2] = TransitionOneSource;
+		AudioSources[3] = PhaseTwoSource;
+		AudioSources[4] = TransitionTwoSource;
+		AudioSources[5] = PhaseThreeSource;
+		AudioSources[6] = FinalSource;
 
-		sourceA.outputAudioMixerGroup = TheMixerOne;
-		sourceB.outputAudioMixerGroup = TheMixerTwo;
+		foreach (AudioSource source in AudioSources) 
+		{
+			InitializeAudioSource(source);
+		}
 
-		InitializeAudioSource(sourceA, Intro);
-		InitializeAudioSource(sourceB, null);
-		currentSource = sourceA;
+		currentSource = AudioSources[0];
 
 		currentState = eState.IntroState;
 	}
 
-	private void InitializeAudioSource(AudioSource source, AudioClip clip)
+	private void InitializeAudioSource(AudioSource source)
 	{
-		source.clip = clip;
 		source.playOnAwake = false;
-		source.volume = 1.0f;
+		source.volume = 0.5f;
+		source.priority = 1;
+		source.outputAudioMixerGroup = TheMixerOne;
 	}
 
 	private void FixedUpdate()
@@ -203,7 +227,8 @@ public class BossMusic : MonoBehaviour
 			UpdateState();
 			if (!currentSource.loop)
 			{
-				currentSource.clip = GetNextClip();
+				AudioSourceIndex++;
+				currentSource = AudioSources[AudioSourceIndex];
 				if (currentSource.clip == PhaseOne || currentSource.clip == PhaseTwo || currentSource.clip == PhaseThree)
 				{
 					currentSource.loop = true;
@@ -226,41 +251,41 @@ public class BossMusic : MonoBehaviour
 		timer = Intro.length;
 	}
 
-	private void CrossfadeToNextClip()
-	{
-		AudioClip nextClip = GetNextClip();
-		AudioSource activeSource = sourceA.isPlaying ? sourceA : sourceB;
-		AudioSource inactiveSource = activeSource == sourceA ? sourceB : sourceA;
+	//private void CrossfadeToNextClip()
+	//{
+	//	AudioClip nextClip = GetNextClip();
+	//	AudioSource activeSource = sourceA.isPlaying ? sourceA : sourceB;
+	//	AudioSource inactiveSource = activeSource == sourceA ? sourceB : sourceA;
 
-		// Set up the next clip on the inactive source
-		inactiveSource.clip = nextClip;
-		inactiveSource.Play();
+	//	// Set up the next clip on the inactive source
+	//	inactiveSource.clip = nextClip;
+	//	inactiveSource.Play();
 
-		if (nextClip == PhaseOne || nextClip == PhaseTwo || nextClip == PhaseThree)
-		{
-			inactiveSource.loop = true;
-		}
-		else
-		{
-			inactiveSource.loop = false;
-		}
+	//	if (nextClip == PhaseOne || nextClip == PhaseTwo || nextClip == PhaseThree)
+	//	{
+	//		inactiveSource.loop = true;
+	//	}
+	//	else
+	//	{
+	//		inactiveSource.loop = false;
+	//	}
 
-		//float timer = 0.0f;
+	//	//float timer = 0.0f;
 
-		//while (timer < CrossFadeTime)
-		//{
-		//	activeSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Lerp(0.0f, -80.0f, timer / CrossFadeTime));
-		//	inactiveSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Lerp(-80.0f, 0.0f, timer / CrossFadeTime));
-		//	timer += Time.deltaTime;
-		//	yield return null;
-		//}
+	//	//while (timer < CrossFadeTime)
+	//	//{
+	//	//	activeSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Lerp(0.0f, -80.0f, timer / CrossFadeTime));
+	//	//	inactiveSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", Mathf.Lerp(-80.0f, 0.0f, timer / CrossFadeTime));
+	//	//	timer += Time.deltaTime;
+	//	//	yield return null;
+	//	//}
 
-		// Ensure active source is fully stopped after crossfade
-		//activeSource.Stop();
-		//activeSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", -80);
-		//inactiveSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", 0); 
-		currentSource = inactiveSource;
-	}
+	//	// Ensure active source is fully stopped after crossfade
+	//	//activeSource.Stop();
+	//	//activeSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", -80);
+	//	//inactiveSource.outputAudioMixerGroup.audioMixer.SetFloat("Volume", 0); 
+	//	currentSource = inactiveSource;
+	//}
 
 	//private IEnumerator CrossfadeToNextClip()
 	//{

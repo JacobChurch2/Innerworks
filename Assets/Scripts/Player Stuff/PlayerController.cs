@@ -601,7 +601,6 @@ public class PlayerController : MonoBehaviour
 				GrappleJoint.connectedAnchor = GrappleHit.point;
 			}
 
-
 			Vector2 direction = ((Vector3)GrappleHit.point - transform.position);
 			rb.AddForce(direction * GrappleStength, ForceMode2D.Impulse);
 		}
@@ -637,6 +636,18 @@ public class PlayerController : MonoBehaviour
 				Debug.DrawLine(transform.position, endPoint, Color.cyan);
 				Vector3[] GrapplePoints = { transform.position, endPoint };
 				GrappleLine.SetPositions(GrapplePoints);
+
+				RaycastHit2D Hit = new RaycastHit2D();
+				for (int i = 0; i <= 360; i += 36)
+				{
+					Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
+					Hit = Physics2D.Raycast(endPoint, ray, 2, Ground);
+					Debug.DrawRay(endPoint, ray, Color.yellow);
+				}
+				if (!Hit)
+				{
+					GrappleEnd();
+				}
 			}
 			else
 			{
@@ -704,6 +715,7 @@ public class PlayerController : MonoBehaviour
 		}
 		MaxHealth = false;
 		HealTimer = HealCooldown;
+		audioController.PlayAudio("hit");
 	}
 
 	private IEnumerator Heal()
