@@ -15,20 +15,19 @@ public class FreezeGame : MonoBehaviour
 		}
 	}
 
-	public IEnumerator SlowdownToAFreeze(float duration = 1)
+	public IEnumerator SlowdownToAFreeze(float duration = .25f)
 	{
-		float SubBy = .01f / duration;
 		if (!Frozen)
 		{
-			for (float timeScale = 1f; timeScale >= 0; timeScale -= SubBy)
+			float timeElapsed = 0;
+			while (timeElapsed < duration)
 			{
-				Time.timeScale = timeScale;
-				yield return new WaitForSecondsRealtime(0.01f);
+				Time.timeScale = Mathf.Lerp(1, 0, timeElapsed / duration);
+				timeElapsed += Time.unscaledDeltaTime;
+
+				yield return null;
 			}
-			if(Time.timeScale != 0f)
-			{
-				Time.timeScale = 0f;
-			}
+			Time.timeScale = 0f;
 			Frozen = true;
 		}
 	}

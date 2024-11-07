@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
 	[Header("Jump")]
 	public float jumpImpulse = 10f;
 	private bool Jumping = false;
-	private int jumpCount = 1;
+	public int jumpCount = 1;
 	public int jumpsAvliable = 1;
 
 	public float jumpCutMultiplier = 0.5f;
@@ -67,6 +67,8 @@ public class PlayerController : MonoBehaviour
 	private float lastGroundedTime = 0;
 	private float lastJumpTime = 0;
 	public float fallGravityMultiplier = 1.5f;
+
+	public bool jumping = false;
 
 	[Header("Springs")]
 	public bool isAffectedBySpring = false;
