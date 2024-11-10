@@ -11,6 +11,8 @@ public class DoubleJumpUnlock : MonoBehaviour
 	PlayerController Player;
 	[SerializeField]
 	FadingPanel FallTextOne, FallTextTwo, FallTextThree, FallTextFour, FallTextFive;
+	[SerializeField]
+	PlayerInput playerInputs;
 
 	bool SequenceStart = false;
 	bool SequenceEnd = false;
@@ -36,12 +38,12 @@ public class DoubleJumpUnlock : MonoBehaviour
 		StartCoroutine(FallTextThree.FadeOutRealTime());
 
 		StartCoroutine(FallTextFour.FadeInRealTime());
-		SequenceEnd = true;
 
 		yield return new WaitForSecondsRealtime(4);
 
 		StartCoroutine(FallTextFive.FadeInRealTime());
 
+		SequenceEnd = true;
 		Player.jumpsAvliable = 2;
 		Player.jumpCount++;
 		//PlayerData.DashUnlocked = true;
@@ -52,6 +54,7 @@ public class DoubleJumpUnlock : MonoBehaviour
 		if (collision.tag.Equals("Player") && !SequenceStart)
 		{
 			SequenceStart = true;
+			playerInputs.enabled = false;
 			StartCoroutine(Frozen.SlowdownToAFreeze(0.75f));
 			StartCoroutine(DoubleJumpSequence());
 		}
@@ -66,6 +69,7 @@ public class DoubleJumpUnlock : MonoBehaviour
 			StartCoroutine(FallTextFive.FadeOutRealTime());
 			SequenceEnd = false;
 			Player.OnJump(context);
+			playerInputs.enabled = true;
 		}
 	}
 }

@@ -39,7 +39,7 @@ public class DashUnlockController : MonoBehaviour
     {
         if (Near.InRange && !SequenceStart)
         {
-            StartCoroutine(Frozen.SlowdownToAFreeze(0.25f));
+            StartCoroutine(Frozen.SlowdownToAFreeze(0.35f));
             StartCoroutine(DashSequence());
             SequenceStart = true;
         }

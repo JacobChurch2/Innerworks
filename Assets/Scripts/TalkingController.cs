@@ -5,19 +5,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
+[RequireComponent(typeof(PlayerInput))]
 public class TalkingController : MonoBehaviour
 {
-    [SerializeField]
-    PlayerInput playerInputs;
+	[SerializeField]
+	PlayerInput playerInputs;
 
-    [SerializeField]
-    Rigidbody2D PlayerRB;
+	[SerializeField]
+	Rigidbody2D PlayerRB;
 
-    [SerializeField]
-    CanvasGroup group;
+	[SerializeField]
+	CanvasGroup group;
 
-    [SerializeField]
-    TextMeshProUGUI TalkingText;
+	[SerializeField]
+	TextMeshProUGUI TalkingText;
 
 	[SerializeField]
 	string[] messages;
@@ -26,82 +27,99 @@ public class TalkingController : MonoBehaviour
 	[SerializeField]
 	int[] FontIndexForMessages;
 
+	public int DefultFontIndex = 0;
+
 	public float letterDelay = 0.05f;
 
-    private Dictionary<string, TMP_FontAsset> MessagesAndFonts = new Dictionary<string, TMP_FontAsset>();
+	private Dictionary<string, TMP_FontAsset> MessagesAndFonts = new Dictionary<string, TMP_FontAsset>();
 
-    private int MessageIndex = 0;
+	private int MessageIndex = 0;
 
-    private string currentFullMessage;
-    private string currentMessage;
+	private string currentFullMessage;
+	private string currentMessage;
 
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        group.alpha = 0;
-        for (int i = 0; i < messages.Length; i++)
-        {
-            MessagesAndFonts.Add(messages[i], fonts[FontIndexForMessages[i]]);
-        }
-    }
+	public bool started = false;
+	public bool done = false;
 
-    private void StartText()
-    {
-        //TODO: add an intro animation
-        group.alpha = 1f;
-        playerInputs.enabled = false;
-        PlayerRB.linearVelocity = Vector2.zero;
-        StartCoroutine(UpdateMessage(0));
-    }
+	private PlayerInput UIInput;
 
-    private void EndText()
-    {
-        //TODO: add an ending animation
-		group.alpha = 0f;
-		playerInputs.enabled = true;
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
+	{
+		group.alpha = 0;
+		UIInput = gameObject.GetComponent<PlayerInput>();
+		UIInput.enabled = false;
+		for (int i = 0; i < messages.Length; i++)
+		{
+			if (i >= FontIndexForMessages.Length)
+			{
+				MessagesAndFonts.Add(messages[i], fonts[FontIndexForMessages[DefultFontIndex]]);
+			} else
+			{
+				MessagesAndFonts.Add(messages[i], fonts[FontIndexForMessages[i]]);
+			}
+		}
 	}
 
-    private IEnumerator UpdateMessage(int index)
-    {
-        if (index >= messages.Length) 
-        {
-            EndText();
-            yield break;
-        }
+	private void StartText()
+	{
+		//TODO: add an intro animation
+		group.alpha = 1f;
+		playerInputs.enabled = false;
+		PlayerRB.linearVelocity = Vector2.zero;
+		StartCoroutine(UpdateMessage(0));
+	}
 
-        currentFullMessage = messages[index];
-        TalkingText.font = MessagesAndFonts[currentFullMessage];
-        for (int i = 0; i < currentFullMessage.Length; i++)
-        {
-            currentMessage = currentFullMessage.Substring(0, i);
-            TalkingText.text = currentMessage;
-            yield return new WaitForSeconds(letterDelay);
-        }
-    }
+	private void EndText()
+	{
+		//TODO: add an ending animation
+		group.alpha = 0f;
+		playerInputs.enabled = true;
+		done = true;
+	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.tag.Equals("Player"))
-        {
-            StartText();
-        }
-    }
+	private IEnumerator UpdateMessage(int index)
+	{
+		if (index >= messages.Length)
+		{
+			EndText();
+			yield break;
+		}
 
-    public void OnClick(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            if (!currentFullMessage.Equals(currentMessage))
-            {
-                StopAllCoroutines();
-                currentMessage = currentFullMessage;
-                TalkingText.text = currentMessage;
-            } 
-            else
-            {
-                StartCoroutine(UpdateMessage(++MessageIndex));
-            }
-        }
-    }
+		currentFullMessage = messages[index];
+		TalkingText.font = MessagesAndFonts[currentFullMessage];
+		for (int i = 0; i < currentFullMessage.Length; i++)
+		{
+			currentMessage = currentFullMessage.Substring(0, i);
+			TalkingText.text = currentMessage;
+			yield return new WaitForSeconds(letterDelay);
+		}
+	}
+
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.tag.Equals("Player") && !started)
+		{
+			started = true;
+			StartText();
+			UIInput.enabled = true;
+		}
+	}
+
+	public void OnClick(InputAction.CallbackContext context)
+	{
+		if (context.started)
+		{
+			if (!currentFullMessage.Equals(currentMessage))
+			{
+				StopAllCoroutines();
+				currentMessage = currentFullMessage;
+				TalkingText.text = currentMessage;
+			}
+			else
+			{
+				StartCoroutine(UpdateMessage(++MessageIndex));
+			}
+		}
+	}
 }

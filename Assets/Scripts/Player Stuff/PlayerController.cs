@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
 	#region component variables
 	//Components
-	Rigidbody2D rb;
+	public Rigidbody2D rb;
 	Animator animator;
 	SpriteRenderer Renderer;
 	BoxCollider2D cc;
@@ -380,6 +380,11 @@ public class PlayerController : MonoBehaviour
 			{
 				rb.gravityScale = gravityScale;
 			}
+		}
+
+		if (rb.linearVelocityY < -100)
+		{
+			rb.linearVelocityY = -100;
 		}
 	}
 	#endregion
