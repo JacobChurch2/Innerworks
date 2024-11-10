@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class LustBossControllerPhaseTwo : MonoBehaviour
 {
 	[SerializeField]
@@ -26,6 +27,10 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 
 	NavMeshAgent agent;
 	Rigidbody2D rb;
+
+	[SerializeField]
+	AnimationClip DashChargeClip;
+	private Animator animator;
 
 
 	#region Dash Variables
@@ -65,6 +70,8 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 		rb = GetComponent<Rigidbody2D>();
 
 		DashTimer = DashCooldown;
+
+		animator = GetComponent<Animator>();
 	}
 
 	void FixedUpdate()
@@ -90,9 +97,20 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 			DashTimer = DashCooldown;
 			Dashing = true;
 			agent.enabled = false;
+
+			animator.SetTrigger("DashCharge");
+			animator.speed = DashChargeClip.length / DashCharge;
+
 			yield return new WaitForSeconds(DashCharge);
+
+			animator.speed = 1;
+			animator.SetBool("Dash", true);
+
 			rb.linearVelocity = (Target.position - transform.position).normalized * DashPower;
+
 			yield return new WaitForSeconds(DashTime);
+			animator.SetBool("Dash", false);
+
 			rb.linearVelocity = Vector2.zero;
 			agent.enabled = true;
 			Dashing = false;

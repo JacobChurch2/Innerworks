@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent (typeof(Animator))]
 public class LustBossControllerPhaseThree : MonoBehaviour
 {
 	[SerializeField]
@@ -19,6 +20,10 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 	public float sight = 10;
 	public LayerMask player;
+
+	[SerializeField]
+	AnimationClip DashChargeClip;
+	private Animator animator;
 
 	#region Bullet Variables
 
@@ -76,6 +81,8 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 		DashTimer = DashCooldown;
 		BulletHellTimer = BulletHellCooldown;
+
+		animator = GetComponent<Animator>();
 	}
 
 	void FixedUpdate()
@@ -141,6 +148,8 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 	private void DashAttack()
 	{
+		animator.SetBool("Dash", true);
+		
 		agent.SetDestination(Target.position);
 		agent.speed = DashPower;
 		agent.acceleration = 10000;
@@ -151,18 +160,26 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 	private IEnumerator DashCharge()
 	{
+		animator.SetTrigger("DashCharge");
+		animator.speed = DashChargeClip.length / DashChargeTime;
+
 		agent.speed = 0;
 		agent.acceleration = 1000;
 		//rb.AddForce(-(Target.position - transform.position) * DashChargePower);
 		DashTimer = DashCooldown;
 		Dashing = true;
 		yield return new WaitForSeconds(DashChargeTime);
+
+		animator.speed = 1;
 		DashAttack();
 	}
 
 	private IEnumerator DashEnd()
 	{
 		yield return new WaitForSeconds(1f);
+
+		animator.SetBool("Dash", false);
+
 		Dashing = false;
 		agent.speed = 10;
 		agent.acceleration = 8;

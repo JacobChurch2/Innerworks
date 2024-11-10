@@ -3525,6 +3525,7 @@ GameObject:
   - component: {fileID: 1393235784}
   - component: {fileID: 1393235786}
   - component: {fileID: 1393235787}
+  - component: {fileID: 1393235788}
   m_Layer: 0
   m_Name: LustBoss
   m_TagString: Untagged
@@ -3549,6 +3550,7 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 128
+  DashChargeClip: {fileID: 7400000, guid: 206253cdc10f1d24ebd6e5616ed9c193, type: 2}
   Bullet: {fileID: 8679646929111970683, guid: ea1a32c7eacaaae4b8e3ddf4ec3de82b, type: 3}
   BulletSpeed: 17
   BulletCooldown: 0.5
@@ -3692,6 +3694,7 @@ MonoBehaviour:
   GridLayout: {fileID: 1450197900}
   Tilemap: {fileID: 86760591}
   ParticleSystem: {fileID: 8632837262735322023, guid: 087bc5a04ba3c324a8368f489014450f, type: 3}
+  DashChargeClip: {fileID: 7400000, guid: 206253cdc10f1d24ebd6e5616ed9c193, type: 2}
   DashPower: 75
   DashCooldown: 1
   DashTime: 0.5
@@ -3751,6 +3754,7 @@ MonoBehaviour:
   player:
     serializedVersion: 2
     m_Bits: 128
+  DashChargeClip: {fileID: 7400000, guid: 206253cdc10f1d24ebd6e5616ed9c193, type: 2}
   Bullet: {fileID: 8679646929111970683, guid: ea1a32c7eacaaae4b8e3ddf4ec3de82b, type: 3}
   BulletSpeed: 20
   BulletCooldown: 0.35
@@ -3857,6 +3861,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &1393235788
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393235777}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d6bd8eb23d3cce84fa509ea6bba0e9a2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1404600538
 GameObject:
   m_ObjectHideFlags: 0
@@ -59519,8 +59545,7 @@ MonoBehaviour:
   BossPhaseOne: {fileID: 1393235778}
   BossPhaseTwo: {fileID: 1393235784}
   BossPhaseThree: {fileID: 1393235786}
-  TheMixerOne: {fileID: 24300002, guid: 957396cdde877664088224052ee5b9e9, type: 2}
-  TheMixerTwo: {fileID: 24300002, guid: 97d2c4f03e03c9f4ab426dc1347d40d3, type: 2}
+  TheMixer: {fileID: 0}
   finish: 0
 --- !u!4 &1966485318
 Transform:
