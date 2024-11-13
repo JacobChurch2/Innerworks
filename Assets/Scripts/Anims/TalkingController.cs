@@ -61,9 +61,11 @@ public class TalkingController : MonoBehaviour
 		}
 	}
 
-	private void StartText()
+	public void StartText()
 	{
 		//TODO: add an intro animation
+		started = true;
+		UIInput.enabled = true;
 		group.alpha = 1f;
 		playerInputs.enabled = false;
 		PlayerRB.linearVelocity = Vector2.zero;
@@ -88,7 +90,7 @@ public class TalkingController : MonoBehaviour
 
 		currentFullMessage = messages[index];
 		TalkingText.font = MessagesAndFonts[currentFullMessage];
-		for (int i = 0; i < currentFullMessage.Length; i++)
+		for (int i = 1; i <= currentFullMessage.Length; i++)
 		{
 			currentMessage = currentFullMessage.Substring(0, i);
 			TalkingText.text = currentMessage;
@@ -100,9 +102,7 @@ public class TalkingController : MonoBehaviour
 	{
 		if (collision.tag.Equals("Player") && !started)
 		{
-			started = true;
 			StartText();
-			UIInput.enabled = true;
 		}
 	}
 

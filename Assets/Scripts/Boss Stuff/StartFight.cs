@@ -25,7 +25,10 @@ public class StartFight : MonoBehaviour
 			Door.SetActive(true);
 
 			ChocolateDrops.SetActive(true);
-			Boss.SetActive(true);
+			if (!Boss.activeSelf)
+			{
+				Boss.SetActive(true);
+			}
 			Boss.GetComponent<LustBossControllerPhaseOne>().enabled = true;
 			Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
 			Boss.GetComponent<LustBossControllerPhaseThree>().enabled = false;

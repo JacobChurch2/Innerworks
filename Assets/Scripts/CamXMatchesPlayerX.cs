@@ -15,6 +15,8 @@ public class CamXMatchesPlayerX : MonoBehaviour
     private bool Left;
     private float StartOffset;
 
+    public bool FollowingPlayer = true;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +27,8 @@ public class CamXMatchesPlayerX : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!FollowingPlayer) return;
+
         if(Player.linearVelocityX < -0.1 && !Left)
         {
 			StopAllCoroutines();

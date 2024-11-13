@@ -17,7 +17,10 @@ public class EndAnim : MonoBehaviour
 
 	private PlayableDirector anim;
 
-	private bool started = false;
+	public bool started = false;
+
+	private float timer;
+	private bool startTimer = false;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -28,13 +31,24 @@ public class EndAnim : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!started && anim.time >= anim.duration)
+		if (anim.time > 0 && !startTimer)
+		{
+			startTimer = true;
+		}
+
+		if (startTimer)
+		{
+			timer += Time.deltaTime;
+		}
+
+		if (!started && (timer >= anim.duration))
 		{
 			started = true;
 			PlayerBody.linearVelocity = Vector2.zero;
 			PlayerBody.bodyType = RigidbodyType2D.Dynamic;
 			PlayerInputs.enabled = PlayerCanMove;
 			anim.Stop();
+			Destroy(gameObject);
 		}
 	}
 }

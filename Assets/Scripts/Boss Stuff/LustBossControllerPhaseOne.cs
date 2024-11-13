@@ -11,6 +11,9 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	[SerializeField]
 	Transform Target;
 
+	[SerializeField]
+	Transform RestLocation;
+
 	NavMeshAgent agent;
 	Rigidbody2D rb;
 
@@ -21,6 +24,9 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	AnimationClip DashChargeClip;
 	private Animator animator;
 
+	public float PhaseTime;
+	private float PhaseTimer;
+
 	#region Bullet Variables
 
 	public GameObject Bullet;
@@ -29,7 +35,6 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	private float BulletTimer;
 
 	#endregion
-
 
 	#region Dash Variables
 
@@ -76,6 +81,8 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		DashTimer = DashCooldown;
 
 		animator = GetComponent<Animator>();
+
+		PhaseTimer = PhaseTime;
 	}
 
 	void FixedUpdate()
@@ -83,6 +90,7 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		Sight();
 		BulletTimer -= Time.deltaTime;
 
+		PhaseTimer -= Time.deltaTime;
 
 		if (!Dashing)
 		{
@@ -90,6 +98,10 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 			agent.SetDestination(Target.position);
 		}
 
+		if(PhaseTimer <= 0)
+		{
+			EndPhase();
+		}
 	}
 
 	private void Sight()
@@ -175,4 +187,13 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		agent.angularSpeed = 120;
 	}
 	#endregion
+
+	private void EndPhase()
+	{
+		print("EndPhaseOne");
+		agent.enabled = false;
+		GetComponent<LustBossVulnerablePhaseOne>().enabled = true;
+		GetComponent<LustBossVulnerablePhaseOne>().StartVulnerablePhase();
+		this.enabled = false;
+	}
 }
