@@ -90,6 +90,7 @@ public class BossMusic : MonoBehaviour
 			UpdateState();
 			if (!currentSource.loop)
 			{
+				currentSource.volume = 0;
 				AudioSourceIndex++;
 				currentSource = AudioSources[AudioSourceIndex];
 				if (currentSource.clip == PhaseOne || currentSource.clip == PhaseTwo || currentSource.clip == PhaseThree)

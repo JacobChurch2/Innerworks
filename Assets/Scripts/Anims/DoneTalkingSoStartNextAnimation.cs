@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(TalkingController))]
@@ -19,6 +20,7 @@ public class DoneTalkingSoStartNextAnimation : MonoBehaviour
     {
         if (talk.done)
         {
+            GetComponent<PlayerInput>().enabled = false;
             anim.Play();
 			Destroy(gameObject);
 		}

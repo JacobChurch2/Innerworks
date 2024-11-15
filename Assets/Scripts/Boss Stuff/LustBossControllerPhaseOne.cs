@@ -132,6 +132,8 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		}
 	}
 
+
+	#region Dash
 	private void DashUpdate()
 	{
 		if (DashTimer <= 0)
@@ -142,21 +144,6 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		{
 			DashTimer -= Time.deltaTime;
 		}
-	}
-
-	#region Dash
-
-	private void DashAttack()
-	{
-		animator.SetBool("Dash", true);
-		
-		DashSound.Play();
-		agent.SetDestination(Target.position);
-		agent.speed = DashPower;
-		agent.acceleration = 10000;
-		agent.angularSpeed = 0;
-		agent.autoBraking = false;
-		StartCoroutine(DashEnd());
 	}
 
 	private IEnumerator DashCharge()
@@ -173,6 +160,20 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		animator.speed = 1;
 		DashAttack();
 	}
+
+	private void DashAttack()
+	{
+		animator.SetBool("Dash", true);
+		
+		DashSound.Play();
+		agent.SetDestination(Target.position);
+		agent.speed = DashPower;
+		agent.acceleration = 10000;
+		agent.angularSpeed = 0;
+		agent.autoBraking = false;
+		StartCoroutine(DashEnd());
+	}
+
 
 	private IEnumerator DashEnd()
 	{

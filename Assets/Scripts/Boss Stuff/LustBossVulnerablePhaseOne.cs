@@ -31,6 +31,9 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 	[SerializeField]
 	EndAnim Finish;
 
+	[SerializeField]
+	DestroyGrounds Destruction;
+
 	private bool started = false;
 	private bool ending = false;
 
@@ -78,11 +81,14 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 		AnimStart.Play();
 		yield return new WaitForSeconds((float)AnimStart.duration);
 		Talking.StartText();
+		Destruction.enabled = true;
 	}
 
 	private void EndPhase()
 	{
 		started = false;
+
+		Destruction.enabled = false;
 
 		GetComponent<LustBossControllerPhaseTwo>().enabled = true;
 		Confiner.BoundingShape2D = NextPhaseCam;

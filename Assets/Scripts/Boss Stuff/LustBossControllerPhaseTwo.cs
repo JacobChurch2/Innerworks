@@ -43,6 +43,8 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 	private bool Dashing = false;
 	private bool ChargingDash = false;
 
+	private AudioSource DashSound;
+
 	#endregion
 
 	public int damage = 5;
@@ -71,6 +73,11 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 
 		rb = GetComponent<Rigidbody2D>();
 
+		if (GetComponent<AudioSource>())
+		{
+			DashSound = GetComponent<AudioSource>();
+		}
+
 		DashTimer = DashCooldown;
 
 		animator = GetComponent<Animator>();
@@ -80,11 +87,7 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 	{
 		DashUpdate();
 
-		if (!Dashing && !ChargingDash)
-		{
-			//agent.SetDestination(Target.position);
-		}
-		else
+		if(Dashing) 
 		{
 			DestoryTiles();
 		}
@@ -124,6 +127,8 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 		Dashing = true;
 		animator.speed = 1;
 		animator.SetBool("Dash", true);
+
+		DashSound.Play();
 
 		rb.linearVelocity = (Target.position - transform.position).normalized * DashPower;
 

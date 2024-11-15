@@ -1,16 +1,11 @@
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 public class StartFight : MonoBehaviour
 {
-	[SerializeField]
-	private GameObject Door;
-	[SerializeField]
-	private GameObject Boss;
-	[SerializeField]
-	private GameObject BossUI;
-	[SerializeField]
-	private GameObject ChocolateDrops;
 	[SerializeField]
 	private Collider2D newCamCollider;
 	[SerializeField]
@@ -18,23 +13,18 @@ public class StartFight : MonoBehaviour
 	[SerializeField]
 	private BossMusic music;
 
+	[SerializeField]
+	PlayerInput playerInputs;
+	[SerializeField]
+	Rigidbody2D PlayerRB;
+
+	[SerializeField]
+	TalkingController Talking;
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag.Equals("Player"))
 		{
-			Door.SetActive(true);
-
-			ChocolateDrops.SetActive(true);
-			if (!Boss.activeSelf)
-			{
-				Boss.SetActive(true);
-			}
-			Boss.GetComponent<LustBossControllerPhaseOne>().enabled = true;
-			Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
-			Boss.GetComponent<LustBossControllerPhaseThree>().enabled = false;
-
-			BossUI.SetActive(true);
-
 			foreach (ParallaxEffect parallax in Resources.FindObjectsOfTypeAll<ParallaxEffect>())
 			{
 				parallax.enabled = false;
@@ -42,9 +32,26 @@ public class StartFight : MonoBehaviour
 
 			confiner.BoundingShape2D = newCamCollider;
 
+			playerInputs.enabled = false;
+
+			PlayerRB.linearVelocity = Vector2.zero;
+
 			music.StartAudio();
 
-			Destroy(gameObject, 0.1f);
+			StartCoroutine(AnimThings());
+
+			Destroy(GetComponent<Collider2D>());
 		}
+	}
+
+	private IEnumerator AnimThings()
+	{
+		PlayableDirector AnimStart = GetComponent<PlayableDirector>();
+
+		AnimStart.Play();
+
+		yield return new WaitForSeconds((float) AnimStart.duration);
+
+		Talking.StartText();
 	}
 }
