@@ -28,21 +28,24 @@ public class PlayerUIController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HealthSlider.value = player.Health / 100f;
-
-        if (HealthSlider.value == 1 && SliderVisable)
+        if (HealthSlider)
         {
-            StopAllCoroutines();
-            StartCoroutine(LerpVisablity(1, 0, .25f));
-            SliderVisable = false;
-        }
+            HealthSlider.value = player.Health / 100f;
 
-		if (HealthSlider.value != 1 && !SliderVisable)
-		{
-            StopAllCoroutines();
-			StartCoroutine(LerpVisablity(0, 1, .1f));
-			SliderVisable = true;
-		}
+            if (HealthSlider.value == 1 && SliderVisable)
+            {
+                StopAllCoroutines();
+                StartCoroutine(LerpVisablity(1, 0, .25f));
+                SliderVisable = false;
+            }
+
+            if (HealthSlider.value != 1 && !SliderVisable)
+            {
+                StopAllCoroutines();
+                StartCoroutine(LerpVisablity(0, 1, .1f));
+                SliderVisable = true;
+            }
+        }
 	}
 
 	private IEnumerator LerpVisablity(float startValue, float endValue, float lerpDuration)

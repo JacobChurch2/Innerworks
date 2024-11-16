@@ -98,6 +98,12 @@ public class PlayerController : MonoBehaviour
 	private float GrappleTimer;
 	private SpringJoint2D GrappleJoint;
 
+	[SerializeField]
+	GameObject GrappleIndicator;
+
+	[SerializeField]
+	GameObject GrappleIndicator2;
+
 	[Header("States")]
 	public bool IsDead = false;
 	public bool IsMoving
@@ -189,6 +195,12 @@ public class PlayerController : MonoBehaviour
 		if (GetComponent<LineRenderer>())
 		{
 			GrappleLine = GetComponent<LineRenderer>();
+		}
+
+		if (!GrappleUnlocked)
+		{
+			GrappleIndicator.SetActive(false);
+			GrappleIndicator2.SetActive(false);
 		}
 
 		gravityScale = rb.gravityScale;
@@ -299,7 +311,7 @@ public class PlayerController : MonoBehaviour
 		else
 		{
 			rb.AddForce(movement * (Vector2.right), ForceMode2D.Force);
-			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue);;
+			Debug.DrawRay(transform.position, movement * (Vector2.right), Color.blue); ;
 		}
 
 		if (touchingDirections.IsGrounded && xMove != 0)
@@ -446,9 +458,10 @@ public class PlayerController : MonoBehaviour
 	#region Dash
 	public void OnDash(InputAction.CallbackContext context)
 	{
+		if (!DashUnlocked) return;
 		if (moveInput.x != 0 || (moveInput.y != 0))
 		{
-			if (DashAvalible && DashUnlocked && !IsDead)
+			if (DashAvalible && !IsDead)
 			{
 				DashSetUp();
 				Dash();
@@ -542,7 +555,8 @@ public class PlayerController : MonoBehaviour
 
 	private void CheckDashUpdate()
 	{
-		if (!DashAvalible && touchingDirections.IsGrounded && !Dashing)
+		if (!DashUnlocked) return;
+		if (touchingDirections.IsGrounded && !Dashing)
 		{
 			DashAvalible = true;
 		}
@@ -561,7 +575,8 @@ public class PlayerController : MonoBehaviour
 	#region Grapple
 	public void OnGrapple(InputAction.CallbackContext context)
 	{
-		if (context.started && GrappleAvalible && GrappleUnlocked && (GrappleTimer < 0))
+		if (!GrappleUnlocked) return;
+		if (context.started && GrappleAvalible && (GrappleTimer <= 0))
 		{
 			GrappleStart();
 		}
@@ -574,17 +589,7 @@ public class PlayerController : MonoBehaviour
 
 	private void GrappleStart()
 	{
-		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-
-		if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)
-		{
-			ActualGrappleLength = Vector2.Distance(MousePos, transform.position);
-
-		}
-		else
-		{
-			ActualGrappleLength = GrappleDistance;
-		}
+		if (!GrappleUnlocked) return;
 
 		Grappling = true;
 
@@ -612,8 +617,6 @@ public class PlayerController : MonoBehaviour
 			rb.AddForce(direction * GrappleStength, ForceMode2D.Impulse);
 		}
 
-		GrappleTimer = GrappleCoolDown;
-
 		animator.SetBool(AnimationStrings.Grappling, true);
 		audioController.PlayAudio("grapple");
 		rb.gravityScale = 0;
@@ -621,12 +624,16 @@ public class PlayerController : MonoBehaviour
 
 	private void GrappleUpdate()
 	{
+		if (!GrappleUnlocked) return;
+
+		GrappleIndicatorPlacement();
+
 		if (Grappling)
 		{
 			GrappleLine.enabled = true;
 			if (GrappleHit)
 			{
-				Vector3 endPoint;
+				Vector2 endPoint;
 				if (GrappleJoint.connectedBody != null)
 				{
 					endPoint = GrappleJoint.connectedBody.transform.position;
@@ -645,11 +652,11 @@ public class PlayerController : MonoBehaviour
 				GrappleLine.SetPositions(GrapplePoints);
 
 				RaycastHit2D Hit = new RaycastHit2D();
-				for (int i = 0; i <= 360; i += 36)
+				for (int i = 0; i < 360; i += 45)
 				{
-					Vector2 ray = Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right;
-					Hit = Physics2D.Raycast(endPoint, ray, 2, Ground);
-					Debug.DrawRay(endPoint, ray, Color.yellow);
+					Vector2 ray = (Quaternion.AngleAxis(i, Vector3.forward) * Vector2.right).normalized;
+					Hit = Physics2D.Raycast(endPoint - ray, ray, 2.5f, Ground);
+					Debug.DrawRay(endPoint - ray, ray * 2.5f, Color.yellow);
 				}
 				if (!Hit)
 				{
@@ -664,6 +671,27 @@ public class PlayerController : MonoBehaviour
 		GrappleTimer -= Time.deltaTime;
 	}
 
+	private void GrappleIndicatorPlacement()
+	{
+		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+
+		if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)
+		{
+			ActualGrappleLength = Vector2.Distance(MousePos, transform.position);
+		}
+		else
+		{
+			ActualGrappleLength = GrappleDistance;
+		}
+
+		Vector2 dir = new Vector2((MousePos.x - transform.position.x), (MousePos.y - transform.position.y)).normalized;
+		Vector3 pos = new Vector3((transform.position.x + dir.x * ActualGrappleLength), (transform.position.y + dir.y * ActualGrappleLength));
+
+		GrappleIndicator.transform.position = pos;
+
+		GrappleIndicator2.transform.position = new Vector3 (MousePos.x, MousePos.y);
+	}
+
 	private IEnumerator FailedGrapple()
 	{
 		rb.linearVelocity = Vector3.zero;
@@ -671,6 +699,8 @@ public class PlayerController : MonoBehaviour
 		Vector3 EndPoint = transform.position + (Vector3)GrappleMousePoint.normalized * ActualGrappleLength;
 		Vector3[] GrapplePoints = { transform.position, EndPoint };
 		GrappleLine.SetPositions(GrapplePoints);
+
+		GrappleTimer = GrappleCoolDown;
 
 		yield return new WaitForSeconds(.1f);
 

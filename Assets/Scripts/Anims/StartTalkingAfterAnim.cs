@@ -11,13 +11,11 @@ public class StartTalkingAfterAnim : MonoBehaviour
     void Start()
     {
         Anim = GetComponent<PlayableDirector>();
-    }
+        Anim.played += OnPlayableDirectorHasStopped;
+	}
 
-    void Update()
+    void OnPlayableDirectorHasStopped(PlayableDirector director)
     {
-        if(Anim.time >= Anim.duration)
-        {
-            Talking.StartText();
-        }
-    }
+		Talking.StartText();
+	}
 }

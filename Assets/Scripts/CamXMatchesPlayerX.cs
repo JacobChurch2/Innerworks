@@ -12,7 +12,7 @@ public class CamXMatchesPlayerX : MonoBehaviour
     public float Duration = .25f;
 
     private CinemachineFollow follow;
-    private bool Left;
+    public bool Left;
     private float StartOffset;
 
     public bool FollowingPlayer = true;

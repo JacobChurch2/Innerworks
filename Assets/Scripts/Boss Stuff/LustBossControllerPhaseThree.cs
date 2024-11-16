@@ -94,7 +94,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 		BulletTimer -= Time.deltaTime;
 
-		if (!Dashing)
+		if (!Dashing && !BulletHellActive)
 		{
 			DashUpdate();
 			agent.SetDestination(Target.position);
@@ -361,6 +361,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	private IEnumerator FinalStand()
 	{
 		StartCoroutine(FinalStandCircle());
+
 		yield return FinalStandSpin();
 
 		yield return FinalStandBackwardSpin();
@@ -521,6 +522,9 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 			yield return new WaitForSeconds(.5f + (.1f * j));
 		}
+
+		GetComponent<LustBossVulnerablePhaseTwo>().enabled = true;
+		GetComponent<LustBossVulnerablePhaseTwo>().StartVulnerablePhase();
 	}
 
 	#endregion

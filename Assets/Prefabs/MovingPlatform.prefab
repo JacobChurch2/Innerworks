@@ -230,7 +230,7 @@ MonoBehaviour:
       Tension: 0.5
     - Mode: 1
       Tension: 0.5
-    m_Closed: 0
+    m_Closed: 1
     m_IntData:
       m_Data: []
     m_FloatData:
@@ -348,10 +348,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Target: {fileID: 4831064565522533243}
   m_PlayOnAwake: 1
-  m_LoopMode: 3
+  m_LoopMode: 1
   m_Method: 0
-  m_Duration: 5
-  m_MaxSpeed: 4.932053
+  m_Duration: 10
+  m_MaxSpeed: 4.9320536
   m_EasingMode: 0
   m_AlignmentMode: 2
   m_ObjectForwardAxis: 2
@@ -486,7 +486,7 @@ Transform:
   m_GameObject: {fileID: 7558392147196354937}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.36, y: -3.85, z: 446.44388}
+  m_LocalPosition: {x: 500.36, y: -3.85, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

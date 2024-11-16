@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class LustBossVulnerablePhaseTwo: MonoBehaviour
 {
@@ -9,6 +10,16 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 	public float RestTimer;
 
 	private bool started = false;
+
+	[SerializeField]
+	PlayableDirector FinalAnim;
+
+	private Animator animator;
+
+	private void Awake()
+	{
+		animator = GetComponent<Animator>();
+	}
 
 	// Update is called once per frame
 	void Update()
@@ -19,7 +30,7 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 
 		if (RestTimer <= 0)
 		{
-			//TODO: connect animation and then start next phase
+			FinalAnim.Play();
 			EndPhase();
 		}
 	}
@@ -28,14 +39,19 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 	{
 		started = true;
 
+		if (animator)
+		{
+			animator.SetBool("Tired", true);
+		}
+
 		transform.DOLocalMove(RestLocation.position, 2f);
+
+		GetComponent<LustBossControllerPhaseThree>().enabled = false;
 	}
 
 	private void EndPhase()
 	{
 		started = false;
-
-		GetComponent<LustBossControllerPhaseThree>().enabled = true;
 
 		this.enabled = false;
 	}

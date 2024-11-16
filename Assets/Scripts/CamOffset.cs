@@ -1,6 +1,5 @@
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class CamOffset : MonoBehaviour
