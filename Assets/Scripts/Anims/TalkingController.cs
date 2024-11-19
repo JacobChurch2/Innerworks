@@ -64,11 +64,12 @@ public class TalkingController : MonoBehaviour
 	public void StartText()
 	{
 		//TODO: add an intro animation
-		started = true;
+  		started = true;
 		UIInput.enabled = true;
 		group.alpha = 1f;
 		playerInputs.enabled = false;
 		PlayerRB.linearVelocity = Vector2.zero;
+		done = false;
 		StartCoroutine(UpdateMessage(0));
 	}
 
@@ -78,6 +79,7 @@ public class TalkingController : MonoBehaviour
 		group.alpha = 0f;
 		playerInputs.enabled = true;
 		done = true;
+		MessageIndex = 0;
 	}
 
 	private IEnumerator UpdateMessage(int index)

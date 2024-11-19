@@ -40,7 +40,7 @@ public class StartFight : MonoBehaviour
 
 			StartCoroutine(AnimThings());
 
-			Destroy(GetComponent<Collider2D>());
+			GetComponent<Collider2D>().enabled = false;
 		}
 	}
 
@@ -51,7 +51,8 @@ public class StartFight : MonoBehaviour
 		AnimStart.Play();
 
 		yield return new WaitForSeconds((float) AnimStart.duration);
-
+		
+		Talking.gameObject.SetActive(true);
 		Talking.StartText();
 	}
 }

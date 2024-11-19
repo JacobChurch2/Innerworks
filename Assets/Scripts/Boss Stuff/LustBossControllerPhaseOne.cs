@@ -25,7 +25,7 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	private Animator animator;
 
 	public float PhaseTime;
-	private float PhaseTimer;
+	public float PhaseTimer;
 
 	#region Bullet Variables
 
@@ -125,6 +125,7 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 	{
 		if (BulletTimer <= 0)
 		{
+			animator.SetTrigger("Kiss");
 			GameObject TheBullet = Instantiate(Bullet);
 			TheBullet.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 			TheBullet.GetComponent<Rigidbody2D>().linearVelocity = force * BulletSpeed;
@@ -158,10 +159,10 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		Dashing = true;
 		yield return new WaitForSeconds(DashChargeTime);
 		animator.speed = 1;
-		DashAttack();
+		StartCoroutine(DashAttack());
 	}
 
-	private void DashAttack()
+	private IEnumerator DashAttack()
 	{
 		animator.SetBool("Dash", true);
 		
@@ -171,14 +172,13 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		agent.acceleration = 10000;
 		agent.angularSpeed = 0;
 		agent.autoBraking = false;
-		StartCoroutine(DashEnd());
+		yield return new WaitForSeconds(1f);
+		DashEnd();
 	}
 
 
-	private IEnumerator DashEnd()
+	public void DashEnd()
 	{
-		yield return new WaitForSeconds(1f);
-
 		animator.SetBool("Dash", false);
 
 		Dashing = false;

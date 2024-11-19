@@ -138,10 +138,11 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region Health variables
-	public int Health = 100;
+	public int Health;
+	public int MaxHealth = 50;
 	public float HealCooldown = 5f;
 	private float HealTimer;
-	private bool MaxHealth = true;
+	private bool AtMaxHealth = true;
 	private Coroutine HealingC;
 	#endregion
 
@@ -175,6 +176,8 @@ public class PlayerController : MonoBehaviour
 	PhysicsMaterial2D NormalPhysics;
 	[SerializeField]
 	PhysicsMaterial2D SlopePhysics;
+	[SerializeField]
+	GameManager gameManager;
 	#endregion
 	#endregion
 
@@ -211,6 +214,8 @@ public class PlayerController : MonoBehaviour
 		//DashUnlocked = PlayerData.DashUnlocked;
 		SpringTime = SpringAffectTime;
 		colliderSize = cc.size;
+
+		Health = MaxHealth;
 
 		HealTimer = HealCooldown;
 
@@ -361,21 +366,25 @@ public class PlayerController : MonoBehaviour
 			lastGroundedTime -= Time.deltaTime;
 		}
 
-		if ((lastGroundedTime > 0 || jumpCount > 1) && lastJumpTime > 0 && !Jumping)
-		{
-			JumpAction();
-			if (!(lastGroundedTime > 0))
-			{
-				jumpCount--;
-			}
-		}
-
 		if (Jumping && rb.linearVelocityY < 0)
 		{
 			Jumping = false;
 		}
 
 		lastJumpTime -= Time.deltaTime;
+
+		if ((lastGroundedTime > 0 || jumpCount > 1) && lastJumpTime > 0 && !Jumping)
+		{
+			JumpAction();
+			if (!(lastGroundedTime > 0))
+			{
+				if (gameManager && gameManager.DevMode)
+				{
+					return;
+				}
+				jumpCount--;
+			}
+		}
 	}
 	#endregion
 
@@ -689,7 +698,7 @@ public class PlayerController : MonoBehaviour
 
 		GrappleIndicator.transform.position = pos;
 
-		GrappleIndicator2.transform.position = new Vector3 (MousePos.x, MousePos.y);
+		GrappleIndicator2.transform.position = new Vector3(MousePos.x, MousePos.y);
 	}
 
 	private IEnumerator FailedGrapple()
@@ -726,7 +735,7 @@ public class PlayerController : MonoBehaviour
 	#region Health
 	private void HealthUpdate()
 	{
-		if (!MaxHealth)
+		if (!AtMaxHealth)
 		{
 			HealTimer -= Time.deltaTime;
 
@@ -739,7 +748,12 @@ public class PlayerController : MonoBehaviour
 
 		if (Health <= 0)
 		{
-			print("Death");
+			if (gameManager && gameManager.DevMode)
+			{
+				return;
+			}
+			GetComponent<DeathController>().Dead();
+			Health = MaxHealth;
 		}
 	}
 
@@ -750,20 +764,20 @@ public class PlayerController : MonoBehaviour
 		{
 			StopCoroutine(HealingC);
 		}
-		MaxHealth = false;
+		AtMaxHealth = false;
 		HealTimer = HealCooldown;
 		audioController.PlayAudio("hit");
 	}
 
 	private IEnumerator Heal()
 	{
-		for (int i = Health; i < 100; i++)
+		for (int i = Health; i < MaxHealth; i++)
 		{
 			//IntelliSense told me to put all these semicolons
 			Health++;
 			yield return new WaitForSeconds(.04f);
 		}
-		MaxHealth = true;
+		AtMaxHealth = true;
 	}
 	#endregion
 

@@ -30,7 +30,7 @@ public class PlayerUIController : MonoBehaviour
     {
         if (HealthSlider)
         {
-            HealthSlider.value = player.Health / 100f;
+            HealthSlider.value = (float) player.Health / (float) player.MaxHealth;
 
             if (HealthSlider.value == 1 && SliderVisable)
             {

@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class StartPhase1 : MonoBehaviour
@@ -43,7 +44,9 @@ public class StartPhase1 : MonoBehaviour
 
 			BossAnimator.SetBool("BattleStarted", true);
 
-			Destroy(StartFight, 0.1f);
+			StartFight.SetActive(false);
+
+			AnimEnding.started = false;
 		}
 	}
 }

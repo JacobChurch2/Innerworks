@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent (typeof(Animator))]
+[RequireComponent(typeof(Animator))]
 public class LustBossControllerPhaseThree : MonoBehaviour
 {
 	[SerializeField]
@@ -42,7 +42,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	public float DashCooldown = 5f;
 	public float DashChargeTime = .25f;
 	private float DashTimer;
-	private bool Dashing = false;
+	public bool Dashing = false;
 
 	#endregion
 
@@ -50,9 +50,9 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 	public float BulletHellSpeed;
 	public float BulletHellCooldown;
-	private float BulletHellTimer;
-	private bool BulletHellActive;
-	private int BulletHellPhase = 1;
+	public float BulletHellTimer;
+	public bool BulletHellActive;
+	public int BulletHellPhase = 1;
 
 	#endregion
 
@@ -125,6 +125,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	{
 		if (BulletTimer <= 0)
 		{
+			animator.SetTrigger("Kiss");
 			GameObject TheBullet = Instantiate(Bullet);
 			TheBullet.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 			TheBullet.GetComponent<Rigidbody2D>().linearVelocity = force * BulletSpeed;
@@ -146,16 +147,19 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		}
 	}
 
-	private void DashAttack()
+	private IEnumerator DashAttack()
 	{
 		animator.SetBool("Dash", true);
-		
+
 		agent.SetDestination(Target.position);
 		agent.speed = DashPower;
 		agent.acceleration = 10000;
 		agent.angularSpeed = 0;
 		agent.autoBraking = false;
-		StartCoroutine(DashEnd());
+
+		yield return new WaitForSeconds(1f);
+
+		DashEnd();
 	}
 
 	private IEnumerator DashCharge()
@@ -171,13 +175,11 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		yield return new WaitForSeconds(DashChargeTime);
 
 		animator.speed = 1;
-		DashAttack();
+		StartCoroutine(DashAttack());
 	}
 
-	private IEnumerator DashEnd()
+	public void DashEnd()
 	{
-		yield return new WaitForSeconds(1f);
-
 		animator.SetBool("Dash", false);
 
 		Dashing = false;

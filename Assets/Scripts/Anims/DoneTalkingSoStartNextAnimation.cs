@@ -21,8 +21,11 @@ public class DoneTalkingSoStartNextAnimation : MonoBehaviour
         if (talk.done)
         {
             GetComponent<PlayerInput>().enabled = false;
+
+            anim.gameObject.SetActive(true);
             anim.Play();
-			Destroy(gameObject);
+
+			gameObject.SetActive(false);
 		}
     }
 }

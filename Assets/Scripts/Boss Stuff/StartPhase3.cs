@@ -31,27 +31,33 @@ public class StartPhase3 : MonoBehaviour
 	{
 		if (collision.tag.Equals("Player"))
 		{
-			Boss.GetComponent<LustBossControllerPhaseOne>().enabled = false;
-			Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
-
-			foreach (ParallaxEffect parallax in Resources.FindObjectsOfTypeAll<ParallaxEffect>())
-			{
-				parallax.enabled = false;
-			}
-
-			StartCoroutine(MoveBossToPoint());
+			SetUp();
 		}
 	}
 
-	private IEnumerator MoveBossToPoint()
+	public void SetUp(float time = 5)
 	{
-		Boss.transform.DOMove(AnimLocal.position, 5);
-		yield return new WaitForSeconds(5);
+		Boss.GetComponent<LustBossControllerPhaseOne>().enabled = false;
+		Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
+
+		foreach (ParallaxEffect parallax in Resources.FindObjectsOfTypeAll<ParallaxEffect>())
+		{
+			parallax.enabled = false;
+		}
+
+		StartCoroutine(MoveBossToPoint(time));
+	}
+
+	private IEnumerator MoveBossToPoint(float time = 5)
+	{
+		Boss.transform.DOMove(AnimLocal.position, time);
+		yield return new WaitForSeconds(time);
 		StartTalking();
 	}
 
 	private void StartTalking()
 	{
+		talk.gameObject.SetActive(true);
 		talk.StartText();
 	}
 
@@ -59,12 +65,13 @@ public class StartPhase3 : MonoBehaviour
 	{
 		if (endAnim.started)
 		{
+			endAnim.started = false;
 			ChocolateDrops.SetActive(true);
 			Boss.GetComponent<LustBossControllerPhaseThree>().enabled = true;
 			confiner.BoundingShape2D = newCamCollider;
 			Boss.GetComponent<NavMeshAgent>().enabled = true;
 
-			Destroy(gameObject);
+			gameObject.SetActive(false);
 		}
 	}
 }

@@ -34,7 +34,7 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 	[SerializeField]
 	DestroyGrounds Destruction;
 
-	private bool started = false;
+	public bool started = false;
 	private bool ending = false;
 
 	private Animator animator;
@@ -58,6 +58,7 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 		if (Finish.started)
 		{
 			EndPhase();
+			Finish.started = false;
 		}
 	}
 
@@ -71,15 +72,17 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 		transform.DOLocalMove(RestLocation.position, 2f);
 	}
 
-	private IEnumerator StartAnimation()
+	public IEnumerator StartAnimation()
 	{
 		if (animator)
 		{
 			animator.SetBool("Tired", false);
 		}
 		ending = true;
+		AnimStart.gameObject.SetActive(true);
 		AnimStart.Play();
 		yield return new WaitForSeconds((float)AnimStart.duration);
+		Talking.gameObject.SetActive(true);
 		Talking.StartText();
 		Destruction.enabled = true;
 	}

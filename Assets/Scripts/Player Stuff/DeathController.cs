@@ -16,6 +16,9 @@ public class DeathController : MonoBehaviour
 	[SerializeField]
 	public Transform ResapwnPoint;
 
+	[SerializeField]
+	GameManager gameManager;
+
 	public void Start()
 	{
 		animator = GetComponent<Animator>();
@@ -35,19 +38,11 @@ public class DeathController : MonoBehaviour
 	{
 		if (collision.tag.Equals("Death"))
 		{
-			animator.SetBool(AnimationStrings.IsDead, true);
-			//audioController.PlayAudio("death");
-			rb.gravityScale = 0;
-			rb.linearVelocity = Vector2.zero;
-			if (playerInput)
+			if (gameManager && gameManager.DevMode)
 			{
-				playerInput.enabled = false;
+				return;
 			}
-			if (Player)
-			{
-				Player.IsDead = true;
-			}
-			StartCoroutine(DeathSequence());
+			Dead();
 		}
 	}
 
@@ -63,7 +58,25 @@ public class DeathController : MonoBehaviour
 		if (Player)
 		{
 			Player.IsDead = false;
+			Player.Health = Player.MaxHealth;
 		}
 		animator.SetBool(AnimationStrings.IsDead, false);
+	}
+
+	public void Dead()
+	{
+		animator.SetBool(AnimationStrings.IsDead, true);
+		//audioController.PlayAudio("death");
+		rb.gravityScale = 0;
+		rb.linearVelocity = Vector2.zero;
+		if (playerInput)
+		{
+			playerInput.enabled = false;
+		}
+		if (Player)
+		{
+			Player.IsDead = true;
+		}
+		StartCoroutine(DeathSequence());
 	}
 }

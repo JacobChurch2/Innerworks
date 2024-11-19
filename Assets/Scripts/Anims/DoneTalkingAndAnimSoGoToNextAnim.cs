@@ -38,8 +38,11 @@ public class DoneTalkingAndAnimSoGoToNextAnim : MonoBehaviour
 			if (oldAnimTime >= oldAnim.duration)
 			{
 				oldAnim.Stop();
+				newAnim.gameObject.SetActive(true);
 				newAnim.Play();
-				Destroy(gameObject);
+				gameObject.SetActive(false);
+				finsishAnim = false;
+				oldAnimTime = 0;
 			}
 		}
 	}
