@@ -373,7 +373,7 @@ public class PlayerController : MonoBehaviour
 
 		lastJumpTime -= Time.deltaTime;
 
-		if ((lastGroundedTime > 0 || jumpCount > 1) && lastJumpTime > 0 && !Jumping)
+		if ((lastGroundedTime > 0 || jumpCount > 1 ||(gameManager && gameManager.DevMode)) && lastJumpTime > 0 && !Jumping)
 		{
 			JumpAction();
 			if (!(lastGroundedTime > 0))

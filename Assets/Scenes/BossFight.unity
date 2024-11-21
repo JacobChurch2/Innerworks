@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startLocal: {fileID: 258153960}
   endLocal: {fileID: 112286088}
-  time: 35
+  time: 90
 --- !u!4 &230704929
 Transform:
   m_ObjectHideFlags: 0
@@ -5153,7 +5153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 212.11
+      value: -13.2
       objectReference: {fileID: 0}
     - target: {fileID: 8618245903933062167, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7840,7 +7840,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1393235778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7860,7 +7860,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   DashChargeClip: {fileID: 7400000, guid: 206253cdc10f1d24ebd6e5616ed9c193, type: 2}
-  PhaseTime: 10
+  PhaseTime: 90
   PhaseTimer: 0
   Bullet: {fileID: 8679646929111970683, guid: ea1a32c7eacaaae4b8e3ddf4ec3de82b, type: 3}
   BulletSpeed: 17
@@ -71508,7 +71508,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 218.10999
+      value: -7.1999817
       objectReference: {fileID: 0}
     - target: {fileID: 7673905265235780159, guid: 118b789dd14097c4f8b0711af6ef4c5a, type: 3}
       propertyPath: m_LocalPosition.y
@@ -71669,7 +71669,7 @@ PrefabInstance:
       objectReference: {fileID: 1941299536}
     - target: {fileID: 5837207117479830892, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 218.11
+      value: -7.2
       objectReference: {fileID: 0}
     - target: {fileID: 5837207117479830892, guid: 10f7eaad19cb00246a5e9a5044da66c7, type: 3}
       propertyPath: m_LocalPosition.y

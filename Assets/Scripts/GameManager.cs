@@ -3,7 +3,7 @@ using UnityEngine.Splines;
 
 public class GameManager : MonoBehaviour
 {
-    //private NativeSpline[] Splines;
+    private NativeSpline[] Splines;
 
     public bool DevMode;
 
@@ -33,15 +33,16 @@ public class GameManager : MonoBehaviour
 
     private void UpdateSplines()
     {
-  //      if (Splines != null && Splines.Length > 0)
-  //      {
-  //          for (int i = 0; i < Splines.Length; i++) {
-  //              using (var nativeSpline = Splines[i])
-  //              {
-  //                  // Use nativeSpline
-  //              }
-  //              //Atomatically dispose
-  //          }
-		//}
+        //if (Splines != null && Splines.Length > 0)
+        //{
+        //    for (int i = 0; i < Splines.Length; i++)
+        //    {
+        //        using (var nativeSpline = Splines[i])
+        //        {
+        //            // Use nativeSpline
+        //        }
+        //        //Atomatically dispose
+        //    }
+        //}
     }
 }

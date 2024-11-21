@@ -303,6 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbab0acff0767341b9668c7214bf058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DevMode: 0
 --- !u!4 &442784603
 Transform:
   m_ObjectHideFlags: 0
@@ -10690,6 +10691,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1964513538607294263, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 442784602}
+    - target: {fileID: 1964513538607294263, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: ResapwnPoint
       value: 
       objectReference: {fileID: 1887503833}
@@ -10709,6 +10714,10 @@ PrefabInstance:
       propertyPath: CamShake
       value: 
       objectReference: {fileID: 1282262155}
+    - target: {fileID: 3889529004350032361, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 442784602}
     - target: {fileID: 5497325367971761099, guid: 979af0c022c902d40803a1f4ff75dd68, type: 3}
       propertyPath: m_SortingOrder
       value: 0
