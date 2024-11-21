@@ -11,7 +11,14 @@ public class StopPlayerController : MonoBehaviour
 
 	void Awake()
     {
-        PlayerInput.enabled = false;
-        PlayerBody.bodyType = RigidbodyType2D.Kinematic;
+        if (PlayerInput != null)
+        {
+            PlayerInput.enabled = false;
+        }
+
+        if (PlayerBody != null)
+        {
+            PlayerBody.bodyType = RigidbodyType2D.Kinematic;
+        }
     }
 }
