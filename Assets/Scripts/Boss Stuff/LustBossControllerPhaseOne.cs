@@ -55,7 +55,8 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			print("boss hit");
+			if (collision.GetComponent<PlayerController>().Dashing) return;
+			print("Phase One boss hit");
 			PlayerController player = collision.GetComponent<PlayerController>();
 			if (player)
 			{
@@ -127,6 +128,7 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 		{
 			animator.SetTrigger("Kiss");
 			GameObject TheBullet = Instantiate(Bullet);
+			TheBullet.GetComponent<Bullet>().CanDamageIfPlayerIsDashing = false;
 			TheBullet.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 			TheBullet.GetComponent<Rigidbody2D>().linearVelocity = force * BulletSpeed;
 			BulletTimer = BulletCooldown;
@@ -191,10 +193,15 @@ public class LustBossControllerPhaseOne : MonoBehaviour
 
 	private void EndPhase()
 	{
-		print("EndPhaseOne");
 		agent.enabled = false;
 		GetComponent<LustBossVulnerablePhaseOne>().enabled = true;
 		GetComponent<LustBossVulnerablePhaseOne>().StartVulnerablePhase();
 		this.enabled = false;
+	}
+
+	public void StartPhase()
+	{
+		agent.enabled = true;
+		PhaseTimer = PhaseTime;
 	}
 }

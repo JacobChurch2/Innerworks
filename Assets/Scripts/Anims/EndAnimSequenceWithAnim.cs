@@ -10,7 +10,7 @@ public class EndAnim : MonoBehaviour
 	private Rigidbody2D PlayerBody;
 
 	[SerializeField]
-	private PlayerInput PlayerInputs;
+	private ControlPlayerInput PlayerInputs;
 
 	[SerializeField]
 	private bool PlayerCanMove;
@@ -31,7 +31,7 @@ public class EndAnim : MonoBehaviour
 		started = true;
 		PlayerBody.linearVelocity = Vector2.zero;
 		PlayerBody.bodyType = RigidbodyType2D.Dynamic;
-		PlayerInputs.enabled = PlayerCanMove;
+		PlayerInputs.ChangePlayerInput(PlayerCanMove);
 		anim.Stop();
 		gameObject.SetActive(false);
 	}

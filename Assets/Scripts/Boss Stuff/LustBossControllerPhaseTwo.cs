@@ -54,7 +54,8 @@ public class LustBossControllerPhaseTwo : MonoBehaviour
 		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			print("boss hit");
+			if (collision.GetComponent<PlayerController>().Dashing) return;
+			print("Phase Two boss hit");
 			PlayerController player = collision.GetComponent<PlayerController>();
 			if (player)
 			{

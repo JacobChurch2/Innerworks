@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Playables;
 
 public class BossMusic : MonoBehaviour
 {
@@ -9,14 +10,13 @@ public class BossMusic : MonoBehaviour
 		IntroState, PhaseOneState, TransitionOneState, PhaseTwoState, TransitionTwoState, PhaseThreeState, FinalState
 	}
 
-	private AudioSource IntroSource, PhaseOneSource, TransitionOneSource, PhaseTwoSource, TransitionTwoSource, PhaseThreeSource, FinalSource;
+	private AudioSource IntroSource, PhaseOneSource, TransitionOneSource, PhaseTwoSource, TransitionTwoSource, PhaseThreeSource, FinalSource, EndingSource;
 
 	private AudioSource[] AudioSources = new AudioSource[7];
 	private int AudioSourceIndex = 0;
 
 	[SerializeField]
 	private AudioClip Intro, PhaseOne, TransitionOne, PhaseTwo, TransitionTwo, PhaseThree, Final;
-
 
 	[SerializeField]
 	private LustBossControllerPhaseOne BossPhaseOne;
@@ -26,7 +26,7 @@ public class BossMusic : MonoBehaviour
 	private LustBossControllerPhaseThree BossPhaseThree;
 
 	[SerializeField]
-	AudioMixerGroup TheMixer;
+	private PlayableDirector FinalAnimStart;
 
 	private AudioSource currentSource;
 	private eState currentState;
@@ -37,6 +37,8 @@ public class BossMusic : MonoBehaviour
 
 	private void Start()
 	{
+		EndingSource = GetComponent<AudioSource>();
+
 		IntroSource = gameObject.AddComponent<AudioSource>();
 		IntroSource.clip = Intro;
 		PhaseOneSource = gameObject.AddComponent<AudioSource>();
@@ -75,7 +77,6 @@ public class BossMusic : MonoBehaviour
 		source.playOnAwake = false;
 		source.volume = 0.5f;
 		source.priority = 1;
-		source.outputAudioMixerGroup = TheMixer;
 	}
 
 	private void FixedUpdate()
@@ -84,6 +85,11 @@ public class BossMusic : MonoBehaviour
 			return;
 
 		timer -= Time.deltaTime;
+
+		if (FinalAnimStart.time > 0)
+		{
+			StartCoroutine(FadeToEndMusic());
+		}
 
 		if (timer <= 0)
 		{
@@ -172,6 +178,36 @@ public class BossMusic : MonoBehaviour
 				currentState = eState.PhaseThreeState;
 			}
 		}
+	}
+
+	private IEnumerator FadeToEndMusic()
+	{
+		float timeElapsed = 0;
+
+		while (timeElapsed < 1)
+		{
+			currentSource.volume = Mathf.Lerp(currentSource.volume, 0, timeElapsed / 1);
+			timeElapsed += Time.deltaTime;
+
+			yield return null;
+		}
+
+		currentSource.volume = 0;
+
+		EndingSource.Play();
+
+		timeElapsed = 0;
+
+		while (timeElapsed < 1)
+		{
+			EndingSource.volume = Mathf.Lerp(0, 1, timeElapsed / 1);
+			timeElapsed += Time.deltaTime;
+
+			yield return null;
+		}
+
+		EndingSource.volume = 1;
+
 	}
 }
 

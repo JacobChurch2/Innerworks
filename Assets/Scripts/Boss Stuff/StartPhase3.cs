@@ -7,6 +7,9 @@ using UnityEngine.AI;
 public class StartPhase3 : MonoBehaviour
 {
 	[SerializeField]
+	ControlPlayerInput playerInput;
+
+	[SerializeField]
 	private GameObject Boss;
 
 	[SerializeField]
@@ -37,6 +40,7 @@ public class StartPhase3 : MonoBehaviour
 
 	public void SetUp(float time = 5)
 	{
+		playerInput.ChangePlayerInput(false);
 		Boss.GetComponent<LustBossControllerPhaseOne>().enabled = false;
 		Boss.GetComponent<LustBossControllerPhaseTwo>().enabled = false;
 
@@ -68,6 +72,7 @@ public class StartPhase3 : MonoBehaviour
 			endAnim.started = false;
 			ChocolateDrops.SetActive(true);
 			Boss.GetComponent<LustBossControllerPhaseThree>().enabled = true;
+			Boss.GetComponent<PhaseManager>().UpdatePhase(50f, 100f);
 			confiner.BoundingShape2D = newCamCollider;
 			Boss.GetComponent<NavMeshAgent>().enabled = true;
 

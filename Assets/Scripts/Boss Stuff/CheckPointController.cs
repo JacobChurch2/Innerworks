@@ -20,6 +20,9 @@ public class CheckPointController : MonoBehaviour
 	[SerializeField]
 	private CinemachineConfiner2D Cam;
 
+	[SerializeField]
+	BossHealth bossHealth;
+
 	private bool resetActive = false;
 
 	[Header("Phase One")]
@@ -47,6 +50,9 @@ public class CheckPointController : MonoBehaviour
 
 	[SerializeField]
 	private Collider2D PhaseOneCamColider;
+
+	[SerializeField]
+	private GameObject BossUI;
 
 	[Header("Phase Two")]
 	[SerializeField]
@@ -135,6 +141,9 @@ public class CheckPointController : MonoBehaviour
 		Boss.GetComponent<Animator>().SetBool("BattleStarted", false);
 		LustFire.SetActive(false);
 		Boss.SetActive(false);
+		bossHealth.health = bossHealth.MaxHealth;
+
+		BossUI.SetActive(false);
 
 		PhaseOneChocolateDrops.SetActive(false);
 
@@ -147,7 +156,8 @@ public class CheckPointController : MonoBehaviour
 
 		Cam.BoundingShape2D = PhaseOneCamColider;
 
-		foreach (LifeTime life in Resources.FindObjectsOfTypeAll<LifeTime>())
+		
+		foreach (LifeTime life in GameObject.FindObjectsByType<LifeTime>(FindObjectsSortMode.None))
 		{
 			if (life != null)
 			{
@@ -192,7 +202,7 @@ public class CheckPointController : MonoBehaviour
 		Boss.GetComponent<LustBossControllerPhaseThree>().DashEnd();
 		Boss.GetComponent<LustBossControllerPhaseThree>().BulletHellActive = false;
 		Boss.GetComponent<LustBossControllerPhaseThree>().BulletHellTimer = Boss.GetComponent<LustBossControllerPhaseThree>().BulletHellCooldown;
-		Boss.GetComponent<LustBossControllerPhaseThree>().BulletHellPhase = 1;
+		bossHealth.health = bossHealth.MaxHealth / 2;
 
 		PhaseThreeTrigger.SetActive(true);
 		PhaseThreeTrigger.GetComponent<Collider2D>().enabled = false;
@@ -204,7 +214,7 @@ public class CheckPointController : MonoBehaviour
 
 		PhaseThreeEndingAnim.started = false;
 
-		foreach (LifeTime life in Resources.FindObjectsOfTypeAll<LifeTime>())
+		foreach (LifeTime life in GameObject.FindObjectsByType<LifeTime>(FindObjectsSortMode.None))
 		{
 			if (life != null)
 			{

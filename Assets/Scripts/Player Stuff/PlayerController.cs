@@ -144,6 +144,7 @@ public class PlayerController : MonoBehaviour
 	private float HealTimer;
 	private bool AtMaxHealth = true;
 	private Coroutine HealingC;
+	private bool canTakeDamage = true;
 	#endregion
 
 	#region management variables
@@ -373,7 +374,7 @@ public class PlayerController : MonoBehaviour
 
 		lastJumpTime -= Time.deltaTime;
 
-		if ((lastGroundedTime > 0 || jumpCount > 1 ||(gameManager && gameManager.DevMode)) && lastJumpTime > 0 && !Jumping)
+		if ((lastGroundedTime > 0 || jumpCount > 1 || (gameManager && gameManager.DevMode)) && lastJumpTime > 0 && !Jumping)
 		{
 			JumpAction();
 			if (!(lastGroundedTime > 0))
@@ -750,8 +751,10 @@ public class PlayerController : MonoBehaviour
 		{
 			if (gameManager && gameManager.DevMode)
 			{
+				Health = 0;
 				return;
 			}
+
 			GetComponent<DeathController>().Dead();
 			Health = MaxHealth;
 		}
@@ -759,6 +762,8 @@ public class PlayerController : MonoBehaviour
 
 	public void TakeDamage(int damage)
 	{
+		if (!canTakeDamage) return;
+
 		Health -= damage;
 		if (HealingC != null)
 		{
@@ -766,6 +771,8 @@ public class PlayerController : MonoBehaviour
 		}
 		AtMaxHealth = false;
 		HealTimer = HealCooldown;
+		canTakeDamage = false;
+		StartCoroutine(damageFlash());
 		audioController.PlayAudio("hit");
 	}
 
@@ -774,7 +781,7 @@ public class PlayerController : MonoBehaviour
 		for (int i = Health; i < MaxHealth; i++)
 		{
 			//IntelliSense told me to put all these semicolons
-			Health++;
+			Health++; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
 			yield return new WaitForSeconds(.04f);
 		}
 		AtMaxHealth = true;
@@ -816,6 +823,22 @@ public class PlayerController : MonoBehaviour
 			IdleTimer = 0;
 			animator.SetFloat(AnimationStrings.IdleTimer, IdleTimer);
 		}
+	}
+
+	private IEnumerator damageFlash()
+	{
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 0f);
+		yield return new WaitForSeconds(0.05f);
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 1f);
+		yield return new WaitForSeconds(0.05f);
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 0f);
+		yield return new WaitForSeconds(0.05f);
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 1f);
+		yield return new WaitForSeconds(0.05f);
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 0f);
+		yield return new WaitForSeconds(0.05f);
+		Renderer.color = new Color(Renderer.color.r, Renderer.color.g, Renderer.color.b, 1f);
+		canTakeDamage = true;
 	}
 
 	public void PlayLandingSound()

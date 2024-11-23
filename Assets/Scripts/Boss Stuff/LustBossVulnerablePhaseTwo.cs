@@ -7,7 +7,7 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 {
 	[SerializeField]
 	private Transform RestLocation;
-	public float RestTimer;
+	public float MoveTimer;
 
 	private bool started = false;
 
@@ -26,9 +26,9 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 	{
 		if (!started) return;
 
-		RestTimer -= Time.deltaTime;
+		MoveTimer -= Time.deltaTime;
 
-		if (RestTimer <= 0)
+		if (MoveTimer <= 0)
 		{
 			FinalAnim.Play();
 			EndPhase();
@@ -39,12 +39,7 @@ public class LustBossVulnerablePhaseTwo: MonoBehaviour
 	{
 		started = true;
 
-		if (animator)
-		{
-			animator.SetBool("Tired", true);
-		}
-
-		transform.DOLocalMove(RestLocation.position, 2f);
+		transform.DOLocalMove(RestLocation.position, MoveTimer);
 
 		GetComponent<LustBossControllerPhaseThree>().enabled = false;
 	}

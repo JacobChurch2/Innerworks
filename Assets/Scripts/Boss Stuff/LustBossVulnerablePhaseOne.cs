@@ -8,7 +8,10 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 {
 	[SerializeField]
 	private Transform RestLocation;
-	public float RestTimer;
+
+	[SerializeField]
+	private float RestTime;
+	private float RestTimer;
 
 	[SerializeField]
 	CinemachineConfiner2D Confiner;
@@ -42,6 +45,7 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 	private void Awake()
 	{
 		animator = GetComponent<Animator>();
+		RestTimer = RestTime;
 	}
 	
 	void Update()
@@ -52,7 +56,8 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 
 		if (RestTimer <= 0 && !ending)
 		{
-			StartCoroutine(StartAnimation());
+			//StartCoroutine(StartAnimation());
+			EndVulerablePhase();
 		}
 
 		if (Finish.started)
@@ -64,7 +69,8 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 
 	public void StartVulnerablePhase()
 	{
- 		if (animator)
+		RestTimer = RestTime;
+		if (animator)
 		{
 			animator.SetBool("Tired", true);
 		}
@@ -72,11 +78,23 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 		transform.DOLocalMove(RestLocation.position, 2f);
 	}
 
+	private void EndVulerablePhase()
+	{
+		GetComponent<LustBossControllerPhaseOne>().enabled = true;
+		if (animator)
+		{
+			animator.SetBool("Tired", false);
+		}
+		GetComponent<LustBossControllerPhaseOne>().StartPhase();
+		this.enabled = false;
+	}
+
 	public IEnumerator StartAnimation()
 	{
 		if (animator)
 		{
 			animator.SetBool("Tired", false);
+			animator.SetBool("Sad", false);
 		}
 		ending = true;
 		AnimStart.gameObject.SetActive(true);
@@ -110,27 +128,27 @@ public class LustBossVulnerablePhaseOne : MonoBehaviour
 		this.enabled = false;
 	}
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (!this.enabled) return;
-		if (collision.tag.Equals("Player") && !ending)
-		{
-			if (collision.GetComponent<PlayerController>().Dashing == true)
-			{
-				StartCoroutine(StartAnimation());
-			}
-		}
-	}
+	//private void OnTriggerEnter2D(Collider2D collision)
+	//{
+	//	if (!this.enabled) return;
+	//	if (collision.tag.Equals("Player") && !ending)
+	//	{
+	//		if (collision.GetComponent<PlayerController>().Dashing == true)
+	//		{
+	//			StartCoroutine(StartAnimation());
+	//		}
+	//	}
+	//}
 
-	private void OnTriggerStay2D(Collider2D collision)
-	{
-		if (!this.enabled) return;
-		if (collision.tag.Equals("Player") && !ending)
-		{
-			if (collision.GetComponent<PlayerController>().Dashing == true)
-			{
-				StartCoroutine(StartAnimation());
-			}
-		}
-	}
+	//private void OnTriggerStay2D(Collider2D collision)
+	//{
+	//	if (!this.enabled) return;
+	//	if (collision.tag.Equals("Player") && !ending)
+	//	{
+	//		if (collision.GetComponent<PlayerController>().Dashing == true)
+	//		{
+	//			StartCoroutine(StartAnimation());
+	//		}
+	//	}
+	//}
 }

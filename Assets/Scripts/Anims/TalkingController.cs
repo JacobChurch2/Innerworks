@@ -9,9 +9,6 @@ using UnityEngine.TextCore.Text;
 public class TalkingController : MonoBehaviour
 {
 	[SerializeField]
-	PlayerInput playerInputs;
-
-	[SerializeField]
 	Rigidbody2D PlayerRB;
 
 	[SerializeField]
@@ -67,7 +64,6 @@ public class TalkingController : MonoBehaviour
   		started = true;
 		UIInput.enabled = true;
 		group.alpha = 1f;
-		playerInputs.enabled = false;
 		PlayerRB.linearVelocity = Vector2.zero;
 		done = false;
 		StartCoroutine(UpdateMessage(0));
@@ -77,7 +73,6 @@ public class TalkingController : MonoBehaviour
 	{
 		//TODO: add an ending animation
 		group.alpha = 0f;
-		playerInputs.enabled = true;
 		done = true;
 		MessageIndex = 0;
 	}

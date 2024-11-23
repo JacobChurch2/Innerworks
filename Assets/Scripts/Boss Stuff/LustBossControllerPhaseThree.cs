@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
@@ -52,7 +51,6 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	public float BulletHellCooldown;
 	public float BulletHellTimer;
 	public bool BulletHellActive;
-	public int BulletHellPhase = 1;
 
 	#endregion
 
@@ -61,7 +59,8 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		if (!enabled) return;
 		if (collision.tag.Equals("Player"))
 		{
-			print("boss hit");
+			if (collision.GetComponent<PlayerController>().Dashing) return;
+			print("Phase Three boss hit");
 			PlayerController player = collision.GetComponent<PlayerController>();
 			if (player)
 			{
@@ -127,6 +126,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		{
 			animator.SetTrigger("Kiss");
 			GameObject TheBullet = Instantiate(Bullet);
+			TheBullet.GetComponent<Bullet>().CanDamageIfPlayerIsDashing = false;
 			TheBullet.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 			TheBullet.GetComponent<Rigidbody2D>().linearVelocity = force * BulletSpeed;
 			BulletTimer = BulletCooldown;
@@ -202,7 +202,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 		}
 	}
 
-	private IEnumerator BulletHellStart()
+	public IEnumerator BulletHellStart(bool finalStand = false)
 	{
 		transform.DOLocalMove(BulletHellPlace.position, 2f);
 		agent.enabled = false;
@@ -210,23 +210,25 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 		yield return new WaitForSeconds(2f);
 
-		switch (BulletHellPhase)
+		if (finalStand)
 		{
-			case 1:
-				StartCoroutine(BulletVersionOne());
-				break;
-			case 2:
-				StartCoroutine(BulletVersionTwo());
-				break;
-			case 3:
-				StartCoroutine(BulletVersionThree());
-				break;
-			case 4:
-				StartCoroutine(FinalStand());
-				break;
+			StartCoroutine(FinalStand());
 		}
-
-		BulletHellPhase++;
+		else
+		{
+			switch (Random.Range(1, 3))
+			{
+				case 1:
+					StartCoroutine(BulletVersionOne());
+					break;
+				case 2:
+					StartCoroutine(BulletVersionTwo());
+					break;
+				case 3:
+					StartCoroutine(BulletVersionThree());
+					break;
+			}
+		}
 	}
 
 	private IEnumerator BulletVersionOne()
@@ -527,6 +529,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 		GetComponent<LustBossVulnerablePhaseTwo>().enabled = true;
 		GetComponent<LustBossVulnerablePhaseTwo>().StartVulnerablePhase();
+		GetComponent<PhaseManager>().Phase = 4;
 	}
 
 	#endregion
@@ -534,6 +537,7 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 	private void BlowBulletHell(Vector2 force)
 	{
 		GameObject TheBullet = Instantiate(Bullet);
+		TheBullet.GetComponent<Bullet>().CanDamageIfPlayerIsDashing = true;
 		TheBullet.transform.position = new Vector3(transform.position.x, transform.position.y, 0);
 		TheBullet.GetComponent<Rigidbody2D>().linearVelocity = force * BulletHellSpeed;
 	}
