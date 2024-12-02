@@ -1,16 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using DG.Tweening;
-using TMPro;
-using Unity.Android.Gradle.Manifest;
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Splines.Interpolators;
-using UnityEngine.UIElements.Experimental;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -201,7 +192,7 @@ public class PlayerController : MonoBehaviour
 			GrappleLine = GetComponent<LineRenderer>();
 		}
 
-		if (!GrappleUnlocked)
+		if (!GrappleUnlocked && GrappleIndicator && GrappleIndicator2)
 		{
 			GrappleIndicator.SetActive(false);
 			GrappleIndicator2.SetActive(false);
@@ -237,11 +228,14 @@ public class PlayerController : MonoBehaviour
 
 		SlopeUpdate();
 
-		GrappleUpdate();
-
 		HealthUpdate();
 
 		AnimatorUpdate();
+	}
+
+	private void LateUpdate()
+	{
+		GrappleUpdate();
 	}
 	#endregion
 
@@ -683,6 +677,8 @@ public class PlayerController : MonoBehaviour
 
 	private void GrappleIndicatorPlacement()
 	{
+		if (!GrappleIndicator || !GrappleIndicator2) return;
+
 		MousePos = cam.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
 		if (Vector2.Distance(MousePos, transform.position) < GrappleDistance)

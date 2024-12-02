@@ -10,10 +10,12 @@ public class LevelLoader : MonoBehaviour
     public float transitionTime = 1f;
 
 	public bool PlayTransitionOnOpening = false;
+	public bool PlayTransitionOnClosing = false;
 
 	private void Start()
 	{
 		m_Animator.SetBool("PlayOnEntry", PlayTransitionOnOpening);
+		m_Animator.SetBool("PlayOnClosing", PlayTransitionOnClosing);
 	}
 
 	private void OnTriggerEnter2D(Collider2D collision)

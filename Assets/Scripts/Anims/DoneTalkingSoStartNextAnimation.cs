@@ -9,7 +9,7 @@ public class DoneTalkingSoStartNextAnimation : MonoBehaviour
     PlayableDirector anim;
 
     private TalkingController talk;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         talk = GetComponent<TalkingController>();

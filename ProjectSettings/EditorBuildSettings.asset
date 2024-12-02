@@ -21,12 +21,21 @@ EditorBuildSettings:
     path: Assets/Scenes/Level2.unity
     guid: 82d097564d3aa294da8268d72322deac
   - enabled: 1
+    path: Assets/Scenes/Cave Escape.unity
+    guid: 1b3526d4b5aabf942b8c23fa84e965b6
+  - enabled: 1
     path: Assets/Scenes/Level3.unity
     guid: 169044aae0110b6458138759d29122ff
+  - enabled: 1
+    path: Assets/Scenes/Sad Boss.unity
+    guid: 10709fa1bcc51de4a9e5dd30b537cfde
   - enabled: 1
     path: Assets/Scenes/BossFight.unity
     guid: 2337a74195eb68547a83d83b1a10f520
   - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: c64e3854ed9d83349b4017e3b84dade8
+  - enabled: 0
     path: Assets/Scenes/Playground.unity
     guid: d59bd312f7a9dbe45b6302b1743a5a00
   m_configObjects: {}

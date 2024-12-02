@@ -529,7 +529,6 @@ public class LustBossControllerPhaseThree : MonoBehaviour
 
 		GetComponent<LustBossVulnerablePhaseTwo>().enabled = true;
 		GetComponent<LustBossVulnerablePhaseTwo>().StartVulnerablePhase();
-		GetComponent<PhaseManager>().Phase = 4;
 	}
 
 	#endregion

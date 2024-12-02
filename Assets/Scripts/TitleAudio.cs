@@ -56,6 +56,4 @@ public class TitleAudio : MonoBehaviour
 
 		TheSource.volume = endValue;
 	}
-
-
 }

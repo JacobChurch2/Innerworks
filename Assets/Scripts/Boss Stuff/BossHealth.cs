@@ -52,6 +52,14 @@ public class BossHealth : MonoBehaviour
 		}
 	}
 
+	private void OnTriggerStay2D(Collider2D collision)
+	{
+		if (collision.tag.Equals("Player") && collision.GetComponent<PlayerController>().Dashing && CanTakeDamage)
+		{
+			TakeDamage();
+		}
+	}
+
 	private void TakeDamage()
 	{
 		if (phaseManager.Phase == 2) return;

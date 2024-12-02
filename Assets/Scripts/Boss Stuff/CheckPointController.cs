@@ -54,6 +54,9 @@ public class CheckPointController : MonoBehaviour
 	[SerializeField]
 	private GameObject BossUI;
 
+	[SerializeField]
+	private GameObject Music;
+
 	[Header("Phase Two")]
 	[SerializeField]
 	private GameObject PhaseTwoRespawnLocal;
@@ -156,7 +159,14 @@ public class CheckPointController : MonoBehaviour
 
 		Cam.BoundingShape2D = PhaseOneCamColider;
 
-		
+		foreach (AudioSource audio in Music.GetComponents<AudioSource>())
+		{
+			if (audio.isPlaying)
+			{
+				audio.Stop();
+			}
+		}
+
 		foreach (LifeTime life in GameObject.FindObjectsByType<LifeTime>(FindObjectsSortMode.None))
 		{
 			if (life != null)

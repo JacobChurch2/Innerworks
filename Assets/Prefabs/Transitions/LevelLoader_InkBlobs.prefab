@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Animator: {fileID: 6316557266403930929}
   transitionTime: 1
   PlayTransitionOnOpening: 1
+  PlayTransitionOnClosing: 1
 --- !u!61 &8867721068938837215
 BoxCollider2D:
   m_ObjectHideFlags: 0

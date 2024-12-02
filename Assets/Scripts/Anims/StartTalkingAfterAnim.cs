@@ -18,5 +18,6 @@ public class StartTalkingAfterAnim : MonoBehaviour
     {
         Talking.gameObject.SetActive(true);
 		Talking.StartText();
+        gameObject.SetActive(false);
 	}
 }

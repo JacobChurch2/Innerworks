@@ -22,6 +22,7 @@ public class EndAnimSequenceWithTalking : MonoBehaviour
         {
             playerInput.ChangePlayerInput(PlayerCanMove);
             this.enabled = false;
+            //gameObject.SetActive(false);
         }
     }
 }
