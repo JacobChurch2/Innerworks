@@ -15,6 +15,10 @@ public class GrappleUnlockController : MonoBehaviour
 	PlayableDirector endingAnim;
 	[SerializeField]
     FadingPanel GrappleTextOne, GrappleTextTwo, GrappleTextThree;
+	[SerializeField]
+	GameObject grappleIndicator1, grappleIndicator2;
+	[SerializeField]
+	GrappleAnimLine line;
 
 	private FreezeGame freeze;
 	private bool SequenceStart;
@@ -51,6 +55,8 @@ public class GrappleUnlockController : MonoBehaviour
 
 		SequenceEnd = true;
 		Player.GrappleUnlocked = true;
+		grappleIndicator1.SetActive(true);
+		grappleIndicator2.SetActive(true);
 		//PlayerData.GrappleUnlocked = true;
 	}
 
@@ -62,6 +68,7 @@ public class GrappleUnlockController : MonoBehaviour
 			StartCoroutine(GrappleTextThree.FadeOutRealTime());
 			endingAnim.Play();
 			SequenceEnd = false;
+			line.enabled = true;
 		}
 	}
 }

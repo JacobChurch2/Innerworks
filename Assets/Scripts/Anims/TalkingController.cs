@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
 [RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(AudioSource))]
 public class TalkingController : MonoBehaviour
 {
 	[SerializeField]
@@ -24,6 +25,15 @@ public class TalkingController : MonoBehaviour
 	[SerializeField]
 	int[] FontIndexForMessages;
 
+	[SerializeField]
+	AudioClip talkingSound;
+
+	[SerializeField]
+	bool loopAudio;
+
+	[SerializeField]
+	float soundLoopTime;
+
 	public int DefultFontIndex = 0;
 
 	public float letterDelay = 0.05f;
@@ -39,6 +49,9 @@ public class TalkingController : MonoBehaviour
 	public bool done = false;
 
 	private PlayerInput UIInput;
+
+	private AudioSource talkSource;
+	private float soundLoopTimer;
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
@@ -56,6 +69,10 @@ public class TalkingController : MonoBehaviour
 				MessagesAndFonts.Add(messages[i], fonts[FontIndexForMessages[i]]);
 			}
 		}
+
+		talkSource = gameObject.GetComponent<AudioSource>();
+		talkSource.clip = talkingSound;
+		soundLoopTimer = 0;
 	}
 
 	public void StartText()
@@ -65,6 +82,11 @@ public class TalkingController : MonoBehaviour
 		UIInput.enabled = true;
 		group.alpha = 1f;
 		PlayerRB.linearVelocity = Vector2.zero;
+
+		if (!loopAudio)
+		{
+			talkSource.Play();
+		}
 		done = false;
 		StartCoroutine(UpdateMessage(0));
 	}
@@ -91,6 +113,14 @@ public class TalkingController : MonoBehaviour
 		{
 			currentMessage = currentFullMessage.Substring(0, i);
 			TalkingText.text = currentMessage;
+
+			soundLoopTimer -= Time.deltaTime;
+			if (soundLoopTimer <= 0 && loopAudio)
+			{
+				soundLoopTimer = soundLoopTime;
+				talkSource.Play();
+			}
+
 			yield return new WaitForSeconds(letterDelay);
 		}
 	}
@@ -116,6 +146,10 @@ public class TalkingController : MonoBehaviour
 			else
 			{
 				StartCoroutine(UpdateMessage(++MessageIndex));
+				if (!loopAudio)
+				{
+					talkSource.Play();
+				}
 			}
 		}
 	}

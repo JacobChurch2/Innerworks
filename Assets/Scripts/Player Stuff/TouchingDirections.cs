@@ -1,11 +1,11 @@
 using UnityEngine;
 
-//[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Animator))]
 public class TouchingDirections : MonoBehaviour
 {
-	//Rigidbody2D rb;
+	Rigidbody2D rb;
 	BoxCollider2D touchingCol;
 	Animator animator;
 
@@ -23,7 +23,6 @@ public class TouchingDirections : MonoBehaviour
 
 	[SerializeField]
 	private bool _isGrounded = true;
-
 
 	public bool IsGrounded
 	{
@@ -63,14 +62,22 @@ public class TouchingDirections : MonoBehaviour
 
 	private void Awake()
 	{
-		//rb = GetComponent<Rigidbody2D>(); 
+		rb = GetComponent<Rigidbody2D>(); 
 		touchingCol = GetComponent<BoxCollider2D>();
 		animator = GetComponent<Animator>();
 	}
 
 	private void FixedUpdate()
 	{
-		IsGrounded = touchingCol.Cast(Vector2.down, castFilter, groundHits, groundDistance) > 0;
+		IsGrounded = touchingCol.Cast(Vector2.down, castFilter, groundHits, groundDistance) > 0 && touchingCol.Cast(Vector2.up, castFilter, groundHits, groundDistance) <= 0;
+		Debug.DrawRay(touchingCol.bounds.center + new Vector3(touchingCol.bounds.extents.x,0), Vector2.down * (touchingCol.bounds.extents.y + groundDistance), Color.green);
+		Debug.DrawRay(touchingCol.bounds.center - new Vector3(touchingCol.bounds.extents.x,0), Vector2.down * (touchingCol.bounds.extents.y + groundDistance), Color.green);
+		Debug.DrawRay(touchingCol.bounds.center - new Vector3(touchingCol.bounds.extents.x, touchingCol.bounds.extents.y + groundDistance), Vector2.right * (touchingCol.bounds.extents.x), Color.green);
+
+		Debug.DrawRay(touchingCol.bounds.center + new Vector3(touchingCol.bounds.extents.x, 0), Vector2.up * (touchingCol.bounds.extents.y + groundDistance), Color.green);
+		Debug.DrawRay(touchingCol.bounds.center - new Vector3(touchingCol.bounds.extents.x, 0), Vector2.up * (touchingCol.bounds.extents.y + groundDistance), Color.green);
+		Debug.DrawRay(touchingCol.bounds.center + new Vector3(touchingCol.bounds.extents.x, touchingCol.bounds.extents.y + groundDistance), Vector2.right * (touchingCol.bounds.extents.x), Color.green);
+
 		IsOnWall = touchingCol.Cast(wallCheckDirection, castFilter, wallHits, wallDistance) > 0;
 		IsOnCeiling = touchingCol.Cast(Vector2.up, castFilter, ceilingHits, ceilingDistance) > 0;
 	}

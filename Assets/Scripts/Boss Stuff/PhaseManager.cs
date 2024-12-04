@@ -13,6 +13,9 @@ public class PhaseManager : MonoBehaviour
 	[SerializeField]
 	BossMusic music;
 
+	[SerializeField]
+	GameObject BossUI;
+
 	public int Phase = 1;
 
 	private Animator animator;
@@ -48,6 +51,7 @@ public class PhaseManager : MonoBehaviour
 					music.finish = true;
 					GetComponent<LustBossControllerPhaseThree>().StopAllCoroutines();
 					StartCoroutine(GetComponent<LustBossControllerPhaseThree>().BulletHellStart(true));
+					BossUI.SetActive(false);
 				}
 				break;
 		}

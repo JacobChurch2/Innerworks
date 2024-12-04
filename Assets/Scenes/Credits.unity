@@ -882,169 +882,23 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '----------Assets----------
-
-
-    New BW Tile by Nainay
-
-
-    Free Park
-    Zone Tileset Pixel Art
-
-
-    Mossy Cavern by Maaot
-
-
-    Parallax Cave Background
-    Assets by SlashDashGamesStudio
-
-    Artist is Seetyaji
-
-
-    City Background
-    Parallax by Waters.Create
-
-
-    Fire by Sarah
-
-
-
-
-
-
-
-
-
-
-    ----------Effects----------
-
-
-    RippleEffect
-    by Keijiro
-
-
-    NavMeshPlus by H8man
-
-
-
-
-
-
-
-
-
-
-    ----------Sound Effects----------
-
-
-    Normal
-    Talking by Jacory Rowe
-
-
-    Angry Talking by Jacorey Rowe
-
-
-    Obsesive Talking
-    by Jacorey Row
-
-
-    Slime3 by Lukeo135
-
-
-    Slime Death (1) by DrMinky
-
-
-    Slime
-    Attack 1 by Qubodup
-
-
-    13th Whoosh Swing Sound by Qubodup
-
-
-    CrumblingPaper.wav
-    by Mikaelfernstrom
-
-
-    Fan.wav by Dpsa
-
-
-    Powerfull Whooshes 2.wav by Nic3_one
-
-
-    Short
-    kiss by Vospi
-
-
-    Water_drop_5.wav by Deleted_user_2104797
-
-
-    Female_Great_Dane_Growl2.wav
-    by Tnorr6969
-
-
-    Hit 3 by NearTheAtmoshphere
-
-
-    slime noise 10_1.wav by
-    Jtap97
-
-
-    8-bit jump by Prof.Mudkip
-
-
-    door cabinet slam echo.wav by Pawsound
-
-
-
-
-
-
-
-
-
-
-
-    ----------QA
-    Testers----------
-
-
-    Cameron Sadusky
-
-
-    Jacorey Rowe
-
-
-    Elijah Saint-Pierre
-
-
-    Darrell
-    Vanriette
-
-
-    Jaxen Barens
-
-
-    Mizuki Ito
-
-
-
-
-
-
-
-
-
-
-
-    ----------Music----------
-
-
-    MusicLoopBundle
-    by Tallbeard Studios
-
-
-    P.I.A.N.O. Renovation. (MUSH UP ANTHEM) feat. Yoshida
-    Brothers by Daishi Dance'
+  m_text: "----------Assets----------\n\nNew BW Tile by Nainay\n\nFree Park Zone
+    Tileset Pixel Art\n\nMossy Cavern by Maaot\n\nParallax Cave Background Assets
+    by SlashDashGamesStudio\nArtist is Seetyaji\n\nCity Background Parallax by Waters.Create\n\nFire
+    by Sarah\n\n\n\n\n\n\n\n\n\n----------Effects----------\n\nRippleEffect by Keijiro\n\nNavMeshPlus
+    by H8man\n\nParallax effect by Maxhacker11\n\n\n\n\n\n\n\n\n\n----------Sound
+    Effects----------\n\nNormal Talking by Jacory Rowe\n\nAngry Talking by Jacorey
+    Rowe\n\nObsesive Talking by Jacorey Row\n\nSlime3 by Lukeo135\n\nSlime Death
+    (1) by DrMinky\n\nSlime Attack 1 by Qubodup\n\n13th Whoosh Swing Sound by Qubodup\n\nCrumblingPaper.wav
+    by Mikaelfernstrom\n\nFan.wav by Dpsa\n\nPowerfull Whooshes 2.wav by Nic3_one\n\nShort
+    kiss by Vospi\n\nWater_drop_5.wav by Deleted_user_2104797\n\nFemale_Great_Dane_Growl2.wav
+    by Tnorr6969\n\nHit 3 by NearTheAtmoshphere\n\nslime noise 10_1.wav by Jtap97\n\n8-bit
+    jump by Prof.Mudkip\n\ndoor cabinet slam echo.wav by Pawsound\n\nPop_10.aif by
+    SunnySideSound\n \n\n\n\n\n\n\n\n\n\n----------QA Testers----------\n\nCameron
+    Sadusky\n\nJacorey Rowe\n\nElijah Saint-Pierre\n\nMarcus Reyes\n\nDarrell Vanriette\n\nJaxen
+    Barens\n\nMizuki Ito\n\nXandyr Brennan\n\n\n\n\n\n\n\n\n\n\n----------Music----------\n\nMusicLoopBundle
+    by Tallbeard Studios\n\nP.I.A.N.O. Renovation. (MUSH UP ANTHEM) feat. Yoshida
+    Brothers by Daishi Dance"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 41c42801b43795a48a2f7466e40a29b4, type: 2}
   m_sharedMaterial: {fileID: -6167262687686961940, guid: 41c42801b43795a48a2f7466e40a29b4, type: 2}

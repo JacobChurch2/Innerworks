@@ -57,6 +57,7 @@ MonoBehaviour:
   m_Tracks:
   - {fileID: 6384905790098382845}
   - {fileID: -1132231479606107334}
+  - {fileID: 8421736409322765367}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -325,7 +326,34 @@ AnimationClip:
     path: 
   m_ScaleCurves: []
   m_FloatCurves: []
-  m_PPtrCurves: []
+  m_PPtrCurves:
+  - serializedVersion: 2
+    curve:
+    - time: 0
+      value: {fileID: 197816327, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.15
+      value: {fileID: 2023146020, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.3
+      value: {fileID: -1625169219, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.45
+      value: {fileID: -287551849, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.6
+      value: {fileID: -1688925636, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.73333335
+      value: {fileID: -379371218, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 0.8833333
+      value: {fileID: 812452187, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 1.0333333
+      value: {fileID: 527132581, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 1.1833333
+      value: {fileID: -207385630, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - time: 1.3333334
+      value: {fileID: -434720051, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    attribute: m_Sprite
+    path: 
+    classID: 212
+    script: {fileID: 0}
+    flags: 2
   m_SampleRate: 60
   m_WrapMode: 0
   m_Bounds:
@@ -342,13 +370,32 @@ AnimationClip:
       isPPtrCurve: 0
       isIntCurve: 0
       isSerializeReferenceCurve: 0
-    pptrCurveMapping: []
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 197816327, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: 2023146020, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -1625169219, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -287551849, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -1688925636, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -379371218, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: 812452187, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: 527132581, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -207385630, guid: c1f372fae3963da4581510f433813a5e, type: 3}
+    - {fileID: -434720051, guid: c1f372fae3963da4581510f433813a5e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.3333334
+    m_StopTime: 1.35
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -526,3 +573,43 @@ MonoBehaviour:
   m_OpenClipOffsetRotation: {x: 0, y: 0, z: 0, w: 1}
   m_Rotation: {x: 0, y: 0, z: 0, w: 1}
   m_ApplyOffsets: 0
+--- !u!114 &8421736409322765367
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b46e36075dd1c124a8422c228e75e1fb, type: 3}
+  m_Name: Signal Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips: []
+  m_Markers:
+    m_Objects:
+    - {fileID: 8765044558897714860}
+--- !u!114 &8765044558897714860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15c38f6fa1940124db1ab7f6fe7268d1, type: 3}
+  m_Name: Signal Emitter
+  m_EditorClassIdentifier: 
+  m_Time: 1.2
+  m_Retroactive: 0
+  m_EmitOnce: 0
+  m_Asset: {fileID: 11400000, guid: c57925d248b3bf740a860f91e5b534f9, type: 2}

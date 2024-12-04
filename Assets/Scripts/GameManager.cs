@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour
@@ -16,9 +17,13 @@ public class GameManager : MonoBehaviour
 	[SerializeField]
 	PlayerInput playerInput;
 
+	[SerializeField]
+	Transform ResumeBtn;
+
 	private AudioSource PauseMusic;
 
 	private AudioSource LevelMusic;
+	private float levelMusicVolume;
 
 	private bool paused = false;
 
@@ -61,6 +66,11 @@ public class GameManager : MonoBehaviour
 		{
 			if (PauseScreen && !paused)
 			{
+				foreach (TalkingController talk in FindObjectsByType<TalkingController>(FindObjectsSortMode.None))
+				{
+					if (talk.started) return;
+				}
+
 				OnPause();
 			}
 			else
@@ -81,6 +91,7 @@ public class GameManager : MonoBehaviour
 				if (audio.isPlaying)
 				{
 					LevelMusic = audio;
+					levelMusicVolume = audio.volume;
 					audio.Pause();
 				}
 			}
@@ -99,9 +110,10 @@ public class GameManager : MonoBehaviour
 		if (LevelMusic)
 		{
 			LevelMusic.UnPause();
-			StartCoroutine(FadeMusic(LevelMusic, 0, 1, 2));
+			StartCoroutine(FadeMusic(LevelMusic, 0, levelMusicVolume, 2));
 		}
 		PauseMusic.Stop();
+		ResumeBtn.localScale = new Vector3(1, 1, 1);
 		playerInput.enabled = true;
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Confined;

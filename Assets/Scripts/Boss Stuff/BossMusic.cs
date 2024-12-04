@@ -26,6 +26,9 @@ public class BossMusic : MonoBehaviour
 	private LustBossControllerPhaseThree BossPhaseThree;
 
 	[SerializeField]
+	PhaseManager phase;
+
+	[SerializeField]
 	private PlayableDirector FinalAnimStart;
 
 	private AudioSource currentSource;
@@ -34,6 +37,8 @@ public class BossMusic : MonoBehaviour
 	public bool finish = false;
 
 	private float timer;
+
+	private bool finalAnimStarted = false;
 
 	private void Start()
 	{
@@ -86,9 +91,10 @@ public class BossMusic : MonoBehaviour
 
 		timer -= Time.deltaTime;
 
-		if (FinalAnimStart.time > 0)
+		if (FinalAnimStart.time > 0 && !finalAnimStarted)
 		{
 			StartCoroutine(FadeToEndMusic());
+			finalAnimStarted = true;
 		}
 
 		if (timer <= 0)
@@ -121,36 +127,36 @@ public class BossMusic : MonoBehaviour
 		timer = Intro.length;
 	}
 
-	private AudioClip GetNextClip()
-	{
-		switch (currentState)
-		{
-			case eState.IntroState:
-				return Intro;
-			case eState.PhaseOneState:
-				return PhaseOne;
-			case eState.TransitionOneState:
-				return TransitionOne;
-			case eState.PhaseTwoState:
-				return PhaseTwo;
-			case eState.TransitionTwoState:
-				return TransitionTwo;
-			case eState.PhaseThreeState:
-				return PhaseThree;
-			case eState.FinalState:
-				return Final;
-			default:
-				return null;
-		}
-	}
+	//private AudioClip GetNextClip()
+	//{
+	//	switch (currentState)
+	//	{
+	//		case eState.IntroState:
+	//			return Intro;
+	//		case eState.PhaseOneState:
+	//			return PhaseOne;
+	//		case eState.TransitionOneState:
+	//			return TransitionOne;
+	//		case eState.PhaseTwoState:
+	//			return PhaseTwo;
+	//		case eState.TransitionTwoState:
+	//			return TransitionTwo;
+	//		case eState.PhaseThreeState:
+	//			return PhaseThree;
+	//		case eState.FinalState:
+	//			return Final;
+	//		default:
+	//			return null;
+	//	}
+	//}
 
 	private void UpdateState()
 	{
-		if (BossPhaseOne.enabled)
+		if (phase.Phase == 1)
 		{
 			currentState = eState.PhaseOneState;
 		}
-		else if (BossPhaseTwo.enabled)
+		else if (phase.Phase == 2)
 		{
 			if (currentState == eState.PhaseOneState)
 			{
@@ -162,7 +168,7 @@ public class BossMusic : MonoBehaviour
 				currentState = eState.PhaseTwoState;
 			}
 		}
-		else if (BossPhaseThree.enabled)
+		else if (phase.Phase == 3)
 		{
 			if (finish)
 			{

@@ -606,7 +606,7 @@ public class PlayerController : MonoBehaviour
 		if (GrappleHit)
 		{
 			GrappleJoint.enabled = true;
-			GrappleJoint.distance = 0;
+			GrappleJoint.distance = 1;
 
 			if (GrappleHit.rigidbody.tag.Equals("MovingPlatform") || GrappleHit.rigidbody.tag.Equals("FallingPlatform"))
 			{

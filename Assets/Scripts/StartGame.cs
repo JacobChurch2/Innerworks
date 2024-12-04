@@ -10,6 +10,9 @@ public class StartGame : MonoBehaviour
 	TextMeshProUGUI StartButton;
 
 	[SerializeField]
+	TextMeshProUGUI ContinueButton;
+
+	[SerializeField]
 	TextMeshProUGUI Title;
 
 	[SerializeField]
@@ -17,25 +20,35 @@ public class StartGame : MonoBehaviour
 
 	public void StartTheGame()
 	{
-		StartCoroutine(LerpButtonVisibility());
+		StartCoroutine(LerpButtonVisibility(StartButton));
+		StartCoroutine(LerpButtonVisibility(ContinueButton));
 		StartCoroutine(LerpTitleVisibility());
 		StartCoroutine(LerpCamZ());
-		StartCoroutine(LoadNextScene());		
+		StartCoroutine(LoadNextScene());
 	}
 
-	IEnumerator LerpButtonVisibility()
+	public void Continue()
+	{
+		StartCoroutine(LerpButtonVisibility(StartButton));
+		StartCoroutine(LerpButtonVisibility(ContinueButton));
+		StartCoroutine(LerpTitleVisibility());
+		StartCoroutine(LerpCamZ());
+		StartCoroutine(LoadSavedScene());
+	}
+
+	IEnumerator LerpButtonVisibility(TextMeshProUGUI btn)
 	{
 		float timeElapsed = 0;
 
 		while (timeElapsed < 0.25f)
 		{
-			StartButton.alpha = Mathf.Lerp(1, 0, timeElapsed / 0.25f);
+			btn.alpha = Mathf.Lerp(1, 0, timeElapsed / 0.25f);
 			timeElapsed += Time.deltaTime;
 
 			yield return null;
 		}
 
-		StartButton.alpha = 0;
+		btn.alpha = 0;
 	}
 
 	IEnumerator LerpTitleVisibility()
@@ -59,7 +72,7 @@ public class StartGame : MonoBehaviour
 
 		while (timeElapsed < 1f)
 		{
-			Cam.transform.position = new Vector3(Cam.transform.position.x, Cam.transform.position.y,  Mathf.Lerp(-200, 0, timeElapsed / 1f));
+			Cam.transform.position = new Vector3(Cam.transform.position.x, Cam.transform.position.y, Mathf.Lerp(-200, 0, timeElapsed / 1f));
 			timeElapsed += Time.deltaTime;
 
 			yield return null;
@@ -71,7 +84,14 @@ public class StartGame : MonoBehaviour
 	IEnumerator LoadNextScene()
 	{
 		yield return new WaitForSeconds(1);
+		PlayerPrefs.SetInt("CurrentLevel", 1);
 
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
+
+	IEnumerator LoadSavedScene()
+	{
+		yield return new WaitForSeconds(1);
+		SceneManager.LoadScene(PlayerPrefs.GetInt("CurrentLevel", 1));
 	}
 }

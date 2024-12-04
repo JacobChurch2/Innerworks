@@ -37,6 +37,8 @@ public class LevelLoader : MonoBehaviour
 
         yield return new WaitForSeconds(transitionTime);
 
+		PlayerPrefs.SetInt("CurrentLevel", SceneManager.GetActiveScene().buildIndex + 1);
+
 		SceneManager.LoadScene(levelIndex);
 	}
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.InputSystem;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(FreezeGame))]
 public class DoubleJumpUnlock : MonoBehaviour
@@ -13,6 +14,8 @@ public class DoubleJumpUnlock : MonoBehaviour
 	FadingPanel FallTextOne, FallTextTwo, FallTextThree, FallTextFour, FallTextFive;
 	[SerializeField]
 	PlayerInput playerInputs;
+	[SerializeField]
+	PlayableDirector finalAnim;
 
 	bool SequenceStart = false;
 	bool SequenceEnd = false;
@@ -26,20 +29,20 @@ public class DoubleJumpUnlock : MonoBehaviour
 	{
 		yield return new WaitForSecondsRealtime(2);
 		StartCoroutine(FallTextOne.FadeInRealTime());
-		yield return new WaitForSecondsRealtime(4);
+		yield return new WaitForSecondsRealtime(3);
 		StartCoroutine(FallTextOne.FadeOutRealTime());
 
 		StartCoroutine(FallTextTwo.FadeInRealTime());
-		yield return new WaitForSecondsRealtime(4);
+		yield return new WaitForSecondsRealtime(3);
 		StartCoroutine(FallTextTwo.FadeOutRealTime());
 
 		StartCoroutine(FallTextThree.FadeInRealTime());
-		yield return new WaitForSecondsRealtime(4);
+		yield return new WaitForSecondsRealtime(3);
 		StartCoroutine(FallTextThree.FadeOutRealTime());
 
 		StartCoroutine(FallTextFour.FadeInRealTime());
 
-		yield return new WaitForSecondsRealtime(4);
+		yield return new WaitForSecondsRealtime(1);
 
 		StartCoroutine(FallTextFive.FadeInRealTime());
 
@@ -69,7 +72,7 @@ public class DoubleJumpUnlock : MonoBehaviour
 			StartCoroutine(FallTextFive.FadeOutRealTime());
 			SequenceEnd = false;
 			Player.OnJump(context);
-			playerInputs.enabled = true;
+			finalAnim.Play();
 		}
 	}
 }
